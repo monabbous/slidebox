@@ -1,10 +1,13 @@
 {
   "name": "@monabbous/slidebox",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "style": "dist/css/slidebox.css",
   "sass": "scss/slidebox.scss",
   "keywords": [
     "scss",
+    "switch",
+    "toggle",
+    "button",
     "css",
     "simple",
     "style",

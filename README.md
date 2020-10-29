@@ -2,10 +2,22 @@
 ![Example](https://i.imgur.com/yyRPh0R.gif)
 ## [Example (click me)](https://htmlpreview.github.io/?https://github.com/monabbous/slidebox/blob/master/examples/simple.html)
 As you can see in the example above, this slidebox is easy to configure with these two css properties, `color` and `font-size`.
-## Installation
+
+### Quick Setup
+Include in your html
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/@monabbous/slidebox@0.0.1/dist/css/slidebox.css"/>
+
+Add the `slidebox` class
+
+    <input style="font-size: 24px" type="checkbox" class="slidebox">
+    
+## Installation (Sass)
 #### 1. Font Awesome
 First you must include **[Font Awesome](https://i.imgur.com/yyRPh0R.gif)** in your project (Preferable Font Awesome 5).
 #### 2. Slidebox
+
 Using `Sass` with `NPM` just install with
 
     npm i @monabbous/slidebox
