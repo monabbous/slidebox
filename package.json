@@ -1,0 +1,16 @@
+{
+  "name": "@monabbous/slidebox",
+  "version": "0.0.1",
+  "style": "dist/css/slidebox.css",
+  "sass": "scss/slidebox.scss",
+  "keywords": [
+    "scss",
+    "css",
+    "simple",
+    "style",
+    "slidebox",
+    "checkbox"
+  ],
+  "author": "Mohamed Nabous <mohamed.nabbous@gmail.com>",
+  "license": "ISC"
+}

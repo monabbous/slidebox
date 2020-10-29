@@ -1,0 +1,209 @@
+$slideboxColorDefaultColor: blue !default;
+$slideboxPrefix: '' !default;
+
+$spacing: 0.8em;
+
+@mixin dark-filters() {
+
+  &::after {
+    filter: brightness(130%);
+  }
+}
+
+@mixin dark-colors() {
+  &::before {
+    color: lighten(grey, 30%);
+  }
+
+  &::after {
+    color: darken(grey, 30%);
+  }
+}
+
+@mixin light-filters() {
+  &::before {
+    filter: brightness(70%);
+  }
+}
+
+@mixin light-colors() {
+  &::before {
+    color: lighten(grey, 30%);
+  }
+
+  &::after {
+    color: #444444;
+  }
+}
+
+input[type=checkbox].#{$slideboxPrefix}slidebox {
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  -ms-appearance: none !important;
+  -o-appearance: none !important;
+  appearance: none !important;
+  line-height: 0px;
+  position: relative;
+  color: $slideboxColorDefaultColor;
+  outline: 0 !important;
+  cursor: pointer;
+  padding: 0 #{$spacing / 2};
+  font-size: 1em;
+
+  &:focus::after {
+    outline: auto 5px -webkit-focus-ring-color;
+  }
+
+  &::before {
+    direction: ltr;
+    position: absolute;
+    content: '\f111\f111\f111\f111\f111\f111\f111';
+    font-weight: 900;
+    font-family: 'Font Awesome 5 Free';
+    display: block;
+    letter-spacing: -$spacing;
+    margin-left: $spacing * 0.5;
+    left: 50%;
+    top: 50%;
+    transform-origin: center center;
+    transform: translate(-50%, -50%) scale(0.8);
+    width: #{$spacing * 4};
+  }
+
+  &::after {
+    line-height: 1em;
+    position: relative;
+    content: '\f111';
+    font-weight: 900;
+    padding: #{$spacing / 2};
+    font-family: 'Font Awesome 5 Free';
+    display: block;
+    transform-origin: center center;
+    animation-duration: 0.2s;
+    animation-timing-function: cubic-bezier(0.68, -0.6, 0.32, 1.6);
+    animation-fill-mode: forwards;
+  }
+
+  &::before, &::after {
+    transition: color 0.2s ease-in-out;
+  }
+
+  &:not(.inverted) {
+    &::after {
+      animation-name: slideboxUnchecked;
+    }
+
+    &.dark {
+      @include dark-colors;
+      @include dark-filters;
+    }
+
+    &.light {
+      @include light-colors;
+      @include light-filters;
+    }
+
+    @if (lightness($slideboxColorDefaultColor) > 40) {
+      @include light-colors;
+      @include light-filters;
+    } @else {
+      @include dark-colors;
+      @include dark-filters;
+    }
+
+    &:checked {
+      &::before, &::after {
+        color: inherit;
+      }
+
+      &::after {
+        animation-name: slideboxChecked;
+      }
+    }
+
+    &:active {
+      &:checked::after {
+        transform: translateX(calc(50% - #{$spacing / 2})) scale(1.1) !important;
+      }
+
+      &:not(:checked)::after {
+        transform: translateX(calc(-50% + #{$spacing / 2})) scale(1.1) !important;
+      }
+    }
+  }
+
+
+  &.inverted {
+    &::before, &::after {
+      color: inherit;
+    }
+
+    &::after {
+      animation-name: slideboxChecked;
+    }
+
+    &.dark {
+      @include dark-filters;
+    }
+
+    &.light {
+      @include light-filters;
+    }
+
+    @if (lightness($slideboxColorDefaultColor) > 40) {
+      @include light-filters;
+    } @else {
+      @include dark-filters;
+    }
+
+    &:checked {
+      &::after {
+        animation-name: slideboxUnchecked;
+      }
+
+      &.dark {
+        @include dark-colors;
+      }
+
+      &.light {
+        @include light-colors;
+      }
+
+      @if (lightness($slideboxColorDefaultColor) > 40) {
+        @include light-colors;
+      } @else {
+        @include dark-colors;
+      }
+
+    }
+
+    &:active {
+      &:checked::after {
+        transform: translateX(calc(-50% + #{$spacing / 2})) scale(1.1) !important;
+      }
+
+      &:not(:checked)::after {
+        transform: translateX(calc(50% - #{$spacing / 2})) scale(1.1) !important;
+      }
+    }
+  }
+
+}
+
+@keyframes slideboxChecked {
+  from {
+    transform: translateX(calc(-50% + #{$spacing / 2}));
+  }
+  to {
+    transform: translateX(calc(50% - #{$spacing / 2}));
+  }
+}
+
+@keyframes slideboxUnchecked {
+  from {
+    transform: translateX(calc(50% - #{$spacing / 2}));
+  }
+  to {
+    transform: translateX(calc(-50% + #{$spacing / 2}));
+  }
+}

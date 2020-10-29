@@ -1,0 +1,152 @@
+@charset "UTF-8";
+input[type=checkbox].slidebox {
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  -ms-appearance: none !important;
+  -o-appearance: none !important;
+  appearance: none !important;
+  line-height: 0px;
+  position: relative;
+  color: blue;
+  outline: 0 !important;
+  cursor: pointer;
+  padding: 0 0.4em;
+  font-size: 1em;
+}
+input[type=checkbox].slidebox:focus::after {
+  outline: auto 5px -webkit-focus-ring-color;
+}
+input[type=checkbox].slidebox::before {
+  direction: ltr;
+  position: absolute;
+  content: "";
+  font-weight: 900;
+  font-family: "Font Awesome 5 Free";
+  display: block;
+  letter-spacing: -0.8em;
+  margin-left: 0.4em;
+  left: 50%;
+  top: 50%;
+  transform-origin: center center;
+  transform: translate(-50%, -50%) scale(0.8);
+  width: 3.2em;
+}
+input[type=checkbox].slidebox::after {
+  line-height: 1em;
+  position: relative;
+  content: "";
+  font-weight: 900;
+  padding: 0.4em;
+  font-family: "Font Awesome 5 Free";
+  display: block;
+  transform-origin: center center;
+  animation-duration: 0.2s;
+  animation-timing-function: cubic-bezier(0.68, -0.6, 0.32, 1.6);
+  animation-fill-mode: forwards;
+}
+input[type=checkbox].slidebox::before, input[type=checkbox].slidebox::after {
+  transition: color 0.2s ease-in-out;
+}
+input[type=checkbox].slidebox:not(.inverted)::after {
+  animation-name: slideboxUnchecked;
+}
+input[type=checkbox].slidebox:not(.inverted).dark::before {
+  color: #cdcdcd;
+}
+input[type=checkbox].slidebox:not(.inverted).dark::after {
+  color: #343434;
+}
+input[type=checkbox].slidebox:not(.inverted).dark::after {
+  filter: brightness(130%);
+}
+input[type=checkbox].slidebox:not(.inverted).light::before {
+  color: #cdcdcd;
+}
+input[type=checkbox].slidebox:not(.inverted).light::after {
+  color: #444444;
+}
+input[type=checkbox].slidebox:not(.inverted).light::before {
+  filter: brightness(70%);
+}
+input[type=checkbox].slidebox:not(.inverted)::before {
+  color: #cdcdcd;
+}
+input[type=checkbox].slidebox:not(.inverted)::after {
+  color: #444444;
+}
+input[type=checkbox].slidebox:not(.inverted)::before {
+  filter: brightness(70%);
+}
+input[type=checkbox].slidebox:not(.inverted):checked::before, input[type=checkbox].slidebox:not(.inverted):checked::after {
+  color: inherit;
+}
+input[type=checkbox].slidebox:not(.inverted):checked::after {
+  animation-name: slideboxChecked;
+}
+input[type=checkbox].slidebox:not(.inverted):active:checked::after {
+  transform: translateX(calc(50% - 0.4em)) scale(1.1) !important;
+}
+input[type=checkbox].slidebox:not(.inverted):active:not(:checked)::after {
+  transform: translateX(calc(-50% + 0.4em)) scale(1.1) !important;
+}
+input[type=checkbox].slidebox.inverted::before, input[type=checkbox].slidebox.inverted::after {
+  color: inherit;
+}
+input[type=checkbox].slidebox.inverted::after {
+  animation-name: slideboxChecked;
+}
+input[type=checkbox].slidebox.inverted.dark::after {
+  filter: brightness(130%);
+}
+input[type=checkbox].slidebox.inverted.light::before {
+  filter: brightness(70%);
+}
+input[type=checkbox].slidebox.inverted::before {
+  filter: brightness(70%);
+}
+input[type=checkbox].slidebox.inverted:checked::after {
+  animation-name: slideboxUnchecked;
+}
+input[type=checkbox].slidebox.inverted:checked.dark::before {
+  color: #cdcdcd;
+}
+input[type=checkbox].slidebox.inverted:checked.dark::after {
+  color: #343434;
+}
+input[type=checkbox].slidebox.inverted:checked.light::before {
+  color: #cdcdcd;
+}
+input[type=checkbox].slidebox.inverted:checked.light::after {
+  color: #444444;
+}
+input[type=checkbox].slidebox.inverted:checked::before {
+  color: #cdcdcd;
+}
+input[type=checkbox].slidebox.inverted:checked::after {
+  color: #444444;
+}
+input[type=checkbox].slidebox.inverted:active:checked::after {
+  transform: translateX(calc(-50% + 0.4em)) scale(1.1) !important;
+}
+input[type=checkbox].slidebox.inverted:active:not(:checked)::after {
+  transform: translateX(calc(50% - 0.4em)) scale(1.1) !important;
+}
+
+@keyframes slideboxChecked {
+  from {
+    transform: translateX(calc(-50% + 0.4em));
+  }
+  to {
+    transform: translateX(calc(50% - 0.4em));
+  }
+}
+@keyframes slideboxUnchecked {
+  from {
+    transform: translateX(calc(50% - 0.4em));
+  }
+  to {
+    transform: translateX(calc(-50% + 0.4em));
+  }
+}
+
+/*# sourceMappingURL=slidebox.css.map */
