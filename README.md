@@ -1,8 +1,7 @@
 # Slidebox
 ![Example](https://i.imgur.com/yyRPh0R.gif)
-
+## [Example (click me)](https://htmlpreview.github.io/?https://github.com/monabbous/slidebox/blob/master/examples/simple.html)
 As you can see in the example above, this slidebox is easy to configure with these two css properties, `color` and `font-size`.
-
 ## Installation
 #### 1. Font Awesome
 First you must include **[Font Awesome](https://i.imgur.com/yyRPh0R.gif)** in your project (Preferable Font Awesome 5).
