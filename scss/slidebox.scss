@@ -1,5 +1,5 @@
 $slideboxColorDefaultColor: blue !default;
-$slideboxPrefix: '' !default;
+$slideboxClassPrefix: '' !default;
 
 $spacing: 0.8em;
 
@@ -36,7 +36,7 @@ $spacing: 0.8em;
   }
 }
 
-input[type=checkbox].#{$slideboxPrefix}slidebox {
+input[type=checkbox].#{$slideboxClassPrefix}slidebox {
   -webkit-appearance: none !important;
   -moz-appearance: none !important;
   -ms-appearance: none !important;

@@ -11,6 +11,10 @@
     "slidebox",
     "checkbox"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/monabbous/slidebox.git"
+  },
   "author": "Mohamed Nabous <mohamed.nabbous@gmail.com>",
   "license": "ISC"
 }
