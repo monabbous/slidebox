@@ -15,7 +15,7 @@ Add the `slidebox` class
     
 ## Installation (Sass)
 #### 1. Font Awesome
-First you must include **[Font Awesome](https://i.imgur.com/yyRPh0R.gif)** in your project (Preferable Font Awesome 5).
+First you must include **[Font Awesome](https://fontawesome.com)** in your project (Preferable Font Awesome 5).
 #### 2. Slidebox
 
 Using `Sass` with `NPM` just install with
