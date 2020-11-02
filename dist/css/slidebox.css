@@ -5,6 +5,8 @@ input[type=checkbox].slidebox {
   -ms-appearance: none !important;
   -o-appearance: none !important;
   appearance: none !important;
+  height: auto;
+  width: auto;
   line-height: 0px;
   position: relative;
   color: blue;
