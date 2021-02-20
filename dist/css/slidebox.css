@@ -14,6 +14,7 @@ input[type=checkbox].slidebox {
   cursor: pointer;
   padding: 0 0.4em;
   font-size: 1em;
+  transform-origin: center center;
 }
 input[type=checkbox].slidebox:focus::after {
   outline: auto 5px -webkit-focus-ring-color;
@@ -30,6 +31,7 @@ input[type=checkbox].slidebox::before {
   left: 50%;
   top: 50%;
   transform-origin: center center;
+  -webkit-transform: translate(-50%, -50%) scale(0.8);
   transform: translate(-50%, -50%) scale(0.8);
   width: 3.2em;
 }
@@ -45,36 +47,42 @@ input[type=checkbox].slidebox::after {
   animation-duration: 0.2s;
   animation-timing-function: cubic-bezier(0.68, -0.6, 0.32, 1.6);
   animation-fill-mode: forwards;
+  filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.5));
 }
 input[type=checkbox].slidebox::before, input[type=checkbox].slidebox::after {
   transition: color 0.2s ease-in-out;
 }
-input[type=checkbox].slidebox:not(.inverted)::after {
-  animation-name: slideboxUnchecked;
+:not([dir=rtl]) input[type=checkbox].slidebox:not(.inverted)::after {
+  animation-name: slideboxToRight;
 }
+
+[dir=rtl] input[type=checkbox].slidebox:not(.inverted)::after {
+  animation-name: slideboxToLeft;
+}
+
 input[type=checkbox].slidebox:not(.inverted).dark::before {
-  color: #cdcdcd;
+  color: white;
 }
 input[type=checkbox].slidebox:not(.inverted).dark::after {
-  color: #343434;
+  color: #e6e6e6;
 }
 input[type=checkbox].slidebox:not(.inverted).dark::after {
-  filter: brightness(130%);
+  filter: brightness(130%) drop-shadow(0 0 4px rgba(0, 0, 0, 0.5));
 }
 input[type=checkbox].slidebox:not(.inverted).light::before {
-  color: #cdcdcd;
+  color: white;
 }
 input[type=checkbox].slidebox:not(.inverted).light::after {
-  color: #444444;
+  color: #f7f7f7;
 }
 input[type=checkbox].slidebox:not(.inverted).light::before {
   filter: brightness(70%);
 }
 input[type=checkbox].slidebox:not(.inverted)::before {
-  color: #cdcdcd;
+  color: white;
 }
 input[type=checkbox].slidebox:not(.inverted)::after {
-  color: #444444;
+  color: #f7f7f7;
 }
 input[type=checkbox].slidebox:not(.inverted)::before {
   filter: brightness(70%);
@@ -82,23 +90,47 @@ input[type=checkbox].slidebox:not(.inverted)::before {
 input[type=checkbox].slidebox:not(.inverted):checked::before, input[type=checkbox].slidebox:not(.inverted):checked::after {
   color: inherit;
 }
-input[type=checkbox].slidebox:not(.inverted):checked::after {
-  animation-name: slideboxChecked;
+:not([dir=rtl]) input[type=checkbox].slidebox:not(.inverted):checked::after {
+  animation-name: slideboxToLeft;
 }
-input[type=checkbox].slidebox:not(.inverted):active:checked::after {
-  transform: translateX(calc(50% - 0.4em)) scale(1.1) !important;
+
+[dir=rtl] input[type=checkbox].slidebox:not(.inverted):checked::after {
+  animation-name: slideboxToRight;
 }
-input[type=checkbox].slidebox:not(.inverted):active:not(:checked)::after {
+
+:not([dir=rtl]) input[type=checkbox].slidebox:not(.inverted):active:checked::after {
+  -webkit-transform: translateX(calc(-50% + 0.4em)) scale(1.1) !important;
   transform: translateX(calc(-50% + 0.4em)) scale(1.1) !important;
 }
+
+[dir=rtl] input[type=checkbox].slidebox:not(.inverted):active:checked::after {
+  -webkit-transform: translateX(calc(50% - 0.4em)) scale(1.1) !important;
+  transform: translateX(calc(50% - 0.4em)) scale(1.1) !important;
+}
+
+:not([dir=rtl]) input[type=checkbox].slidebox:not(.inverted):active:not(:checked)::after {
+  -webkit-transform: translateX(calc(50% - 0.4em)) scale(1.1) !important;
+  transform: translateX(calc(50% - 0.4em)) scale(1.1) !important;
+}
+
+[dir=rtl] input[type=checkbox].slidebox:not(.inverted):active:not(:checked)::after {
+  -webkit-transform: translateX(calc(-50% + 0.4em)) scale(1.1) !important;
+  transform: translateX(calc(-50% + 0.4em)) scale(1.1) !important;
+}
+
 input[type=checkbox].slidebox.inverted::before, input[type=checkbox].slidebox.inverted::after {
   color: inherit;
 }
-input[type=checkbox].slidebox.inverted::after {
-  animation-name: slideboxChecked;
+:not([dir=rtl]) input[type=checkbox].slidebox.inverted::after {
+  animation-name: slideboxToLeft;
 }
+
+[dir=rtl] input[type=checkbox].slidebox.inverted::after {
+  animation-name: slideboxToRight;
+}
+
 input[type=checkbox].slidebox.inverted.dark::after {
-  filter: brightness(130%);
+  filter: brightness(130%) drop-shadow(0 0 4px rgba(0, 0, 0, 0.5));
 }
 input[type=checkbox].slidebox.inverted.light::before {
   filter: brightness(70%);
@@ -106,48 +138,70 @@ input[type=checkbox].slidebox.inverted.light::before {
 input[type=checkbox].slidebox.inverted::before {
   filter: brightness(70%);
 }
-input[type=checkbox].slidebox.inverted:checked::after {
-  animation-name: slideboxUnchecked;
+:not([dir=rtl]) input[type=checkbox].slidebox.inverted:checked::after {
+  animation-name: slideboxToRight;
 }
+
+[dir=rtl] input[type=checkbox].slidebox.inverted:checked::after {
+  animation-name: slideboxToLeft;
+}
+
 input[type=checkbox].slidebox.inverted:checked.dark::before {
-  color: #cdcdcd;
+  color: white;
 }
 input[type=checkbox].slidebox.inverted:checked.dark::after {
-  color: #343434;
+  color: #e6e6e6;
 }
 input[type=checkbox].slidebox.inverted:checked.light::before {
-  color: #cdcdcd;
+  color: white;
 }
 input[type=checkbox].slidebox.inverted:checked.light::after {
-  color: #444444;
+  color: #f7f7f7;
 }
 input[type=checkbox].slidebox.inverted:checked::before {
-  color: #cdcdcd;
+  color: white;
 }
 input[type=checkbox].slidebox.inverted:checked::after {
-  color: #444444;
+  color: #f7f7f7;
 }
-input[type=checkbox].slidebox.inverted:active:checked::after {
-  transform: translateX(calc(-50% + 0.4em)) scale(1.1) !important;
-}
-input[type=checkbox].slidebox.inverted:active:not(:checked)::after {
+:not([dir=rtl]) input[type=checkbox].slidebox.inverted:active:checked::after {
+  -webkit-transform: translateX(calc(50% - 0.4em)) scale(1.1) !important;
   transform: translateX(calc(50% - 0.4em)) scale(1.1) !important;
 }
 
-@keyframes slideboxChecked {
+[dir=rtl] input[type=checkbox].slidebox.inverted:active:checked::after {
+  -webkit-transform: translateX(calc(-50% + 0.4em)) scale(1.1) !important;
+  transform: translateX(calc(-50% + 0.4em)) scale(1.1) !important;
+}
+
+:not([dir=rtl]) input[type=checkbox].slidebox.inverted:active:not(:checked)::after {
+  -webkit-transform: translateX(calc(-50% + 0.4em)) scale(1.1) !important;
+  transform: translateX(calc(-50% + 0.4em)) scale(1.1) !important;
+}
+
+[dir=rtl] input[type=checkbox].slidebox.inverted:active:not(:checked)::after {
+  -webkit-transform: translateX(calc(50% - 0.4em)) scale(1.1) !important;
+  transform: translateX(calc(50% - 0.4em)) scale(1.1) !important;
+}
+
+@keyframes slideboxToLeft {
   from {
-    transform: translateX(calc(-50% + 0.4em));
+    -webkit-transform: translateX(calc(50% - 0.4em));
+    transform: translateX(calc(50% - 0.4em));
   }
   to {
-    transform: translateX(calc(50% - 0.4em));
+    -webkit-transform: translateX(calc(-50% + 0.4em));
+    transform: translateX(calc(-50% + 0.4em));
   }
 }
-@keyframes slideboxUnchecked {
+@keyframes slideboxToRight {
   from {
-    transform: translateX(calc(50% - 0.4em));
+    -webkit-transform: translateX(calc(-50% + 0.4em));
+    transform: translateX(calc(-50% + 0.4em));
   }
   to {
-    transform: translateX(calc(-50% + 0.4em));
+    -webkit-transform: translateX(calc(50% - 0.4em));
+    transform: translateX(calc(50% - 0.4em));
   }
 }
 

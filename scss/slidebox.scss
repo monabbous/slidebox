@@ -3,20 +3,22 @@ $slideboxClassPrefix: '' !default;
 
 $spacing: 0.8em;
 
+$slideboxShadowFilter: drop-shadow(0 0 4px rgba(black, 0.5));
+
 @mixin dark-filters() {
 
   &::after {
-    filter: brightness(130%);
+    filter: brightness(130%) $slideboxShadowFilter;
   }
 }
 
 @mixin dark-colors() {
   &::before {
-    color: lighten(grey, 30%);
+    color: lighten(grey, 50%);
   }
 
   &::after {
-    color: darken(grey, 30%);
+    color: lighten(grey, 40%);
   }
 }
 
@@ -28,11 +30,61 @@ $spacing: 0.8em;
 
 @mixin light-colors() {
   &::before {
-    color: lighten(grey, 30%);
+    color: lighten(grey, 50%);
   }
 
   &::after {
-    color: #444444;
+    color: lighten(#444444, 70%);
+  }
+}
+
+@mixin slideboxRight($extraTransform: null) {
+  -webkit-transform: translateX(calc(50% - #{$spacing / 2})) $extraTransform;
+  transform: translateX(calc(50% - #{$spacing / 2})) $extraTransform;
+}
+
+
+@mixin slideboxLeft($extraTransform: null) {
+  -webkit-transform: translateX(calc(-50% + #{$spacing / 2})) $extraTransform;
+  transform: translateX(calc(-50% + #{$spacing / 2})) $extraTransform;
+}
+
+
+@mixin slideboxStart($extraTransform: null) {
+  @at-root :not([dir=rtl]) & {
+    @include slideboxLeft($extraTransform);
+  }
+  @at-root [dir=rtl] & {
+    @include slideboxRight($extraTransform);
+  }
+}
+
+@mixin slideboxEnd($extraTransform: null) {
+  @at-root :not([dir=rtl]) & {
+    @include slideboxRight($extraTransform);
+  }
+  @at-root [dir=rtl] & {
+    @include slideboxLeft($extraTransform);
+  }
+}
+
+
+
+@mixin slideboxToStartAnimation() {
+  @at-root :not([dir=rtl]) & {
+    animation-name: slideboxToLeft;
+  }
+  @at-root [dir=rtl] & {
+    animation-name: slideboxToRight;
+  }
+}
+
+@mixin slideboxToEndAnimation() {
+  @at-root :not([dir=rtl]) & {
+    animation-name: slideboxToRight;
+  }
+  @at-root [dir=rtl] & {
+    animation-name: slideboxToLeft;
   }
 }
 
@@ -51,6 +103,7 @@ input[type=checkbox].#{$slideboxClassPrefix}slidebox {
   cursor: pointer;
   padding: 0 #{$spacing / 2};
   font-size: 1em;
+  transform-origin: center center;
 
   &:focus::after {
     outline: auto 5px -webkit-focus-ring-color;
@@ -68,6 +121,7 @@ input[type=checkbox].#{$slideboxClassPrefix}slidebox {
     left: 50%;
     top: 50%;
     transform-origin: center center;
+    -webkit-transform: translate(-50%, -50%) scale(0.8);
     transform: translate(-50%, -50%) scale(0.8);
     width: #{$spacing * 4};
   }
@@ -84,6 +138,7 @@ input[type=checkbox].#{$slideboxClassPrefix}slidebox {
     animation-duration: 0.2s;
     animation-timing-function: cubic-bezier(0.68, -0.6, 0.32, 1.6);
     animation-fill-mode: forwards;
+    filter: $slideboxShadowFilter;
   }
 
   &::before, &::after {
@@ -92,7 +147,7 @@ input[type=checkbox].#{$slideboxClassPrefix}slidebox {
 
   &:not(.inverted) {
     &::after {
-      animation-name: slideboxUnchecked;
+      @include slideboxToEndAnimation;
     }
 
     &.dark {
@@ -119,17 +174,17 @@ input[type=checkbox].#{$slideboxClassPrefix}slidebox {
       }
 
       &::after {
-        animation-name: slideboxChecked;
+        @include slideboxToStartAnimation;
       }
     }
 
     &:active {
       &:checked::after {
-        transform: translateX(calc(50% - #{$spacing / 2})) scale(1.1) !important;
+        @include slideboxStart(scale(1.1) !important);
       }
 
       &:not(:checked)::after {
-        transform: translateX(calc(-50% + #{$spacing / 2})) scale(1.1) !important;
+        @include slideboxEnd(scale(1.1) !important);
       }
     }
   }
@@ -141,7 +196,7 @@ input[type=checkbox].#{$slideboxClassPrefix}slidebox {
     }
 
     &::after {
-      animation-name: slideboxChecked;
+      @include slideboxToStartAnimation;
     }
 
     &.dark {
@@ -160,7 +215,7 @@ input[type=checkbox].#{$slideboxClassPrefix}slidebox {
 
     &:checked {
       &::after {
-        animation-name: slideboxUnchecked;
+        @include slideboxToEndAnimation;
       }
 
       &.dark {
@@ -181,31 +236,31 @@ input[type=checkbox].#{$slideboxClassPrefix}slidebox {
 
     &:active {
       &:checked::after {
-        transform: translateX(calc(-50% + #{$spacing / 2})) scale(1.1) !important;
+        @include slideboxEnd(scale(1.1) !important);
       }
 
       &:not(:checked)::after {
-        transform: translateX(calc(50% - #{$spacing / 2})) scale(1.1) !important;
+        @include slideboxStart(scale(1.1) !important);
       }
     }
   }
 
 }
 
-@keyframes slideboxChecked {
+@keyframes slideboxToLeft {
   from {
-    transform: translateX(calc(-50% + #{$spacing / 2}));
+    @include slideboxRight;
   }
   to {
-    transform: translateX(calc(50% - #{$spacing / 2}));
+    @include slideboxLeft;
   }
 }
 
-@keyframes slideboxUnchecked {
+@keyframes slideboxToRight {
   from {
-    transform: translateX(calc(50% - #{$spacing / 2}));
+    @include slideboxLeft;
   }
   to {
-    transform: translateX(calc(-50% + #{$spacing / 2}));
+    @include slideboxRight;
   }
 }
