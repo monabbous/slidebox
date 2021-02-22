@@ -9,7 +9,7 @@ input[type=checkbox].slidebox {
   width: auto;
   line-height: 0px;
   position: relative;
-  color: blue;
+  color: #282727;
   outline: 0 !important;
   cursor: pointer;
   padding: 0 0.4em;
@@ -61,7 +61,7 @@ input[type=checkbox].slidebox::before, input[type=checkbox].slidebox::after {
 }
 
 input[type=checkbox].slidebox:not(.inverted).dark::before {
-  color: white;
+  color: #b2b2b2;
 }
 input[type=checkbox].slidebox:not(.inverted).dark::after {
   color: #e6e6e6;
@@ -73,19 +73,19 @@ input[type=checkbox].slidebox:not(.inverted).light::before {
   color: white;
 }
 input[type=checkbox].slidebox:not(.inverted).light::after {
-  color: #f7f7f7;
+  color: white;
 }
 input[type=checkbox].slidebox:not(.inverted).light::before {
   filter: brightness(70%);
 }
 input[type=checkbox].slidebox:not(.inverted)::before {
-  color: white;
+  color: #b2b2b2;
 }
 input[type=checkbox].slidebox:not(.inverted)::after {
-  color: #f7f7f7;
+  color: #e6e6e6;
 }
-input[type=checkbox].slidebox:not(.inverted)::before {
-  filter: brightness(70%);
+input[type=checkbox].slidebox:not(.inverted)::after {
+  filter: brightness(130%) drop-shadow(0 0 4px rgba(0, 0, 0, 0.5));
 }
 input[type=checkbox].slidebox:not(.inverted):checked::before, input[type=checkbox].slidebox:not(.inverted):checked::after {
   color: inherit;
@@ -135,8 +135,8 @@ input[type=checkbox].slidebox.inverted.dark::after {
 input[type=checkbox].slidebox.inverted.light::before {
   filter: brightness(70%);
 }
-input[type=checkbox].slidebox.inverted::before {
-  filter: brightness(70%);
+input[type=checkbox].slidebox.inverted::after {
+  filter: brightness(130%) drop-shadow(0 0 4px rgba(0, 0, 0, 0.5));
 }
 :not([dir=rtl]) input[type=checkbox].slidebox.inverted:checked::after {
   animation-name: slideboxToRight;
@@ -147,7 +147,7 @@ input[type=checkbox].slidebox.inverted::before {
 }
 
 input[type=checkbox].slidebox.inverted:checked.dark::before {
-  color: white;
+  color: #b2b2b2;
 }
 input[type=checkbox].slidebox.inverted:checked.dark::after {
   color: #e6e6e6;
@@ -156,13 +156,13 @@ input[type=checkbox].slidebox.inverted:checked.light::before {
   color: white;
 }
 input[type=checkbox].slidebox.inverted:checked.light::after {
-  color: #f7f7f7;
-}
-input[type=checkbox].slidebox.inverted:checked::before {
   color: white;
 }
+input[type=checkbox].slidebox.inverted:checked::before {
+  color: #b2b2b2;
+}
 input[type=checkbox].slidebox.inverted:checked::after {
-  color: #f7f7f7;
+  color: #e6e6e6;
 }
 :not([dir=rtl]) input[type=checkbox].slidebox.inverted:active:checked::after {
   -webkit-transform: translateX(calc(50% - 0.4em)) scale(1.1) !important;

@@ -1,9 +1,11 @@
-$slideboxColorDefaultColor: blue !default;
+$slideboxColorDefaultColor: #282727 !default;
 $slideboxClassPrefix: '' !default;
 
 $spacing: 0.8em;
 
 $slideboxShadowFilter: drop-shadow(0 0 4px rgba(black, 0.5));
+
+$isLight: lightness($slideboxColorDefaultColor) - lightness(darken($slideboxColorDefaultColor, 30%)) > 20;
 
 @mixin dark-filters() {
 
@@ -14,7 +16,7 @@ $slideboxShadowFilter: drop-shadow(0 0 4px rgba(black, 0.5));
 
 @mixin dark-colors() {
   &::before {
-    color: lighten(grey, 50%);
+    color: lighten(grey, 19.5%);
   }
 
   &::after {
@@ -34,7 +36,7 @@ $slideboxShadowFilter: drop-shadow(0 0 4px rgba(black, 0.5));
   }
 
   &::after {
-    color: lighten(#444444, 70%);
+    color: lighten(grey, 70%);
   }
 }
 
@@ -160,7 +162,7 @@ input[type=checkbox].#{$slideboxClassPrefix}slidebox {
       @include light-filters;
     }
 
-    @if (lightness($slideboxColorDefaultColor) > 40) {
+    @if ($isLight) {
       @include light-colors;
       @include light-filters;
     } @else {
@@ -207,7 +209,7 @@ input[type=checkbox].#{$slideboxClassPrefix}slidebox {
       @include light-filters;
     }
 
-    @if (lightness($slideboxColorDefaultColor) > 40) {
+    @if ($isLight) {
       @include light-filters;
     } @else {
       @include dark-filters;
@@ -226,7 +228,7 @@ input[type=checkbox].#{$slideboxClassPrefix}slidebox {
         @include light-colors;
       }
 
-      @if (lightness($slideboxColorDefaultColor) > 40) {
+      @if ($isLight) {
         @include light-colors;
       } @else {
         @include dark-colors;

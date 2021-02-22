@@ -1,6 +1,6 @@
 {
   "name": "@monabbous/slidebox",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "style": "dist/css/slidebox.css",
   "sass": "scss/slidebox.scss",
   "keywords": [
