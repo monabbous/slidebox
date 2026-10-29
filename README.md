@@ -1,59 +1,33 @@
-# Slidebox
-![Example](https://i.imgur.com/yyRPh0R.gif)
-## [Example (click me)](https://htmlpreview.github.io/?https://github.com/monabbous/slidebox/blob/master/examples/simple.html)
-As you can see in the example above, this slidebox is easy to configure with these two css properties, `color` and `font-size`.
+# Slidebox Lab
 
-### Quick Setup
-Include in your html
+An elastic CSS switch with a playground for geometry, colors, and motion.
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"/>
-    <link rel="stylesheet" href="https://unpkg.com/@monabbous/slidebox@0.0.3/dist/css/slidebox.css"/>
+![Slidebox Lab animated preview](assets/slidebox-demo.webp)
 
-Add the `slidebox` class
+## Run locally
 
-    <input style="font-size: 24px" type="checkbox" class="slidebox">
-    
-## Installation (Sass)
-#### 1. Font Awesome
-First you must include **[Font Awesome](https://fontawesome.com)** in your project (Preferable Font Awesome 5).
-#### 2. Slidebox
+Clone this repository, then serve its root directory:
 
-Using `Sass` with `NPM` just install with
+```bash
+python3 -m http.server 8080
+```
 
-    npm i @monabbous/slidebox
-    
-Then include in your sass style file
-    
-    @import '~@monabbous/slidebox';
+Open `http://localhost:8080`. The lab uses plain HTML, CSS, and JavaScript, without a build step.
 
-## Usage
-Simply in your checkbox element add the slidebox class.
+## Playground
 
-    <input type="checkbox" class="slidebox">
-    
-### Custom Style
-Just like the Example, you can modify the color and the size of the checkbox.
+- Adjust track width, thumb spacing, press deformation, and transition duration.
+- Change easing family and direction (In, Out, or In-Out), including Elastic and Bounce.
+- Compare Slidebox against native controls in light and dark schemes.
+- Choose browser-default, CSS system, nabous.dev, or custom colors.
+- Copy complete CSS, Tailwind v4 `@utility` CSS, or configuration variables.
 
-    <input style="font-size: 24px" type="checkbox" class="slidebox">
+Controls can be adjusted without triggering transition animations. The selected duration is restored after two animation frames.
 
-Make sure when modifying the color to add class `dark` when using a dark color, and `light` when using a light color.
+The easing functions follow [easings.net](https://easings.net/). Elastic and Bounce use sampled CSS `linear()` timing functions.
 
-    <!-- dark color -->
-    <input style="color:#040491" type="checkbox" class="slidebox dark">
-    
-    <!-- light color -->
-    <input style="color:#a8a8ff" type="checkbox" class="slidebox light">
+## Original Slidebox package
 
-You can also invert the visible output of the slide box, where the value of the checkbox is the opposite of how it is shown.
+The original Sass package, compiled CSS, package manifests, and example are preserved in [`legacy/`](legacy/). See the [legacy README](legacy/README.md) for the previous installation instructions.
 
-    <input type="checkbox" class="slidebox inverted">
-
-### Changing the default Configuration
-    
-    $slideboxColorDefaultColor: blue;
-    $slideboxClassPrefix: 'nabbous-';
-    @import '~@monabbous/slidebox';
-
-## Interactive playground
-
-The [Slidebox Lab](examples/lab/index.html) lets you tune the elastic switch, compare native system colors, select easing families and directions, and export CSS or a Tailwind v4 utility.
+[Source](https://github.com/monabbous/slidebox) · [nabous.dev](https://nabous.dev)

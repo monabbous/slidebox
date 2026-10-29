@@ -1,6 +1,6 @@
 # Slidebox
 ![Example](https://i.imgur.com/yyRPh0R.gif)
-## [Example (click me)](https://htmlpreview.github.io/?https://github.com/monabbous/slidebox/blob/master/examples/simple.html)
+## [Example (click me)](https://htmlpreview.github.io/?https://github.com/monabbous/slidebox/blob/master/legacy/examples/simple.html)
 As you can see in the example above, this slidebox is easy to configure with these two css properties, `color` and `font-size`.
 
 ### Quick Setup
@@ -56,4 +56,4 @@ You can also invert the visible output of the slide box, where the value of the 
 
 ## Interactive playground
 
-The [Slidebox Lab](examples/lab/index.html) lets you tune the elastic switch, compare native system colors, select easing families and directions, and export CSS or a Tailwind v4 utility.
+The [Slidebox Lab](../index.html) lets you tune the elastic switch, compare native system colors, select easing families and directions, and export CSS or a Tailwind v4 utility.
