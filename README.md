@@ -53,3 +53,7 @@ You can also invert the visible output of the slide box, where the value of the 
     $slideboxColorDefaultColor: blue;
     $slideboxClassPrefix: 'nabbous-';
     @import '~@monabbous/slidebox';
+
+## Interactive playground
+
+The [Slidebox Lab](examples/lab/index.html) lets you tune the elastic switch, compare native system colors, select easing families and directions, and export CSS or a Tailwind v4 utility.
