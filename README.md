@@ -2,7 +2,11 @@
 
 An elastic CSS switch with a playground for geometry, colors, and motion.
 
-![Slidebox Lab animated preview](assets/slidebox-demo.webp)
+[Preview the interactive playground online](https://htmlpreview.github.io/?https://github.com/monabbous/slidebox/blob/master/index.html)
+
+![Slidebox Lab demo: default geometry, 200ms ease-in-out](assets/slidebox-demo.webp)
+
+The animation uses the default width (2), thumb spacing (0.33), deformation (0.1), and a 200ms `ease-in-out` transition.
 
 ## Run locally
 
