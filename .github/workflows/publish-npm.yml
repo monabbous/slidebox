@@ -1,0 +1,81 @@
+name: Publish to npm
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Semantic version bump'
+        required: true
+        type: choice
+        default: patch
+        options:
+          - patch
+          - minor
+          - major
+
+permissions:
+  contents: write
+  id-token: write
+
+concurrency:
+  group: npm-release-main
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Set up Node.js and npm
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org'
+          package-manager-cache: false
+
+      - name: Check branch and npm credentials
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          test "$GITHUB_REF" = "refs/heads/main"
+          if [ -z "$NPM_TOKEN" ]; then
+            echo "::error::Add NPM_TOKEN to the repository Actions secrets before running a release."
+            exit 1
+          fi
+          git fetch origin main
+          test "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)"
+          NODE_AUTH_TOKEN="$NPM_TOKEN" npm whoami --registry=https://registry.npmjs.org
+
+      - name: Bump version
+        env:
+          RELEASE_TYPE: ${{ inputs.release_type }}
+        run: npm version "$RELEASE_TYPE" --no-git-tag-version
+
+      - name: Build and validate npm package
+        run: |
+          npm run build
+          npm test
+          npm pack --dry-run
+
+      - name: Commit version and tag on main
+        run: |
+          VERSION="$(node -p 'require("./package.json").version')"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json dist/css/slidebox.css scss/slidebox.scss
+          git commit -m "chore(release): v${VERSION}"
+          git tag "v${VERSION}"
+          git push origin HEAD:main
+          git push origin "v${VERSION}"
+
+      - name: Publish npm package
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public --provenance

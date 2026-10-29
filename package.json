@@ -1,0 +1,38 @@
+{
+  "name": "@monabbous/slidebox",
+  "version": "0.3.0",
+  "description": "Elastic, system-color-aware CSS checkbox switch.",
+  "license": "ISC",
+  "style": "./dist/css/slidebox.css",
+  "sass": "./scss/slidebox.scss",
+  "files": [
+    "dist/css/slidebox.css",
+    "scss/slidebox.scss"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/monabbous/slidebox.git"
+  },
+  "homepage": "https://github.com/monabbous/slidebox#readme",
+  "bugs": {
+    "url": "https://github.com/monabbous/slidebox/issues"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "prepack": "npm run build"
+  },
+  "keywords": [
+    "slidebox",
+    "switch",
+    "toggle",
+    "checkbox",
+    "css",
+    "scss",
+    "elastic",
+    "system-colors"
+  ]
+}

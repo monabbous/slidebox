@@ -65,7 +65,7 @@ select { background: #195675; color: var(--text); border: 1px solid #5c90a7; bor
 .export-tabs { margin-bottom: 12px; flex-wrap: wrap; }
 pre { font: 11px/1.65 ui-monospace, SFMono-Regular, monospace; white-space: pre; overflow: auto; max-height: 300px; padding: 15px; border-radius: 7px; border: 1px solid var(--line); background: #082b40; color: #b8f1eb; }
 footer { text-align: center; color: var(--muted); font-size: 11px; padding: 24px; }
-/* Exported component is also used by the preview. */
+/* Slidebox component: begin */
 .slidebox {
   --_container-width-ratio: 2;
   --_thumb-spacing-ratio: .33;
@@ -124,6 +124,7 @@ footer { text-align: center; color: var(--muted); font-size: 11px; padding: 24px
 @media (prefers-reduced-motion: reduce) {
   .slidebox::after { transition-duration: .01ms; transition-delay: 0ms; }
 }
+/* Slidebox component: end */
 @media (max-width: 760px) {
   .workspace { grid-template-columns: 1fr; }
   .page { padding: 0 16px; }
