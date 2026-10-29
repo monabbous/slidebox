@@ -26,6 +26,8 @@ Open `http://localhost:8080`. The lab uses plain HTML, CSS, and JavaScript, with
 - Choose browser-default, CSS system, nabous.dev, or custom colors.
 - Copy complete CSS, Tailwind v4 `@utility` CSS, or configuration variables.
 
+Chromium currently lacks support for the `AccentColor` CSS color keyword. In browser-default mode, the custom thumb uses a blue approximation in light mode and `SelectedItem` in dark mode, while native controls retain `accent-color: auto`. Browsers that support `AccentColor` use it automatically.
+
 Controls can be adjusted without triggering transition animations. The selected duration is restored after two animation frames.
 
 The easing functions follow [easings.net](https://easings.net/). Elastic and Bounce use sampled CSS `linear()` timing functions.

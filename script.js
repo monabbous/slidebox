@@ -76,10 +76,17 @@ function cssTiming() {
   }).join(', ') + ')';
 }
 
+// AccentColor isn't implemented as an ordinary CSS color in Chromium.
+// SelectedItem is the closest available system color in dark mode.
+const hasAccentColor = CSS.supports('color', 'AccentColor');
+const systemAccent = hasAccentColor ? 'AccentColor' : 'SelectedItem';
+// Chromium mobile's SelectedItem is cyan in light mode, while native controls
+// use blue. No CSS keyword exposes the native accent color exactly.
+const browserAccent = hasAccentColor ? 'AccentColor' : 'light-dark(#0b75ff, SelectedItem)';
 function paletteValues() {
-  if (state.palette === 'native') return ['Field','ButtonBorder','FieldText','AccentColor','auto'];
+  if (state.palette === 'native') return ['Field','ButtonBorder','FieldText',browserAccent,'auto'];
   if (state.palette === 'system') return [
-    'Field','color-mix(in srgb, ButtonBorder 65%, Field)','FieldText','AccentColor','AccentColor'
+    'Field','color-mix(in srgb, ButtonBorder 65%, Field)','FieldText',systemAccent,systemAccent
   ];
   if (state.palette === 'brand') return ['#2a5b7c','#5289a6','#e8f6fa','#00b2b2','#00b2b2'];
   const c = state.colors;
@@ -135,7 +142,7 @@ function configDeclarations() {
     `--_track: ${track};`,
     `--_border: ${border};`,
     `--_off: ${off};`,
-    `--_on: ${on};`
+    `--_on: ${state.palette === 'native' ? 'light-dark(#0b75ff, SelectedItem)' : state.palette === 'system' ? 'SelectedItem' : on};`
   ].join('\n  ');
 }
 
@@ -183,7 +190,9 @@ const extraCSS = `
 }`;
 function generatedCode() {
   const decl=configDeclarations();
-  if (format === 'vars') return `.slidebox {\n  ${decl}\n}`;
+  const accentUpgrade = ['native', 'system'].includes(state.palette)
+    ? '\n@supports (color: AccentColor) { .slidebox { --_on: AccentColor; } }' : '';
+  if (format === 'vars') return `.slidebox {\n  ${decl}\n}${accentUpgrade}`;
   if (format === 'tailwind') return `@import "tailwindcss";
 
 @utility slidebox {
@@ -199,7 +208,7 @@ function generatedCode() {
   &:checked:active::after { --_start: calc(1 - var(--_deform)); }
   &:disabled { cursor: not-allowed; opacity: .5; }
 }
-${extraCSS.slice(extraCSS.indexOf('@media'))}`;
+${accentUpgrade}${extraCSS.slice(extraCSS.indexOf('@media'))}`;
   return `.slidebox {
   ${decl}
   ${baseCSS}
@@ -210,7 +219,7 @@ ${extraCSS.slice(extraCSS.indexOf('@media'))}`;
 .slidebox:checked::after {
   ${checkedCSS}
 }
-${extraCSS}`;
+${accentUpgrade}\n${extraCSS}`;
 }
 
 function render() {
@@ -225,8 +234,8 @@ function render() {
   $('colorGrid').hidden=state.palette!=='custom';
   for (const [key,value] of Object.entries(state.colors)) $(key).value=value;
   const notes={
-    native:'Native inputs use accent-color: auto. Slidebox uses AccentColor, the closest exposed system token.',
-    system:'System tokens: Field, FieldText, ButtonBorder, AccentColor.',
+    native:'Native controls use accent-color: auto. Slidebox uses a matching blue in light mode and SelectedItem in dark mode when AccentColor is unavailable.',
+    system:'Uses Field, FieldText, ButtonBorder and SelectedItem (AccentColor where available). System colors may differ from native controls.',
     brand:'Uses the blue and teal colors from nabous.dev.',
     custom:'Native controls and Slidebox use the selected colors.'
   };

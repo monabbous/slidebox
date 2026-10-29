@@ -75,7 +75,7 @@ footer { text-align: center; color: var(--muted); font-size: 11px; padding: 24px
   --_track: Field;
   --_border: ButtonBorder;
   --_off: FieldText;
-  --_on: AccentColor;
+  --_on: light-dark(#0b75ff, SelectedItem);
   appearance: none;
   -webkit-appearance: none;
   box-sizing: border-box;
@@ -90,6 +90,9 @@ footer { text-align: center; color: var(--muted); font-size: 11px; padding: 24px
   border-radius: 100vw;
   background: var(--_track);
   cursor: pointer;
+}
+@supports (color: AccentColor) {
+  .slidebox { --_on: AccentColor; }
 }
 .slidebox::after {
   --_start: 0; --_end: 1;
