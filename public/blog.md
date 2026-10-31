@@ -7,6 +7,23 @@ canonical_url: https://nabous.dev/blog/slidebox/
 tags: css, webdev, showdev, opensource
 ---
 
+## TL;DR
+
+Slidebox styles real checkboxes and radio buttons. The checkbox's elastic stretch comes from moving its two margins at slightly different times, so its width changes without scaling the rounded ends. Ordinary checkbox and radio interaction need no JavaScript; dragging and range effects are optional experiments. There’s a [playground](https://nabous.dev/lab/slidebox/), [benchmarks](https://nabous.dev/project-assets/slidebox/benchmarks/), and an [installable coding-agent skill](#install-the-agent-skill). I’m revisiting the project six years after first sharing it.
+
+## Contents
+
+- [Coming back to Slidebox](#coming-back-to-slidebox)
+- [The margin trick](#i-still-like-finding-the-small-trick)
+- [Playground and customization](#a-playground-gave-me-a-reason-to-keep-messing-with-it)
+- [Native radio groups](#the-radio-group-was-a-good-excuse-to-try-it-somewhere-else)
+- [Experimental range and dragging](#the-range-is-where-im-still-experimenting)
+- [Benchmarks and limitations](#i-wanted-to-measure-it-too)
+- [Install the agent skill](#install-the-agent-skill)
+- [Install Slidebox and make it your own](#fork-it-and-make-something-i-wouldnt-have-thought-of)
+
+## Coming back to Slidebox
+
 Since I started coding, I've loved reimagining things and hacking my way through HTML, CSS, and JavaScript to see how far I could get.
 
 As CSS became more capable, I got a little obsessed with making small utilities that looked good without needing much code. Especially when I could let the browser handle the interaction and keep most of the work in CSS. I wanted things to feel sleek, and I wanted to understand what was actually making them work.
@@ -123,6 +140,20 @@ I don't have evidence that my approach is universally faster. What I like about 
 These are local stress-test results, and callback cadence isn't a GPU-presented FPS counter. Margins still cause layout work; `will-change` doesn't make that disappear. I still want more browser/device testing and normal one-control measurements before making broader performance claims.
 
 I'm also putting the benchmark tools in the source repo so people can run their own comparisons, inspect the method, and share results from different machines instead of relying on mine.
+
+## Install the agent skill
+
+I also wrote a [Slidebox skill for coding agents](https://github.com/monabbous/slidebox/blob/main/skills/slidebox/SKILL.md). It gives an agent the package's usage, customization options, and the distinction between the native controls and optional experiments, so it has somewhere specific to look before suggesting code.
+
+With Node.js 22.20 or later, run this from the project where you want to use Slidebox:
+
+```sh
+npx skills add monabbous/slidebox --skill slidebox
+```
+
+Choose your supported coding agent when the installer asks. This installs the skill for that project; add `-g` if you want it available across projects. It installs instructions for your agent, not the Slidebox package itself. You can [read the skill first](https://raw.githubusercontent.com/monabbous/slidebox/main/skills/slidebox/SKILL.md), or give that URL directly to an agent that can read external instructions.
+
+The [README's agent section](https://github.com/monabbous/slidebox#ai-agent-discovery) also has a quick GitHub CLI lookup and the OpenCode skill location. For example, ask your agent to “use @monabbous/slidebox for this settings checkbox” after installing the skill. Whether it loads automatically depends on the agent.
 
 ## Fork it and make something I wouldn't have thought of
 

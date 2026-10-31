@@ -108,6 +108,14 @@ Without GitHub CLI, use the [raw skill URL](https://raw.githubusercontent.com/mo
 
 For OpenCode, save the skill as `~/.config/opencode/skills/slidebox/SKILL.md`. Other agents can load the same Markdown using their own skill mechanism. Check your agent's discovery rules; a public skill does not guarantee that every agent loads it automatically.
 
+With Node.js 22.20 or later, you can also use the [Skills CLI](https://github.com/vercel-labs/skills) from your project and select your supported agent:
+
+```sh
+npx skills add monabbous/slidebox --skill slidebox
+```
+
+Add `-g` for an installation across projects. This installs agent instructions, not the npm component package.
+
 ## Vanilla HTML and CSS
 
 No bundler required:
