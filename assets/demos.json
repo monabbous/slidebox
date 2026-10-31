@@ -1,0 +1,99 @@
+{
+  "source": "screenrecording-2026-10-31_05-12-41.mp4",
+  "width": 1902,
+  "height": 1390,
+  "fps": "60/1",
+  "encoding": "Lossless animated WebP; original frame timing and crop resolution",
+  "clips": [
+    {
+      "file": "slidebox-demo.webp",
+      "start": 41.05,
+      "end": 45.2,
+      "crop": [260, 94, 558, 690],
+      "description": "Header: custom Material-style checkbox, nabous.dev colors, CSS-only toggling",
+      "settings": { "width": 2.5, "spacing": -0.27, "deform": 0.2, "duration": "350ms", "easing": "easeInOutElastic" }
+    },
+    {
+      "file": "checkbox-default-brand.webp",
+      "start": 6.95,
+      "end": 8.95,
+      "crop": [190, 86, 590, 248],
+      "description": "Default checkbox, nabous.dev colors",
+      "settings": { "width": 2, "spacing": 0.33, "deform": 0.1, "duration": "200ms", "easing": "easeInOutSine" }
+    },
+    {
+      "file": "checkbox-default-browser.webp",
+      "start": 9.4,
+      "end": 10.8,
+      "crop": [190, 86, 816, 248],
+      "description": "Default checkbox, browser colors",
+      "settings": { "width": 2, "spacing": 0.33, "deform": 0.1, "duration": "200ms", "easing": "easeInOutSine" }
+    },
+    {
+      "file": "checkbox-material-brand.webp",
+      "start": 10.6,
+      "end": 13.1,
+      "crop": [190, 88, 590, 336],
+      "description": "Material UI geometry, nabous.dev colors",
+      "settings": { "width": 2.5, "spacing": -0.33, "deform": 0.1, "duration": "200ms", "easing": "easeInOutSine" }
+    },
+    {
+      "file": "checkbox-material-browser.webp",
+      "start": 5,
+      "still": true,
+      "crop": [190, 88, 816, 336],
+      "description": "Material UI geometry, browser colors. Static reference: this control was not toggled in the recording."
+    },
+    {
+      "file": "checkbox-ios-brand.webp",
+      "start": 13.2,
+      "end": 14.7,
+      "crop": [190, 88, 590, 424],
+      "description": "Old iOS geometry, nabous.dev colors",
+      "settings": { "width": 1.6, "spacing": 0.03, "deform": 0, "duration": "200ms", "easing": "easeInOutSine" }
+    },
+    {
+      "file": "checkbox-ios-browser.webp",
+      "start": 5,
+      "still": true,
+      "crop": [190, 88, 816, 424],
+      "description": "Old iOS geometry, browser colors. Static reference: this control was not toggled in the recording."
+    },
+    {
+      "file": "checkbox-material-elastic.webp",
+      "start": 31.05,
+      "end": 33.2,
+      "crop": [190, 88, 590, 336],
+      "description": "Material UI geometry with CSS easeInOutElastic, nabous.dev colors",
+      "settings": { "width": 2.5, "spacing": -0.33, "deform": 0.1, "duration": "200ms", "easing": "easeInOutElastic" }
+    },
+    {
+      "file": "radio-group.webp",
+      "start": 16.75,
+      "end": 20.3,
+      "crop": [500, 108, 440, 810],
+      "description": "Native radio group, CSS-only selection and highlight motion"
+    },
+    {
+      "file": "range-native.webp",
+      "start": 48.25,
+      "still": true,
+      "crop": [1004, 156, 442, 812],
+      "description": "Unfilled native range before enabling either JavaScript option"
+    },
+    {
+      "file": "range-click.webp",
+      "start": 55.2,
+      "end": 58.65,
+      "crop": [1004, 156, 442, 812],
+      "description": "Experimental range: native value changes with optional JavaScript motion and progress fill enabled"
+    },
+    {
+      "file": "range-drag.webp",
+      "start": 58.9,
+      "end": 62.65,
+      "crop": [1004, 156, 442, 812],
+      "description": "Experimental range: dragging with optional JavaScript motion and progress fill enabled"
+    }
+  ]
+}

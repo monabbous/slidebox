@@ -39,7 +39,7 @@ test("clicks, label clicks, and keyboard activation remain native", async ({ pag
   await expect(input).toBeChecked();
   await input.press("Space");
   await expect(input).not.toBeChecked();
-  await page.locator("label").click({ position: { x: 170, y: 10 } });
+  await page.locator("label").filter({ has: input }).click({ position: { x: 170, y: 10 } });
   await expect(input).toBeChecked();
   expect(await page.evaluate(() => window.events)).toEqual(["input", "change", "input", "change", "input", "change"]);
 });

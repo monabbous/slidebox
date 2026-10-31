@@ -43,6 +43,7 @@
   }
   &::after {
     --_start: 0; --_end: 1;
+    box-sizing: border-box;
     content: "";
     display: block;
     flex: 1 1 auto;
@@ -53,6 +54,7 @@
     margin-inline-start: calc((1em * var(--_container-width-ratio) - 1em) * var(--_start) + var(--_thumb-spacing-ratio) * .5em);
     margin-inline-end: calc((1em * var(--_container-width-ratio) - 1em) * var(--_end) + var(--_thumb-spacing-ratio) * .5em);
     border-radius: inherit;
+    border: 1px solid var(--_track);
     background: var(--_off);
     transition: background var(--_duration) var(--_easing-function), margin-inline-start var(--_duration) var(--_easing-function), margin-inline-end var(--_duration) var(--_easing-function);
     transition-delay: 0s, 0s, calc(var(--_duration) * var(--_deform));
@@ -75,5 +77,142 @@
   }
   @media (prefers-reduced-motion: reduce) {
     &::after { transition-duration: .01ms; transition-delay: 0ms; }
+  }
+  }
+
+.slidebox-group(@width: false; @spacing: false; @deform: false; @duration: false; @easing: false; @track: false; @border: false; @off: false; @on: false; @size: false; @radius: false; @text: false; @selected-text: false) {
+  .slidebox-option(width; @width);
+  .slidebox-option(spacing; @spacing);
+  .slidebox-option(deform; @deform);
+  .slidebox-option(duration; @duration);
+  .slidebox-option(easing; @easing);
+  .slidebox-option(track; @track);
+  .slidebox-option(border; @border);
+  .slidebox-option(off; @off);
+  .slidebox-option(on; @on);
+  .slidebox-option(size; @size);
+  .slidebox-option(radius; @radius);
+  .slidebox-option(text; @text);
+  .slidebox-option(selected-text; @selected-text);
+  & {
+    --_size: var(--slidebox-size, 36px);
+    --_spacing: var(--slidebox-spacing, .12);
+    --_deform: var(--slidebox-deform, .06);
+    --_duration: var(--slidebox-duration, 200ms);
+    --_easing: var(--slidebox-easing, ease-in-out);
+    --_track: var(--slidebox-track, Field);
+    --_border: var(--slidebox-border, ButtonBorder);
+    --_off: var(--slidebox-off, FieldText);
+    --_on: var(--slidebox-on, var(--_accent, light-dark(#0b75ff, SelectedItem)));
+    --_text: var(--slidebox-text, var(--slidebox-off, FieldText));
+    --_selected-text: var(--slidebox-selected-text, HighlightText);
+    --_press-start: 0px;
+    --_press-end: 0px;
+    display: inline-grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    box-sizing: border-box;
+    padding: calc(var(--_size) * var(--_spacing));
+    gap: calc(var(--_size) * var(--_spacing));
+    border: 1px solid var(--_border);
+    border-radius: var(--slidebox-radius, 100vw);
+    background: var(--_track);
+    color: var(--_text);
+    isolation: isolate;
+    position: relative;
+  }
+  & > label {
+    position: relative;
+    display: grid;
+    min-width: 0;
+    cursor: pointer;
+  }
+  & > label > input[type="radio"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  & > label > span {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    place-items: center;
+    box-sizing: border-box;
+    min-height: var(--_size);
+    padding: .35em 1em;
+    border: 1px solid transparent;
+    border-radius: var(--slidebox-radius, 100vw);
+    color: var(--_text);
+    background: transparent;
+    transition: color var(--_duration) var(--_easing);
+  }
+  & > label > input:checked + span {
+    color: var(--_selected-text);
+  }
+  & > label > input:checked + span::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    border-radius: inherit;
+    background: var(--_on);
+    margin-inline-start: var(--_press-start);
+    margin-inline-end: var(--_press-end);
+    transition: margin-inline-start var(--_duration) var(--_easing), margin-inline-end var(--_duration) var(--_easing);
+  }
+  & > label > input:not(:checked) + span { color: var(--_text); }
+  &:has(> label > input:checked):has(> label:active > input:not(:checked):not(:disabled)):not(:has(> label:active ~ label > input:checked)) {
+    --_press-end: calc(-1 * var(--_size) * var(--_deform));
+  }
+  &:has(> label:active > input:not(:disabled)):has(> label:active ~ label > input:checked) {
+    --_press-start: calc(-1 * var(--_size) * var(--_deform));
+  }
+  & > label > input:focus-visible + span {
+    outline: 2px solid var(--_on);
+    outline-offset: 2px;
+  }
+  & > label:has(> input:disabled) { cursor: not-allowed; }
+  & > label > input:disabled + span { opacity: .5; }
+  @supports (color: AccentColor) {
+    & { --_accent: AccentColor; }
+  }
+  /* A shared sliding indicator where scoped CSS anchor positioning is available.
+     Other browsers retain the per-segment highlight above. Neither needs JS. */
+  @supports (anchor-scope: --slidebox-selection) and (left: anchor(left)) {
+    & { anchor-scope: --slidebox-selection; }
+    & > label:has(> input:checked) { anchor-name: --slidebox-selection; }
+    &:has(> label > input:checked)::before {
+      content: "";
+      position: absolute;
+      position-anchor: --slidebox-selection;
+      left: ~"anchor(left)";
+      right: ~"anchor(right)";
+      top: ~"anchor(top)";
+      height: ~"anchor-size(height)";
+      margin-inline-start: var(--_press-start);
+      margin-inline-end: var(--_press-end);
+      z-index: -1;
+      border-radius: var(--slidebox-radius, 100vw);
+      background: var(--_on);
+      pointer-events: none;
+      transition: left var(--_duration) var(--_easing), right var(--_duration) var(--_easing), top var(--_duration) var(--_easing), height var(--_duration) var(--_easing), margin-inline-start var(--_duration) var(--_easing), margin-inline-end var(--_duration) var(--_easing);
+    }
+    & > label > input:checked + span::before { content: none; }
+  }
+  @media (forced-colors: active) {
+    & { --_track: Field; --_border: ButtonBorder; --_off: FieldText; --_on: Highlight; --_text: FieldText; --_selected-text: HighlightText; }
+    & > label > input:checked + span { border-color: Highlight; outline: 2px solid Highlight; outline-offset: -2px; }
+    & > label > input:disabled + span { color: GrayText; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    & > label > span { transition-duration: .01ms; }
+    & > label > input:checked + span::before { transition-duration: .01ms; }
+    &::before { transition-duration: .01ms; }
   }
   }

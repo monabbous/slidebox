@@ -30,6 +30,7 @@
   "&::after": {
     "--_start": "0",
     "--_end": "1",
+    "box-sizing": "border-box",
     "content": "\"\"",
     "display": "block",
     "flex": "1 1 auto",
@@ -40,6 +41,7 @@
     "margin-inline-start": "calc((1em * var(--_container-width-ratio) - 1em) * var(--_start) + var(--_thumb-spacing-ratio) * .5em)",
     "margin-inline-end": "calc((1em * var(--_container-width-ratio) - 1em) * var(--_end) + var(--_thumb-spacing-ratio) * .5em)",
     "border-radius": "inherit",
+    "border": "1px solid var(--_track)",
     "background": "var(--_off)",
     "transition": "background var(--_duration) var(--_easing-function), margin-inline-start var(--_duration) var(--_easing-function), margin-inline-end var(--_duration) var(--_easing-function)",
     "transition-delay": "0s, 0s, calc(var(--_duration) * var(--_deform))"

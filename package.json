@@ -8,6 +8,7 @@
   "less": "./less/slidebox.less",
   "files": [
     "dist/css/slidebox.css",
+    "dist/css/group.css",
     "scss/",
     "less/",
     "tailwind/",

@@ -1,10 +1,84 @@
 # Slidebox
 
-An elastic CSS switch built on a native checkbox. No JavaScript, extra elements, or runtime dependencies required. Add optional [experimental pointer dragging](#experimental-pointer-dragging) when you want the thumb to follow your pointer.
+## Native inputs. Just CSS.
 
-![Slidebox switch animation](assets/slidebox-demo.webp)
+Elastic checkboxes and grouped radios. Still real inputs: labels, keyboard controls, forms, and disabled states work as usual.
 
-[Try the playground](https://htmlpreview.github.io/?https://github.com/monabbous/slidebox/blob/main/index.html) · [npm](https://www.npmjs.com/package/@monabbous/slidebox)
+[![npm](https://img.shields.io/npm/v/@monabbous/slidebox?color=00b2b2)](https://www.npmjs.com/package/@monabbous/slidebox)
+[![License: ISC](https://img.shields.io/badge/license-ISC-2a5b7c)](https://www.npmjs.com/package/@monabbous/slidebox)
+[![Tailwind v3.4 / v4](https://img.shields.io/badge/Tailwind-v3.4%20%2F%20v4-2a5b7c)](#tailwind)
+![No runtime dependencies](https://img.shields.io/badge/runtime_dependencies-0-00b2b2)
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/monabbous/slidebox/main/assets/slidebox-demo.webp" width="520" alt="A Material-style native checkbox stretching and springing between checked and unchecked, using CSS">
+</p>
+
+The header demo is CSS-only: width `2.5`, spacing `−.27`, deform `.2`, and a `350ms` elastic easing. The thumb changes shape through margins, not scaling.
+
+[Try the playground](https://htmlpreview.github.io/?https://github.com/monabbous/slidebox/blob/main/index.html) · [npm](https://www.npmjs.com/package/@monabbous/slidebox) · [Source](https://github.com/monabbous/slidebox)
+
+Switches and radio groups need no JavaScript. The range slider is **experimental**; its optional motion and progress fill use JavaScript. Checkbox dragging is also optional and experimental.
+
+## Contents
+
+- [Demos](#demos)
+  - [Checkboxes](#checkbox-demos)
+  - [Radio group](#radio-group-demo)
+  - [Range](#range-demos-experimental)
+- [Install](#install)
+- [Vanilla HTML and CSS](#vanilla-html-and-css)
+- [Checkbox presets](#checkbox-presets)
+- [Grouped radio buttons](#grouped-radio-buttons)
+- [Sass / SCSS](#sass--scss)
+- [Less](#less)
+- [Tailwind](#tailwind)
+- [Defaults and controls](#defaults-and-controls)
+- [Experimental checkbox dragging](#experimental-checkbox-dragging)
+- [Experimental range slider](#experimental-range-slider)
+- [Accessibility and browser support](#accessibility-and-browser-support)
+- [Development](#development)
+
+## Demos
+
+Click any preview to open the playground. These are crops of the actual recording, not rendered mockups.
+
+### Checkbox demos
+
+| Preset | nabous.dev | Browser colors | Width | Spacing | Deform |
+| --- | --- | --- | --- | --- | --- |
+| Default | [![Default checkbox, nabous.dev](https://raw.githubusercontent.com/monabbous/slidebox/main/assets/checkbox-default-brand.webp)](https://htmlpreview.github.io/?https://github.com/monabbous/slidebox/blob/main/index.html) | [![Default checkbox, browser colors](https://raw.githubusercontent.com/monabbous/slidebox/main/assets/checkbox-default-browser.webp)](https://htmlpreview.github.io/?https://github.com/monabbous/slidebox/blob/main/index.html) | 2 | .33 | .1 |
+| Material UI | [![Material-style checkbox, nabous.dev](https://raw.githubusercontent.com/monabbous/slidebox/main/assets/checkbox-material-brand.webp)](https://htmlpreview.github.io/?https://github.com/monabbous/slidebox/blob/main/index.html) | [![Material-style checkbox, browser colors](https://raw.githubusercontent.com/monabbous/slidebox/main/assets/checkbox-material-browser.webp)](https://htmlpreview.github.io/?https://github.com/monabbous/slidebox/blob/main/index.html) | 2.5 | −.33 | .1 |
+| Old iOS | [![Old iOS-style checkbox, nabous.dev](https://raw.githubusercontent.com/monabbous/slidebox/main/assets/checkbox-ios-brand.webp)](https://htmlpreview.github.io/?https://github.com/monabbous/slidebox/blob/main/index.html) | [![Old iOS-style checkbox, browser colors](https://raw.githubusercontent.com/monabbous/slidebox/main/assets/checkbox-ios-browser.webp)](https://htmlpreview.github.io/?https://github.com/monabbous/slidebox/blob/main/index.html) | 1.6 | .03 | 0 |
+
+These are geometry presets, not framework integrations or exact replicas. The browser-color Material UI and Old iOS previews are stills; those two weren't toggled in the recording.
+
+**Material UI geometry, elastic easing:**
+
+[![Material-style checkbox with elastic CSS easing](https://raw.githubusercontent.com/monabbous/slidebox/main/assets/checkbox-material-elastic.webp)](https://htmlpreview.github.io/?https://github.com/monabbous/slidebox/blob/main/index.html)
+
+The header shows the larger custom variant. [Copy either configuration](#checkbox-presets).
+
+### Radio group demo
+
+[![Radio group showing the active segment, backward selection, and forward selection across Day, Week, and Month](https://raw.githubusercontent.com/monabbous/slidebox/main/assets/radio-group.webp)](https://htmlpreview.github.io/?https://github.com/monabbous/slidebox/blob/main/index.html)
+
+Week → Day → Week → Month. Pressing the active choice does nothing; selecting before or after it stretches the highlight in that direction. CSS only. [Radio group setup](#grouped-radio-buttons).
+
+### Range demos (experimental)
+
+**Native range, no JS enhancements** — an unfilled still reference:
+
+[![Unfilled native range before enabling either JavaScript option](https://raw.githubusercontent.com/monabbous/slidebox/main/assets/range-native.webp)](https://htmlpreview.github.io/?https://github.com/monabbous/slidebox/blob/main/index.html)
+
+**Clicking to a value — motion and fill enabled (JS):**
+
+[![Experimental range reacting to native value changes with optional JavaScript motion and fill](https://raw.githubusercontent.com/monabbous/slidebox/main/assets/range-click.webp)](https://htmlpreview.github.io/?https://github.com/monabbous/slidebox/blob/main/index.html)
+
+**Dragging — motion and fill enabled (JS):**
+
+[![Experimental range being dragged with a delayed visual tail and progress fill](https://raw.githubusercontent.com/monabbous/slidebox/main/assets/range-drag.webp)](https://htmlpreview.github.io/?https://github.com/monabbous/slidebox/blob/main/index.html)
+
+The native control still owns its value. The helpers only add motion and fill. [Range setup and options](#experimental-range-slider).
 
 ## Install
 
@@ -12,265 +86,364 @@ An elastic CSS switch built on a native checkbox. No JavaScript, extra elements,
 npm install @monabbous/slidebox
 ```
 
-Choose **one** integration below: CSS, Sass, Less, or Tailwind. You don't need to import the plain CSS when using a mixin or the Tailwind plugin.
+Pick one styling route: CSS, Sass, Less, or Tailwind. The mixins and plugin already include the component rules; don't import the plain CSS as well.
 
-## Plain CSS
+## Vanilla HTML and CSS
 
-Import the stylesheet through your bundler:
+No bundler required:
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@monabbous/slidebox/dist/css/slidebox.css">
+
+<label>
+  <input class="slidebox" type="checkbox" name="notifications">
+  Enable notifications
+</label>
+```
+
+Pin the CDN URL to a package version in production. You can also copy `dist/css/slidebox.css` from the installed package and serve it yourself.
+
+With a bundler, import the same stylesheet:
 
 ```js
 import "@monabbous/slidebox/dist/css/slidebox.css";
 ```
 
-Add the class to a checkbox and give it an accessible label:
+Use normal checkbox attributes: `checked`, `disabled`, `required`, `name`, and `value`. Add `role="switch"` if you want switch semantics instead of checkbox semantics. Always provide a label.
 
-```html
-<label>
-  <input class="slidebox" type="checkbox" role="switch" name="notifications">
-  Enable notifications
-</label>
-```
-
-Use normal checkbox attributes: `checked`, `disabled`, `required`, `name`, and `value`. Read or change its state with your framework's normal checkbox binding. `role="switch"` is optional; omit it for checkbox semantics.
-
-### Set defaults and override individual switches
-
-Public custom properties inherit, so you can set site-wide defaults on `:root`, section defaults on a parent, or overrides on a single input:
+Set defaults on a parent and override individual inputs:
 
 ```css
 :root {
   color-scheme: light dark;
-  --slidebox-size: 24px;
-  --slidebox-on: #7c3aed;
+  --slidebox-size: 28px;
   --slidebox-duration: 250ms;
 }
 
 .settings {
-  --slidebox-width: 2.4;
+  --slidebox-on: #00b2b2;
 }
 
-.slidebox.compact {
+.compact-switch {
   --slidebox-size: 18px;
-  --slidebox-spacing: 0.25;
 }
 ```
 
-`color-scheme: light dark` lets the system colors follow the user's theme. Use `light` or `dark` to force a scheme.
+The package uses system colors by default. The recordings show the playground's **nabous.dev** glass skin alongside browser colors; that skin and its pointer lighting aren't applied to your app automatically.
 
-## Controls
+## Checkbox presets
 
-The same names work as CSS properties (`--slidebox-NAME`), Sass map keys, Less arguments (`@NAME`), and Tailwind plugin options/utilities.
+The [demo gallery](#checkbox-demos) shows each preset in **nabous.dev** and **browser colors**.
 
-| Control | Default | Meaning |
-| --- | --- | --- |
-| `size` | `54px` | Switch height; width and thumb geometry scale with it. Use a CSS length. |
-| `width` | `2` | Track width divided by height. Use a unitless number greater than 1. |
-| `spacing` | `.33` | Space around the thumb as a fraction of the height. Use a number from 0 to less than 1. |
-| `deform` | `.1` | Elastic press deformation and motion delay ratio. Use a number from 0 to less than 1; 0 removes the deformation. |
-| `duration` | `200ms` | Animation duration, including a time unit. |
-| `easing` | `ease-in-out` | Any CSS timing function, including `cubic-bezier()` and `linear()`. |
-| `track` | `Field` | Track background color. |
-| `border` | `ButtonBorder` | Track border color. |
-| `off` | `FieldText` | Unchecked thumb color. |
-| `on` | System accent, when supported | Checked thumb color; falls back to `light-dark(#0b75ff, SelectedItem)`. |
+| Preset | Width | Spacing | Deform |
+| --- | --- | --- | --- |
+| Default | 2 | .33 | .1 |
+| Material UI | 2.5 | −.33 | .1 |
+| Old iOS | 1.6 | .03 | 0 |
 
-Custom colors do not override forced-colors accessibility mode. Reduced-motion users get effectively instant transitions. Logical margins support both LTR and RTL layouts. Keep the browser's focus outline, or provide a visible `:focus-visible` style yourself.
-
-## Sass mixin
-
-Use Dart Sass's module system. Configure shared defaults with `$defaults`, then override any control per mixin call:
-
-```scss
-@use "@monabbous/slidebox/scss/mixins" as slidebox with (
-  $defaults: (
-    size: 24px,
-    on: #7c3aed,
-    duration: 250ms
-  )
-);
-
-.toggle {
-  @include slidebox.slidebox();
+```css
+.material-switch {
+  --slidebox-width: 2.5;
+  --slidebox-spacing: -.33;
+  --slidebox-deform: .1;
 }
 
-.toggle-large {
-  @include slidebox.slidebox((size: 36px, width: 2.5));
+.ios-switch {
+  --slidebox-width: 1.6;
+  --slidebox-spacing: .03;
+  --slidebox-deform: 0;
+}
+```
+
+Add these classes alongside `slidebox`.
+
+### The elastic Material-style version
+
+For the larger, slower version in the header, use this sampled `easeInOutElastic` curve:
+
+```css
+:root {
+  --ease-in-out-elastic: linear(
+    0, .0005, .001, .0011, .0003, -.0014, -.0037, -.0052,
+    -.0039, .0019, .012, .0221, .0239, .0077, -.0313, -.0831,
+    -.1175, -.0884, .0434, .2708, .5, .7292, .9566, 1.0884,
+    1.1175, 1.0831, 1.0313, .9923, .9761, .9779, .988, .9981,
+    1.0039, 1.0052, 1.0037, 1.0014, .9997, .9989, .999, .9995, 1
+  );
+}
+
+.material-elastic {
+  --slidebox-width: 2.5;
+  --slidebox-spacing: -.27;
+  --slidebox-deform: .2;
+  --slidebox-duration: 350ms;
+  --slidebox-easing: var(--ease-in-out-elastic);
 }
 ```
 
 ```html
-<label><input class="toggle" type="checkbox"> Enable notifications</label>
+<label><input class="slidebox material-elastic" type="checkbox"> Enable sound</label>
 ```
 
-Importing the mixin does not emit CSS until you include it. Configure the module once, before any other module loads it. Your Sass bundler must resolve npm imports (with the Sass CLI, add `--load-path=node_modules`).
+The small preview above keeps the fixed Material UI preset (`−.33` spacing, `.1` deform, `200ms`); the header uses the custom values shown in the snippet. Both use CSS easing, not a JavaScript spring.
 
-For the ready-made `.slidebox` class instead of a mixin:
+## Grouped radio buttons
+
+Import the group stylesheet separately:
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@monabbous/slidebox/dist/css/group.css">
+
+<fieldset>
+  <legend>Calendar view</legend>
+  <div class="slidebox-group">
+    <label><input type="radio" name="view" value="day"><span>Day</span></label>
+    <label><input type="radio" name="view" value="week" checked><span>Week</span></label>
+    <label><input type="radio" name="view" value="month"><span>Month</span></label>
+  </div>
+</fieldset>
+```
+
+Bundler import: `@monabbous/slidebox/dist/css/group.css`.
+
+Keep the structure **group → label → input followed by span**. Radios in one group share a `name`; independent groups need different names. A `fieldset` and `legend` provide the group's accessible name.
+
+Pressing the active segment doesn't deform it. Press an earlier or later segment and the current highlight stretches toward it. Labels stay put. Arrow keys and form submission remain native, including in RTL layouts.
+
+Scoped CSS anchor positioning gives supported browsers a shared sliding highlight. Other modern browsers get a per-segment highlight. Neither version needs JavaScript. Keep labels short: segments share the available width in a single row. This is a radio group, not a tabs widget.
+
+## Sass / SCSS
+
+Use Dart Sass. Importing the mixin module emits no CSS until you include a mixin:
 
 ```scss
-@use "@monabbous/slidebox/scss/slidebox";
+@use "@monabbous/slidebox/scss/mixins" as slidebox with (
+  $defaults: (on: #00b2b2, duration: 250ms)
+);
+
+.switch {
+  @include slidebox.slidebox((size: 28px));
+}
+
+.material-switch {
+  @include slidebox.slidebox((size: 28px, width: 2.5, spacing: -.33));
+}
+
+.view-picker {
+  @include slidebox.group((size: 36px, selected-text: #063c59));
+}
 ```
 
-## Less mixin
+Use your chosen class on the checkbox or group container instead of `slidebox` / `slidebox-group`. `$defaults` applies to both mixins; the map passed to an include overrides it. Configure the module once, before another module loads it.
 
-Import the mixin, then use named arguments. Create a wrapper mixin for project defaults:
+For the ready-made classes, use `@use "@monabbous/slidebox/scss/slidebox";` and/or `@use "@monabbous/slidebox/scss/group";` instead. With the Sass CLI, add `--load-path=node_modules`.
+
+The experimental range has a separate module:
+
+```scss
+@use "@monabbous/slidebox/scss/experimental" as experimental with (
+  $defaults: (on: #00b2b2, duration: 250ms)
+);
+
+.volume { @include experimental.range((size: 28px, spacing: .33)); }
+```
+
+## Less
+
+Import the mixins, then create a wrapper for project defaults:
 
 ```less
 @import "@monabbous/slidebox/less/slidebox.less";
 
-.app-switch(@size: 24px; @on: #7c3aed; @duration: 250ms) {
-  .slidebox(@size: @size; @on: @on; @duration: @duration);
+.app-switch(@size: 28px; @width: 2; @spacing: .33) {
+  .slidebox(@size: @size; @width: @width; @spacing: @spacing; @on: #00b2b2; @duration: 250ms);
 }
 
-.toggle { .app-switch(); }
-.toggle-large { .app-switch(@size: 36px); }
-.toggle-wide { .slidebox(@size: 24px; @width: 2.5; @spacing: 0.25); }
+.switch { .app-switch(); }
+.material-switch { .app-switch(@width: 2.5; @spacing: -.33); }
+.small-switch { .app-switch(@size: 18px); }
+.view-picker { .slidebox-group(@on: #00b2b2; @selected-text: #063c59); }
 ```
 
-The import emits no CSS on its own. Use semicolons between arguments, especially when passing timing functions containing commas. Your Less bundler must resolve npm imports; with the Less CLI, add `--include-path=node_modules`.
+The import emits no CSS on its own. Use semicolons between arguments, especially with timing functions containing commas. With the Less CLI, add `--include-path=node_modules`.
 
-## Tailwind CSS
+For the experimental range:
 
-The plugin is included in the same npm package and supports Tailwind v3.4 and v4. Install Tailwind separately using its normal setup.
+```less
+@import "@monabbous/slidebox/less/experimental.less";
+
+.volume { .slidebox-range(@size: 28px; @spacing: .33; @on: #00b2b2); }
+```
+
+## Tailwind
+
+The plugin is included in this package. Use your existing Tailwind setup; it supports **v3.4 and v4**.
 
 ### Tailwind v4
-
-Register the plugin in your Tailwind stylesheet. The options block sets project defaults; omit it to keep Slidebox's defaults:
 
 ```css
 @import "tailwindcss";
 @plugin "@monabbous/slidebox/tailwind/index.cjs" {
-  size: 24px;
-  on: #7c3aed;
+  size: 28px;
+  on: #00b2b2;
   duration: 250ms;
 }
 ```
 
+The options block sets project defaults. Omit it to keep the component defaults.
+
 ### Tailwind v3
 
-Register it in `tailwind.config.cjs`:
-
 ```js
+// tailwind.config.cjs
 module.exports = {
   content: ["./src/**/*.{html,js,ts,jsx,tsx,vue,svelte}"],
   plugins: [
     require("@monabbous/slidebox/tailwind/index.cjs")({
-      size: "24px",
-      on: "#7c3aed",
+      size: "28px",
+      on: "#00b2b2",
       duration: "250ms",
     }),
   ],
 };
 ```
 
-### Utilities and overrides
-
-Add `slidebox` for the component, then control it with `slidebox-NAME-[VALUE]` utilities:
+### Classes
 
 ```html
 <label>
-  <input
-    type="checkbox"
-    class="slidebox slidebox-size-[28px] slidebox-width-[2.5] slidebox-spacing-[0.25] slidebox-deform-[0.15] slidebox-duration-[300ms] slidebox-on-violet-600 dark:slidebox-on-violet-400"
-  >
-  Enable notifications
+  <input class="slidebox slidebox-width-[2.5] slidebox-spacing-[-0.33] slidebox-on-teal-500"
+    type="checkbox">
+  Enable sound
 </label>
+
+<fieldset>
+  <legend>Calendar view</legend>
+  <div class="slidebox-group slidebox-selected-text-slate-950">
+    <label><input type="radio" name="view" value="day"><span>Day</span></label>
+    <label><input type="radio" name="view" value="week" checked><span>Week</span></label>
+  </div>
+</fieldset>
+
+<!-- Experimental range -->
+<input class="slidebox-range w-64 slidebox-size-[28px]" type="range" aria-label="Volume">
 ```
 
-- All controls accept arbitrary values: `slidebox-track-[#222]`, `slidebox-easing-[cubic-bezier(0.4,0,0.2,1)]`, etc.
-- `track`, `border`, `off`, and `on` expose your Tailwind color palette, such as `slidebox-on-emerald-500`.
-- `duration` and `easing` also expose Tailwind's transition theme, such as `slidebox-duration-300` and `slidebox-easing-linear`.
-- Variants work normally: `md:slidebox-size-[32px]`, `hover:slidebox-on-emerald-600`, etc.
-- Use `slidebox-size-*` rather than `h-*` to resize: thumb geometry uses the switch's font size.
-- Keep complete class names in source; dynamically assembled class strings may not be detected by Tailwind.
+No extra component stylesheet imports are needed. Classes are generated when used.
 
-In v3, add named presets under `theme.extend.slidebox`:
+- Every control accepts arbitrary values: `slidebox-deform-[0.2]`, `slidebox-duration-[350ms]`, `slidebox-easing-[var(--ease-in-out-elastic)]`.
+- Colors use your palette: `slidebox-on-teal-500`, `slidebox-track-slate-900`, `slidebox-text-white`, `slidebox-selected-text-slate-950`.
+- Duration, easing, and radius also use the corresponding Tailwind themes: `slidebox-duration-300`, `slidebox-easing-linear`, `slidebox-radius-lg`.
+- Variants work normally: `dark:slidebox-on-teal-300`, `md:slidebox-size-[36px]`.
+- Use `slidebox-size-*` to resize a checkbox, not `h-*`. Its geometry follows font size. Ranges use normal width utilities such as `w-64`.
+- Keep complete class names in source so Tailwind can detect them.
+
+In v3, you can name your own values under `theme.extend.slidebox`, for example `size: { compact: "18px" }` gives you `slidebox-size-compact`.
+
+## Defaults and controls
+
+The same names work as `--slidebox-NAME` custom properties, Sass map keys, Less arguments (`@NAME`), and Tailwind plugin options/utilities.
+
+| Control | Checkbox | Radio group | Experimental range |
+| --- | --- | --- | --- |
+| `size` | `54px` height | `36px` minimum segment height | `24px` track height |
+| `width` | `2`, a width/height ratio greater than 1 | Use normal CSS width | Use normal CSS width |
+| `spacing` | `.33`; negative values let the thumb protrude | `.12` padding/gap ratio | `.33` thumb/fill inset; negative values enlarge the thumb |
+| `deform` | `.1` press deformation / delay ratio | `.06` directional press stretch | `.1` maximum travel lag / delay ratio; optional JS only |
+| `duration` | `200ms` | `200ms` | `200ms` |
+| `easing` | `ease-in-out` | `ease-in-out` | `ease-in-out` |
+| `track` | `Field` | `Field` | `Field` |
+| `border` | `ButtonBorder` | `ButtonBorder` | `ButtonBorder` |
+| `off` | `FieldText` unchecked thumb | Unselected text fallback | Not used |
+| `on` | Checked thumb color | Selected highlight color | Thumb and optional fill color |
+| `text` | Not used | Unselected text; falls back to `off` / `FieldText` | Not used |
+| `selected-text` | Not used | `HighlightText` | Not used |
+| `radius` | Not used; pill shape | `100vw` | `100vw` |
+
+`on` uses `AccentColor` where supported, otherwise `light-dark(#0b75ff, SelectedItem)`. Set `color-scheme: light dark` to follow the user's theme, or choose `light` / `dark` explicitly. When setting a custom radio highlight, set a contrasting `selected-text` too.
+
+Keep spacing below `1`. Negative checkbox/range spacing is intentional; negative padding is clamped to zero for the native range. `deform: 0` removes deformation.
+
+Inherited properties make good site defaults. A mixin/plugin default assigned directly to a control takes priority over inheritance; override that control with a selector or utility when needed.
+
+## Experimental checkbox dragging
+
+The CSS checkbox already handles clicks and keyboard input. This optional module lets its thumb follow a mouse, touch, or pen drag:
 
 ```js
-theme: {
-  extend: {
-    slidebox: {
-      size: { compact: "18px", comfortable: "28px" },
-      width: { wide: "2.5" },
-    },
-  },
-},
-// Now use slidebox-size-compact or slidebox-width-wide.
-```
-
-CSS custom properties work with every integration. Avoid setting a control both through plugin/mixin defaults and an inherited variable: a value assigned directly to the switch wins over inheritance. Use a utility or a selector targeting that switch to override it.
-
-## Experimental pointer dragging
-
-**Opt-in and experimental.** The switch works without JavaScript. This separate, dependency-free ES module adds mouse, touch, and pen dragging to a checkbox styled with Slidebox. It never initializes controls automatically. The API and gesture feel may change in future releases.
-
-Keep using your chosen CSS, Sass, Less, or Tailwind integration, then attach the enhancement **after the input is mounted**:
-
-```html
-<label>
-  <input id="notifications" class="slidebox" type="checkbox" role="switch" name="notifications">
-  Enable notifications
-</label>
-```
-
-```js
-import "@monabbous/slidebox/dist/css/slidebox.css"; // Omit for Sass, Less, or Tailwind.
 import { enhanceSlidebox } from "@monabbous/slidebox/experimental/drag.mjs";
 
+// Run after the input is mounted and styled with Slidebox.
 const input = document.querySelector("#notifications");
 const disableDragging = enhanceSlidebox(input, { threshold: 5 });
 
-// Before removing the input, or when disabling this experimental feature:
+// On unmount, or when disabling the feature:
 // disableDragging();
 ```
 
-The JavaScript and drag styles must come from the **same package version**. Sass and Less mixins also include the necessary styles, so your checkbox can use a custom class instead of `.slidebox`.
+`threshold` is horizontal movement in CSS pixels before a drag starts; it defaults to `5`. Release at or beyond the midpoint to check the input. A changed state emits one bubbling `input` event, then one bubbling `change` event. The following pointer click is suppressed so it doesn't toggle twice.
 
-### Behavior and configuration
+Taps, label clicks, Space-key activation, disabled states, and form resets remain native. Vertical touch scrolling and pinch zoom stay available. Pointer cancellation abandons the gesture; RTL reverses its direction. `deform` and `duration` control the stretch; reduced motion disables it.
 
-- `threshold` is the horizontal movement, in CSS pixels, required to begin dragging. Default: `5`. Must be a finite, non-negative number.
-- The thumb follows the pointer; its trailing edge stretches and relaxes using `--slidebox-deform` and `--slidebox-duration`. Set `--slidebox-deform: 0` to disable stretching. Reduced-motion preferences also disable drag stretching.
-- Releasing at or beyond the midpoint checks the input; releasing before it unchecks it. A changed state emits one bubbling `input` event followed by one bubbling `change` event. Drag movement alone does not emit either event.
-- Normal clicks, label clicks, Space-key activation, form values, and form resets remain native. A completed drag suppresses its following click to prevent a second toggle. No synthetic `click` is emitted for a drag.
-- RTL reverses the gesture direction. Disabled inputs, including those inside a disabled fieldset, cannot be dragged.
-- Vertical touch gestures remain available for scrolling, and pinch zoom remains enabled. Cancellation or lost pointer capture abandons the gesture without committing it.
-- Call the returned cleanup function to stop dragging and restore temporary styles. Cleanup can be called repeatedly. Disabling it during a drag cancels that drag.
-- Repeated calls for the same input return its existing cleanup function. To change `threshold`, clean up and initialize again.
+Calling the initializer again returns the existing cleanup function. Clean up before changing options or removing the input. Types are included, and importing the module is safe during server rendering; initialization needs a mounted checkbox and Pointer Events/pointer capture.
 
-Use normal checkbox bindings in your framework. In React, for example, initialize from a ref and return cleanup from an effect:
+For controlled framework inputs, synchronize state from the native `input`/`change` events and detach those listeners on cleanup. Test that binding rather than assuming the framework's synthetic events behave identically.
 
-```jsx
-import { useEffect, useRef, useState } from "react";
-import { enhanceSlidebox } from "@monabbous/slidebox/experimental/drag.mjs";
+## Experimental range slider
 
-function Notifications() {
-  const input = useRef(null);
-  const [enabled, setEnabled] = useState(false);
+The unfilled native range works without JavaScript:
 
-  useEffect(() => {
-    const element = input.current;
-    // Native listeners also receive the enhancement's programmatic change event.
-    const sync = () => setEnabled(element.checked);
-    element.addEventListener("change", sync);
-    const destroy = enhanceSlidebox(element);
-    return () => {
-      destroy();
-      element.removeEventListener("change", sync);
-    };
-  }, []);
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@monabbous/slidebox/experimental/range.css">
 
-  return (
-    <label>
-      <input ref={input} className="slidebox" type="checkbox" role="switch"
-        checked={enabled} onChange={event => setEnabled(event.target.checked)} />
-      Enable notifications
-    </label>
-  );
-}
+<label for="volume">Volume</label>
+<input id="volume" class="slidebox-range" type="range"
+  name="volume" min="0" max="100" step="5" value="40">
 ```
 
-TypeScript declarations ship alongside `drag.mjs`. Importing the module is safe during server rendering, but calling `enhanceSlidebox()` requires a mounted checkbox in a browser supporting Pointer Events and pointer capture. Use a sufficiently wide horizontal Slidebox (width ratio greater than 1). Test touch, scrolling, and your framework's controlled-input behavior before adopting it in production; vertical switches are not supported.
+Bundler import: `@monabbous/slidebox/experimental/range.css`. Sass, Less, and Tailwind equivalents are shown above.
 
-Try it in the playground under **03 / Experimental → Enable pointer dragging**. Reset turns the option off. The playground's glass lighting is separate and is not shipped as part of the drag module.
+Use normal `min`, `max`, `step`, `value`, and `disabled` attributes. Listen to `input` for live values or `change` for committed changes. Set the overall length with CSS width; `size` controls height. Thumb spacing applies at both endpoints.
+
+### Optional motion and progress fill
+
+The [range demos](#range-demos-experimental) show **both JavaScript options enabled**:
+
+```js
+import {
+  enhanceSlideboxRange,
+  enhanceSlideboxRangeFill,
+} from "@monabbous/slidebox/experimental/range.mjs";
+
+const input = document.querySelector("#volume");
+const disableMotion = enhanceSlideboxRange(input);
+const disableFill = enhanceSlideboxRangeFill(input);
+
+// On unmount:
+// disableMotion();
+// disableFill();
+```
+
+Use either helper alone or both together. Neither changes the native value or emits synthetic events.
+
+**Motion:** the leading edge reaches the native destination; the tail follows after a delay. Reversing direction swaps the trailing edge. A temporary, non-interactive visual layer supplies the margin-based deformation without resizing the native hit box. It is removed after settling or cleanup. `deform` limits the lag and sets its initial delay (`duration × deform`); `duration` controls settling. Keyboard changes also animate. Reduced motion, forced colors, `deform: 0`, or `duration: 0ms` disables this effect.
+
+**Fill:** a rounded, opaque progress bar follows the value, matching the thumb's height and inset. Progress is clamped to 0–100%, fill height is capped, and painting is clipped inside the track. RTL reverses it. It updates on `input`, `change`, and native form reset. After setting a value programmatically, dispatch an `input` event if you want the fill to update.
+
+The helpers include TypeScript types. Repeated initialization returns the existing cleanup function. Use matching CSS and JS from the same package version, initialize after mounting, and clean up before removing the control. This is still experimental: horizontal sliders only, with more browser/device testing needed, particularly for transformed or zoomed containers and unusual stacking contexts.
+
+In the playground, the range has its own section below the switch/radio controls. **Directional range motion (JS)** and **Fill progress (JS)** are independent and off by default. Reset turns both off.
+
+## Accessibility and browser support
+
+- Keep real labels. Use `fieldset` / `legend` for related radios.
+- Native focus, keyboard interaction, validation, and form values stay in place. Don't remove focus outlines without replacing them.
+- `prefers-reduced-motion` shortens CSS transitions and disables JS stretching. Forced-colors mode restores system colors and visible selection outlines.
+- CSS uses logical margins for RTL. The optional helpers follow the same direction.
+- Shared radio highlight motion needs scoped CSS anchor positioning; selection still works without it.
+- Use a current browser with CSS custom properties, CSS math, logical properties, and `light-dark()` support. Native range styling and checkbox pseudo-elements can differ between engines.
+
+The automated browser checks run in Chromium. Firefox/WebKit range rules are included, but those browsers and real touch devices still need testing. No claim that every control looks identical in every browser.
 
 ## Development
 
@@ -278,20 +451,29 @@ Try it in the playground under **03 / Experimental → Enable pointer dragging**
 npm ci
 npm run build
 npm test
+npx playwright install chromium
+npm run test:browser
 npm pack --dry-run
 ```
 
-The build extracts component rules from `style.css` and generates CSS, Sass, Less, and Tailwind rules. Tests compile both mixins and the plugin with Tailwind v3 and v4, and check the drag module's lifecycle.
+Serve the playground with `python3 -m http.server 8080`, then open `http://localhost:8080`.
 
-For real-browser drag and playground checks:
+The build extracts the switch from `style.css` and reads group/range rules from `components/`. It generates the package CSS, mixins, and Tailwind rules. Edit those sources, not the generated files.
+
+The playground glass treatment follows [nabous.dev's current glass utilities](https://github.com/monabbous/nabous.dev/blob/master/src/styles/glassmorphism.css): bottom accent light, shared pointer glow, and masked borders. It stays out of the core package styles.
+
+### Demo recordings
+
+All demos are cropped from the same recording, with **lossless WebP encoding and original 60 fps timing**. No scaling, slowing down, or generated in-between frames. Static references are marked in [`assets/demos.json`](assets/demos.json), alongside exact crop rectangles, timestamps, and recorded settings.
+
+With FFmpeg installed, rebuild them from the original file:
 
 ```sh
-npx playwright install chromium
-npm run test:browser
+node scripts/build-demos.mjs /path/to/screenrecording-2026-10-31_05-12-41.mp4
+# Or rebuild one clip:
+node scripts/build-demos.mjs /path/to/screenrecording-2026-10-31_05-12-41.mp4 slidebox-demo.webp
 ```
 
-These run in Chromium; other browsers and devices still need testing. The lab itself is plain HTML/CSS/JavaScript; serve the repository with `python3 -m http.server 8080` and open `http://localhost:8080`.
+Releases use the manual [Publish to npm](.github/workflows/publish-npm.yml) workflow on `main`, with trusted publishing through `production`. Choose a version bump for a new release; use `publish_existing_version` only to retry a failed publish of the current version.
 
-Releases use the manual [Publish to npm](.github/workflows/publish-npm.yml) workflow on `main`, with npm trusted publishing through the `production` environment. Choose a version bump for a new release, or enable `publish_existing_version` to retry the current version without a bump or new tag.
-
-The original implementation is preserved in [`legacy/`](legacy/).
+The original library is preserved in [`legacy/`](legacy/).

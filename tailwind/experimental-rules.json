@@ -1,0 +1,125 @@
+{
+  ".slidebox-range": {
+    "--_size": "var(--slidebox-size, 24px)",
+    "--_spacing": "var(--slidebox-spacing, .33)",
+    "--_range-inset": "max(0px, calc(var(--_size) * var(--_spacing) * .5))",
+    "--_thumb-size": "calc(var(--_size) * (1 - var(--_spacing)))",
+    "--_deform": "var(--slidebox-deform, .1)",
+    "--_duration": "var(--slidebox-duration, 200ms)",
+    "--_easing": "var(--slidebox-easing, ease-in-out)",
+    "--_track": "var(--slidebox-track, Field)",
+    "--_border": "var(--slidebox-border, ButtonBorder)",
+    "--_on": "var(--slidebox-on, var(--_accent, light-dark(#0b75ff, SelectedItem)))",
+    "appearance": "none",
+    "-webkit-appearance": "none",
+    "box-sizing": "border-box",
+    "width": "100%",
+    "min-width": "0",
+    "height": "var(--_size)",
+    "margin": "0",
+    "padding-block": "0",
+    "padding-inline": "var(--_range-inset)",
+    "border": "1px solid var(--_border)",
+    "border-radius": "var(--slidebox-radius, 100vw)",
+    "background": "var(--_track)",
+    "color": "var(--_on)",
+    "cursor": "pointer",
+    "accent-color": "var(--_on)",
+    "&[data-slidebox-range-fill]": {
+      "--_fill-size": "max(0px, min(var(--_thumb-size), calc(var(--_size) - 2px)))",
+      "--_fill-stop": "clamp(0px, calc(var(--_thumb-size) * .5 + (100% - var(--_thumb-size)) * clamp(0, var(--slidebox-range-fill, 0), 1)), 100%)",
+      "background-image": "radial-gradient(circle closest-side, var(--_fill-color, var(--_on)) calc(100% - .5px), transparent 100%),\n    linear-gradient(to right, transparent 0 calc(var(--_fill-size) * .5), var(--_fill-color, var(--_on)) calc(var(--_fill-size) * .5) var(--_fill-stop), transparent var(--_fill-stop)),\n    var(--_range-track-image, none)",
+      "background-size": "var(--_fill-size) var(--_fill-size), max(0px, calc(100% - 2 * var(--_range-inset))) var(--_fill-size), 100vw 100vh",
+      "background-position": "left var(--_range-inset) center, center, 0 0",
+      "background-repeat": "no-repeat",
+      "background-attachment": "scroll, scroll, fixed",
+      "background-clip": "padding-box"
+    },
+    "&[data-slidebox-range-fill]:dir(rtl)": {
+      "background-image": "radial-gradient(circle closest-side, var(--_fill-color, var(--_on)) calc(100% - .5px), transparent 100%),\n    linear-gradient(to left, transparent 0 calc(var(--_fill-size) * .5), var(--_fill-color, var(--_on)) calc(var(--_fill-size) * .5) var(--_fill-stop), transparent var(--_fill-stop)),\n    var(--_range-track-image, none)",
+      "background-position": "right var(--_range-inset) center, center, 0 0"
+    },
+    "&::-webkit-slider-runnable-track": {
+      "box-sizing": "border-box",
+      "height": "calc(var(--_size) - 2px)",
+      "border": "0",
+      "border-radius": "var(--slidebox-radius, 100vw)",
+      "background": "transparent"
+    },
+    "&::-moz-range-track": {
+      "box-sizing": "border-box",
+      "height": "calc(var(--_size) - 2px)",
+      "border": "0",
+      "border-radius": "var(--slidebox-radius, 100vw)",
+      "background": "transparent"
+    },
+    "&::-webkit-slider-thumb": {
+      "appearance": "none",
+      "-webkit-appearance": "none",
+      "box-sizing": "border-box",
+      "width": "calc(var(--_size) * (1 - var(--_spacing)))",
+      "height": "calc(var(--_size) * (1 - var(--_spacing)))",
+      "margin-top": "calc(var(--_size) * var(--_spacing) / 2 - 1px)",
+      "border": "1px solid var(--_track)",
+      "border-radius": "var(--slidebox-radius, 100vw)",
+      "background": "var(--_on)",
+      "transition": "none"
+    },
+    "&::-moz-range-thumb": {
+      "box-sizing": "border-box",
+      "width": "calc(var(--_size) * (1 - var(--_spacing)))",
+      "height": "calc(var(--_size) * (1 - var(--_spacing)))",
+      "border": "1px solid var(--_track)",
+      "border-radius": "var(--slidebox-radius, 100vw)",
+      "background": "var(--_on)",
+      "transition": "none"
+    },
+    "&:focus-visible": {
+      "outline": "2px solid var(--_on)",
+      "outline-offset": "3px"
+    },
+    "&[data-slidebox-range-dragging]::-webkit-slider-thumb": {
+      "background": "transparent",
+      "border-color": "transparent",
+      "transition": "none"
+    },
+    "&[data-slidebox-range-dragging]::-moz-range-thumb": {
+      "background": "transparent",
+      "border-color": "transparent",
+      "transition": "none"
+    },
+    "&:disabled": {
+      "cursor": "not-allowed",
+      "opacity": ".5"
+    },
+    "@supports (color: AccentColor)": {
+      "&": {
+        "--_accent": "AccentColor"
+      }
+    },
+    "@media (forced-colors: active)": {
+      "&": {
+        "--_track": "Field",
+        "--_border": "ButtonBorder",
+        "--_on": "Highlight"
+      },
+      "&::-webkit-slider-thumb": {
+        "border-color": "Highlight"
+      },
+      "&::-moz-range-thumb": {
+        "border-color": "Highlight"
+      }
+    },
+    "@media (prefers-reduced-motion: reduce)": {
+      "&": {
+        "transition-duration": ".01ms"
+      },
+      "&::-webkit-slider-thumb": {
+        "transition-duration": ".01ms"
+      },
+      "&::-moz-range-thumb": {
+        "transition-duration": ".01ms"
+      }
+    }
+  }
+}

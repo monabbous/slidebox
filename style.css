@@ -7,15 +7,24 @@
   --line: #467b96;
   --text: #e8f6fa;
   --muted: #a1c7d8;
-  /* Viewport-aligned light, shared between surfaces as on nabous.dev. */
-  --glass-bg: radial-gradient(circle at var(--mouse-x, -100vmax) var(--mouse-y, -100vmax), color-mix(in srgb, var(--accent) 9%, transparent), transparent 300px) 0 0 / 100vw 100vh fixed no-repeat;
-  --glass-border: radial-gradient(circle at var(--mouse-x, -100vmax) var(--mouse-y, -100vmax), color-mix(in srgb, var(--accent) 55%, transparent), transparent 160px) 0 0 / 100vw 100vh fixed no-repeat border-box;
+  /* Port of nabous.dev/src/styles/glassmorphism.css, without Tailwind. */
+  --colors__background: var(--bg);
+  --colors__primary: var(--primary);
+  --colors__accent: var(--accent);
+  --glassmorphism-bg__position-x: var(--mouse-x, -100vmax);
+  --glassmorphism-bg__position-y: var(--mouse-y, -100vmax);
+  --glassmorph-glow-opacity: .1;
+  --glassmorph-glow-coverage: 30%;
+  --glass-base: radial-gradient(circle at bottom center, hsla(from var(--colors__accent) h s l / .1) 0%, transparent 50%) center center / 100vw 100vh no-repeat;
+  --glass-light: radial-gradient(circle at var(--glassmorphism-bg__position-x) var(--glassmorphism-bg__position-y), hsla(from var(--colors__accent) h s l / var(--glassmorph-glow-opacity)) 0%, transparent var(--glassmorph-glow-coverage));
+  --glass-bg: var(--glass-base), var(--glass-light) center center / 100vw 100vh fixed no-repeat, linear-gradient(hsla(from var(--colors__background) h s l / .4), hsla(from var(--colors__background) h s l / .4));
+  --glass-border: var(--glass-base), radial-gradient(circle at var(--glassmorphism-bg__position-x) var(--glassmorphism-bg__position-y), hsla(from var(--colors__accent) h s l / calc(var(--glassmorph-glow-opacity) * 3)) 0%, transparent calc(var(--glassmorph-glow-coverage) * 1.33)) center center / 100vw 100vh fixed no-repeat;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 * { box-sizing: border-box; }
 body {
   margin: 0;
-  background: radial-gradient(ellipse at 10% 5%, #087d8659, transparent 55%), radial-gradient(ellipse at 95% 65%, #2a5b7c99, transparent 60%), var(--bg);
+  background: var(--glass-base), radial-gradient(ellipse at 10% 5%, #087d8659, transparent 55%), radial-gradient(ellipse at 95% 65%, #2a5b7c99, transparent 60%), var(--bg);
   background-attachment: fixed;
   color: var(--text);
   font-size: 14px;
@@ -39,6 +48,31 @@ a { color: inherit; text-decoration: none; }
 .card { background: #104562; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; min-width: 0; }
 .card-header { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 19px 20px; border-bottom: 1px solid var(--line); }
 .card h2 { font-size: 19px; margin: 5px 0 0; letter-spacing: -.03em; }
+.checkbox-presets { margin-bottom: 20px; }
+.presets-scroll { overflow-x: auto; background: #202327; color: #f7f7f7; color-scheme: dark; }
+.checkbox-presets[data-scheme="light"] .presets-scroll { background: #f2f4f3; color: #252a28; color-scheme: light; }
+.presets-table { width: 100%; border-collapse: collapse; text-align: start; font-size: 13px; }
+.presets-table caption { text-align: start; padding: 18px 20px; font-size: 12px; opacity: .8; }
+.presets-table th, .presets-table td { padding: 20px; border-bottom: 1px solid color-mix(in srgb, FieldText 15%, transparent); white-space: nowrap; text-align: start; }
+.presets-table thead th { padding-block: 10px; font-size: 11px; font-weight: 500; opacity: .75; }
+.presets-table tbody th { font-weight: 500; }
+.presets-table label { cursor: pointer; }
+.presets-table td:not(:first-child) { font-variant-numeric: tabular-nums; }
+.checkbox-presets .slidebox {
+  --_container-width-ratio: var(--preset-width);
+  --_thumb-spacing-ratio: var(--preset-spacing);
+  --_deform: var(--preset-deform);
+  --_duration: var(--slidebox-duration, 200ms);
+  --_easing-function: var(--slidebox-easing, ease-in-out);
+  --_track: var(--slidebox-track, Field);
+  --_border: var(--slidebox-border, ButtonBorder);
+  --_off: var(--slidebox-off, FieldText);
+  --_on: var(--slidebox-on, light-dark(#0b75ff, SelectedItem));
+  font-size: 36px;
+  vertical-align: middle;
+  margin: 6px 0;
+}
+.presets-note { padding: 4px 20px; }
 .button, .seg button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; color: var(--text); background: #195675; border: 1px solid #5c90a7; border-radius: 7px; padding: 8px 12px; font-size: 12px; }
 .button:hover, .seg button:hover { border-color: #31e1d8; }
 .button.active, .seg button.active, .button.primary { background: #087d86; border-color: #1fcec5; }
@@ -72,6 +106,17 @@ select { background: #195675; color: var(--text); border: 1px solid #5c90a7; bor
   flex: none;
   margin: 0;
 }
+.range-card { margin-top: 20px; }
+.experiment-label { color: var(--muted); font-size: 10px; margin-inline-start: 8px; }
+.experiment-toolbar { display: flex; flex-wrap: wrap; gap: 20px; margin: 16px 0; }
+.experimental-preview { --slidebox-size: 32px; border: 1px solid #467b9680; border-radius: 8px; min-height: 0; padding: 20px; }
+.controls-fieldset { border: 0; min-width: 0; width: 100%; margin: 0; padding: 0; }
+.controls-fieldset legend { padding: 0; margin-bottom: 12px; font-size: 12px; }
+.controls-fieldset > small { display: block; margin-top: 12px; }
+.range-example { margin: 4px 0 24px; }
+.range-example label { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 12px; }
+#groupPreview { width: 100%; font-size: 12px; }
+#groupDemo { --slidebox-size: 28px; }
 .color-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; margin: 12px 0; }
 .color-grid label { display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--line); border-radius: 7px; padding: 7px 10px; font-size: 11px; }
 .color-grid input { border: 0; padding: 0; width: 36px; height: 27px; background: transparent; cursor: pointer; }
@@ -86,13 +131,13 @@ select { background: #195675; color: var(--text); border: 1px solid #5c90a7; bor
 pre { font: 11px/1.65 ui-monospace, SFMono-Regular, monospace; white-space: pre; overflow: auto; max-height: 300px; padding: 15px; border-radius: 7px; border: 1px solid var(--line); background: #082b40; color: #b8f1eb; }
 footer { text-align: center; color: var(--muted); font-size: 11px; padding: 24px; }
 
-/* Glass surfaces: https://dev.to/nabous/weekend-hobby-playing-with-light-glass-and-css-1h2 */
+/* Glass surfaces: https://github.com/monabbous/nabous.dev/blob/master/src/styles/glassmorphism.css */
 .topbar, .card, .button, .seg button, .color-grid label {
   position: relative;
   isolation: isolate;
   background: var(--glass-bg);
-  background-color: color-mix(in srgb, var(--bg) 40%, transparent);
-  border-color: color-mix(in srgb, var(--line) 55%, transparent);
+  background-color: transparent;
+  border-color: transparent;
   -webkit-backdrop-filter: blur(40px);
   backdrop-filter: blur(40px);
 }
@@ -110,11 +155,21 @@ footer { text-align: center; color: var(--muted); font-size: 11px; padding: 24px
   mask: linear-gradient(white, white) padding-box, linear-gradient(white, white);
   mask-composite: exclude;
 }
-.topbar::before { border-width: 0 0 1px; }
+.topbar::before { inset: 0; border-width: 0 0 1px; }
+.card { border-width: 2px; }
+.card::before {
+  /* glassmorph-border, as used by the About card on nabous.dev. */
+  inset: -1px;
+  margin: auto;
+  z-index: 100;
+  border: inherit;
+  border-color: transparent;
+  padding: inherit;
+}
 .button.active, .seg button.active, .button.primary {
   background: var(--glass-bg);
-  background-color: #087d8680;
-  border-color: #1fcec580;
+  background-color: #00b2b21a;
+  border-color: #00b2b233;
 }
 .button:hover, .seg button:hover { border-color: #31e1d8; }
 .card-header, .section-pad.divider { border-color: #467b9666; }
@@ -124,6 +179,95 @@ select, pre, #graph {
 }
 select { background-image: none; }
 select option { background: var(--bg); color: var(--text); }
+
+/* nabous.dev base + pointer light: 40%-alpha tracks, opaque thumbs.
+   Keep existing geometry and track-colored thumb borders unchanged. */
+@media (forced-colors: none) {
+  :is(.brand-glass, .preset-brand) .slidebox,
+  .brand-glass .slidebox-group,
+  .brand-glass .slidebox-range {
+    background: var(--glass-base), var(--glass-light) center center / 100vw 100vh fixed no-repeat, linear-gradient(hsla(from var(--_track) h s l / .4), hsla(from var(--_track) h s l / .4));
+    border-color: hsla(from var(--_border) h s l / .25);
+    -webkit-backdrop-filter: blur(40px);
+    backdrop-filter: blur(40px);
+    box-shadow: none;
+  }
+  :is(.brand-glass, .preset-brand) .slidebox { --_glass-thumb: var(--_off); position: relative; isolation: isolate; }
+  :is(.brand-glass, .preset-brand) .slidebox:checked { --_glass-thumb: var(--_on); }
+  :is(.brand-glass, .preset-brand) .slidebox::after {
+    position: relative;
+    z-index: 3;
+  }
+  :is(.brand-glass, .preset-brand) .slidebox::before,
+  .brand-glass .slidebox-group::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    z-index: 2;
+    border: 1px solid transparent;
+    border-radius: inherit;
+    pointer-events: none;
+    background: var(--glass-border);
+    -webkit-mask: linear-gradient(white, white) padding-box, linear-gradient(white, white);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(white, white) padding-box, linear-gradient(white, white);
+    mask-composite: exclude;
+  }
+  :is(.brand-glass, .preset-brand) .slidebox::after,
+  .brand-glass .slidebox-group::before,
+  .brand-glass .slidebox-group > label > input:checked + span::before,
+  .brand-glass [data-slidebox-range-visual] > span {
+    background: var(--glass-base), var(--glass-light) center center / 100vw 100vh fixed no-repeat, linear-gradient(var(--_glass-thumb, var(--_on, #00b2b2)), var(--_glass-thumb, var(--_on, #00b2b2))) !important;
+    -webkit-backdrop-filter: blur(40px);
+    backdrop-filter: blur(40px);
+    box-shadow: none;
+  }
+  .brand-glass .slidebox-range::-webkit-slider-thumb {
+    background: var(--glass-base), var(--glass-light) center center / 100vw 100vh fixed no-repeat, linear-gradient(var(--_on), var(--_on));
+    -webkit-backdrop-filter: blur(40px);
+    backdrop-filter: blur(40px);
+    box-shadow: none;
+  }
+  .brand-glass .slidebox-range::-moz-range-thumb {
+    background: var(--glass-base), var(--glass-light) center center / 100vw 100vh fixed no-repeat, linear-gradient(var(--_on), var(--_on));
+    backdrop-filter: blur(40px);
+    box-shadow: none;
+  }
+  .brand-glass .slidebox-range[data-slidebox-range-dragging]::-webkit-slider-thumb { background: transparent; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .brand-glass .slidebox-range[data-slidebox-range-dragging]::-moz-range-thumb { background: transparent; box-shadow: none; backdrop-filter: none; }
+  .brand-glass .slidebox-range[data-slidebox-range-fill] {
+    --_fill-color: var(--_on);
+    --_range-track-image: var(--glass-light);
+  }
+  .preset-brand .slidebox {
+    --_track: #2a5b7c;
+    --_border: #5289a6;
+    --_off: #e8f6fa;
+    --_on: #00b2b2;
+  }
+  .preset-browser .slidebox {
+    --_track: Field;
+    --_border: ButtonBorder;
+    --_off: FieldText;
+    --_on: light-dark(#0b75ff, SelectedItem);
+    background: var(--_track);
+    border-color: var(--_border);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: none;
+  }
+  .preset-browser .slidebox::before { content: none; }
+  .preset-browser .slidebox::after {
+    background: var(--_off) !important;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: none;
+  }
+  .preset-browser .slidebox:checked::after { background: var(--_on) !important; }
+  @supports (color: AccentColor) {
+    .preset-browser .slidebox { --_on: AccentColor; }
+  }
+}
 
 @supports not (backdrop-filter: blur(1px)) {
   .topbar, .card, .button, .seg button, .color-grid label { background-color: #104562; }
@@ -137,6 +281,7 @@ select option { background: var(--bg); color: var(--text); }
   }
   .topbar::before, .card::before, .button::before, .seg button::before, .color-grid label::before { display: none; }
   .drag-option .slidebox { --_track: Field; --_border: ButtonBorder; --_off: FieldText; --_on: Highlight; }
+  .checkbox-presets .slidebox { --_track: Field; --_border: ButtonBorder; --_off: FieldText; --_on: Highlight; }
 }
 /* Slidebox component: begin */
 .slidebox {
@@ -169,6 +314,7 @@ select option { background: var(--bg); color: var(--text); }
 }
 .slidebox::after {
   --_start: 0; --_end: 1;
+  box-sizing: border-box;
   content: "";
   display: block;
   flex: 1 1 auto;
@@ -179,6 +325,7 @@ select option { background: var(--bg); color: var(--text); }
   margin-inline-start: calc((1em * var(--_container-width-ratio) - 1em) * var(--_start) + var(--_thumb-spacing-ratio) * .5em);
   margin-inline-end: calc((1em * var(--_container-width-ratio) - 1em) * var(--_end) + var(--_thumb-spacing-ratio) * .5em);
   border-radius: inherit;
+  border: 1px solid var(--_track);
   background: var(--_off);
   transition: background var(--_duration) var(--_easing-function), margin-inline-start var(--_duration) var(--_easing-function), margin-inline-end var(--_duration) var(--_easing-function);
   transition-delay: 0s, 0s, calc(var(--_duration) * var(--_deform));

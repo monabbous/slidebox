@@ -4,16 +4,32 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Slidebox drag test</title>
 <link rel="stylesheet" href="/dist/css/slidebox.css">
+<link rel="stylesheet" href="/experimental/range.css">
+<link rel="stylesheet" href="/dist/css/group.css">
 <style>
   body { padding: 50px; }
   .slidebox { --slidebox-size: 50px; --slidebox-duration: 200ms; }
+  .slidebox-range { width: 300px; display: block; margin: 24px 0; }
 </style>
 <form id="form">
   <label><input class="slidebox" id="switch" type="checkbox" name="enabled"> Enable notifications</label>
+  <label for="volume">Volume</label>
+  <input id="volume" class="slidebox-range" type="range" name="volume" min="0" max="100" step="5" value="40">
+  <fieldset id="periodFieldset">
+    <legend>Period</legend>
+    <div class="slidebox-group" id="periodGroup">
+      <label><input id="day" type="radio" name="period" value="day"><span>Day</span></label>
+      <label><input id="week" type="radio" name="period" value="week" checked><span>Week</span></label>
+      <label><input id="month" type="radio" name="period" value="month"><span>Month</span></label>
+    </div>
+  </fieldset>
   <button type="reset">Reset</button>
 </form>
 <script type="module">
   import { enhanceSlidebox } from "/experimental/drag.mjs";
+  import { enhanceSlideboxRange, enhanceSlideboxRangeFill } from "/experimental/range.mjs";
+  window.enableRangeMotion = () => { window.destroyRange = enhanceSlideboxRange(document.getElementById("volume")); };
+  window.enableRangeFill = () => { window.destroyFill = enhanceSlideboxRangeFill(document.getElementById("volume")); };
   window.events = [];
   const input = document.getElementById("switch");
   for (const name of ["input", "change"]) input.addEventListener(name, () => window.events.push(name));

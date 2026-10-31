@@ -4,7 +4,7 @@
 const $ = (id) => document.getElementById(id);
 const defaults = () => ({
   width: 2, spacing: .33, deform: .1, duration: 200,
-  family: 'Sine', direction: 'InOut', palette: 'native',
+  family: 'Sine', direction: 'InOut', palette: 'brand',
   colors: { accent: '#00b2b2', track: '#2a5b7c', border: '#5289a6', off: '#e8f6fa' }
 });
 let state = defaults();
@@ -93,6 +93,7 @@ function paletteValues() {
 }
 
 function applyPreview() {
+  document.body.classList.toggle('brand-glass', state.palette === 'brand');
   const [track,border,off,on,nativeAccent] = paletteValues();
   cancelAnimationFrame(restoreFrame1);
   cancelAnimationFrame(restoreFrame2);
@@ -108,10 +109,21 @@ function applyPreview() {
   for (const [name,value] of Object.entries(variables)) {
     switchInput.style.setProperty(name,String(value));
   }
+  const controlsPreview = $('controlsPreview');
+  controlsPreview.style.setProperty('--slidebox-spacing', String(state.spacing));
+  for (const container of [controlsPreview, $('preview'), $('checkboxPresets')]) {
+    container.style.setProperty('--slidebox-duration', '0s');
+    for (const [name, value] of Object.entries({
+      track, border, off, on, deform: state.deform, easing: cssTiming()
+    })) container.style.setProperty('--slidebox-' + name, String(value));
+  }
   for (const id of ['nativeRange','nativeCheck','nativeRadio']) $(id).style.accentColor = nativeAccent;
   restoreFrame1 = requestAnimationFrame(() => {
     restoreFrame2 = requestAnimationFrame(() => {
       switchInput.style.setProperty('--_duration', state.duration + 'ms');
+      controlsPreview.style.setProperty('--slidebox-duration', state.duration + 'ms');
+      $('preview').style.setProperty('--slidebox-duration', state.duration + 'ms');
+      $('checkboxPresets').style.setProperty('--slidebox-duration', state.duration + 'ms');
     });
   });
 }
@@ -144,7 +156,7 @@ function render() {
   const notes={
     native:'Native controls use accent-color: auto. Slidebox uses a matching blue in light mode and SelectedItem in dark mode when AccentColor is unavailable.',
     system:'Uses Field, FieldText, ButtonBorder and SelectedItem (AccentColor where available). System colors may differ from native controls.',
-    brand:'Uses the blue and teal colors from nabous.dev.',
+    brand:'The default nabous.dev palette: blue and teal, frosted tracks, and solid thumbs with pointer lighting.',
     custom:'Native controls and Slidebox use the selected colors.'
   };
   $('paletteNote').textContent=notes[state.palette];
@@ -166,10 +178,12 @@ $('palette').addEventListener('change', event => {state.palette=event.target.val
 for (const key of ['accent','track','border','off']) {
   $(key).addEventListener('input', event => {state.colors[key]=event.target.value;render();});
 }
-document.querySelectorAll('[data-scheme]').forEach(button => {
+document.querySelectorAll('button[data-scheme]').forEach(button => {
   button.addEventListener('click', () => {
     $('preview').dataset.scheme=button.dataset.scheme;
-    document.querySelectorAll('[data-scheme]').forEach(b =>
+    $('controlsPreview').dataset.scheme=button.dataset.scheme;
+    $('checkboxPresets').dataset.scheme=button.dataset.scheme;
+    document.querySelectorAll('button[data-scheme]').forEach(b =>
       b.classList.toggle('active',b===button));
   });
 });
