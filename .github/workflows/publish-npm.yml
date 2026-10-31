@@ -12,6 +12,10 @@ on:
           - patch
           - minor
           - major
+      publish_existing_version:
+        description: 'Publish the current version without bumping or tagging'
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -24,6 +28,7 @@ concurrency:
 jobs:
   publish:
     if: github.ref == 'refs/heads/main'
+    environment: production
     runs-on: ubuntu-latest
     steps:
       - name: Checkout main
@@ -50,6 +55,7 @@ jobs:
           test "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)"
 
       - name: Bump version
+        if: ${{ !inputs.publish_existing_version }}
         env:
           RELEASE_TYPE: ${{ inputs.release_type }}
         run: npm version "$RELEASE_TYPE" --no-git-tag-version
@@ -61,6 +67,7 @@ jobs:
           npm pack --dry-run
 
       - name: Commit version and tag on main
+        if: ${{ !inputs.publish_existing_version }}
         run: |
           VERSION="$(node -p 'require("./package.json").version')"
           git config user.name "github-actions[bot]"
