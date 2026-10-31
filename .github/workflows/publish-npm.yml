@@ -40,18 +40,14 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
           package-manager-cache: false
 
-      - name: Check branch and npm credentials
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Install npm with trusted publishing support
+        run: npm install --global npm@11
+
+      - name: Check branch
         run: |
           test "$GITHUB_REF" = "refs/heads/main"
-          if [ -z "$NPM_TOKEN" ]; then
-            echo "::error::Add NPM_TOKEN to the repository Actions secrets before running a release."
-            exit 1
-          fi
           git fetch origin main
           test "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)"
-          NODE_AUTH_TOKEN="$NPM_TOKEN" npm whoami --registry=https://registry.npmjs.org
 
       - name: Bump version
         env:
@@ -76,6 +72,4 @@ jobs:
           git push origin "v${VERSION}"
 
       - name: Publish npm package
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm publish --access public --provenance
