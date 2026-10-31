@@ -40,3 +40,16 @@ test("benchmark trial records both batches without asserting a hardware speed", 
   expect(trial.sampledFrames).toBeGreaterThan(0);
   await expect(page.locator("#grid input")).not.toBeChecked();
 });
+
+test("published benchmark reports use brand colors and shared card corners on mobile", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/public/benchmarks/");
+  await expect(page.locator(".card").first()).toHaveCSS("border-radius", "4px");
+  await expect(page.locator("body")).toHaveCSS("background-color", "rgb(6, 60, 89)");
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+  expect(await page.locator('a[href^="/benchmarks/"]').count()).toBe(0);
+  await expect(page.getByRole("link", { name: "Article", exact: true })).toHaveAttribute("href", "https://nabous.dev/blog/slidebox/");
+  const graph = await page.request.get("/public/benchmarks/rafFps-500.svg");
+  expect(graph.ok()).toBe(true);
+  expect(await graph.text()).toContain('fill="#00b2b2"');
+});

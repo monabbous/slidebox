@@ -7,6 +7,7 @@ import { summarizeFrames, clsScore, createCases, trialOrder, metricDelta } from 
 import { parseOptions } from "../benchmarks/options.mjs";
 import { startServer } from "../benchmarks/server.mjs";
 import { validateReport, writeReport } from "../benchmarks/report.mjs";
+import { brandSvg, REPORT_STYLES } from "../benchmarks/theme.mjs";
 
 test("benchmark options validate workload limits and do not accept unknown flags", () => {
   assert.deepEqual(parseOptions([]).counts, [500, 2000]);
@@ -115,8 +116,23 @@ test("benchmark report exports valid standalone SVGs and explains metric limits"
     const html = readFileSync(join(output, "index.html"), "utf8");
     assert.ok(html.includes("not GPU-presented FPS"));
     assert.ok(html.includes("Zero CLS does not mean zero layout"));
+    assert.ok(html.includes(REPORT_STYLES));
+    assert.ok(html.includes("~/ nabous.dev"));
+    assert.ok(!html.includes("https://fonts.googleapis.com"));
     const svgs = readdirSync(output).filter(file => file.endsWith(".svg"));
     assert.equal(svgs.length, 6);
     for (const file of svgs) assert.match(readFileSync(join(output, file), "utf8"), /^<svg xmlns="http:\/\/www.w3.org\/2000\/svg"/);
   } finally { rmSync(output, { recursive: true, force: true }); }
+});
+
+test("graph branding preserves geometry and data and is idempotent", () => {
+  const original = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 387"><text x="0" y="32" fill="#18313e">Median 59.9</text><rect x="235" y="20" width="499.763" height="18" fill="#008f91"><title>min 58.4, max 60.0</title></rect><line x1="721.6" x2="735" stroke="#173847"/><rect x="235" y="58" width="315.59" height="18" fill="#d17b22"/></svg>';
+  const themed = brandSvg(original);
+  assert.equal(brandSvg(themed), themed);
+  assert.ok(themed.includes('viewBox="0 0 850 387"'));
+  for (const value of ['x="235" y="20" width="499.763" height="18"', 'x1="721.6" x2="735"', "Median 59.9", "min 58.4, max 60.0"]) assert.ok(themed.includes(value));
+  assert.ok(themed.includes('fill="#00b2b2"'));
+  assert.ok(themed.includes('fill="#80b9ed"'));
+  assert.ok(themed.includes('fill="#082f46"'));
+  assert.ok(themed.includes("color-scheme:dark"));
 });
