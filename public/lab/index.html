@@ -5,78 +5,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light dark">
   <meta name="description" content="Try elastic native controls, customize their motion and appearance, and install Slidebox for CSS, Sass, Less, or Tailwind.">
-  <title>Slidebox Lab | nabous.dev</title>
+  <title>Slidebox playground</title>
   <link rel="stylesheet" href="./style.css">
   <link rel="stylesheet" href="./experimental/range.css">
   <link rel="stylesheet" href="./dist/css/group.css">
   <script src="./script.js" defer></script>
   <script type="module" src="./playground/drag-preview.mjs"></script>
-  <script type="module" src="./playground/glass.mjs"></script>
   <script type="module" src="./playground/controls-preview.mjs"></script>
 </head>
 <body class="brand-glass">
-  <header class="topbar">
-    <a class="wordmark" href="https://nabous.dev" target="_blank" rel="noopener noreferrer"><span class="mark">~/</span> slidebox<span class="quiet">.lab</span></a>
-    <a class="site-link" href="https://github.com/monabbous/slidebox" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
-  </header>
   <main class="page">
     <div class="intro">
-      <div class="eyebrow">CSS / COMPONENT TOOL</div>
-      <h1>Slidebox Lab</h1>
-      <p>Try an elastic native checkbox. Tune the feel, then add it to your project.</p>
+      <h1>Slidebox</h1>
+      <div class="intro-bottom"><p>Elastic native checkboxes and radio groups.<br>Adjust the geometry, colors, and timing below.</p><a class="intro-link" href="#checkboxPresets">View examples <i class="fa-solid fa-arrow-down" aria-hidden="true"></i></a></div>
     </div>
-    <section class="card checkbox-presets" id="checkboxPresets" data-scheme="dark" aria-labelledby="checkboxPresetsTitle">
-      <div class="card-header"><div><div class="eyebrow">EXAMPLES / SAME COMPONENT, DIFFERENT GEOMETRY</div><h2 id="checkboxPresetsTitle">Checkboxes</h2></div></div>
-      <div class="presets-scroll">
-        <table class="presets-table">
-          <caption>Toggle each example to compare. These geometry presets stay fixed while you adjust the playground.</caption>
-          <thead><tr><th scope="col">Name</th><th scope="col">nabous.dev</th><th scope="col">Browser colors</th><th scope="col">Width</th><th scope="col">Spacing</th><th scope="col">Deform</th></tr></thead>
-          <tbody>
-            <tr style="--preset-width: 2; --preset-spacing: .33; --preset-deform: .1">
-              <th scope="row"><label for="checkboxDefault">Default</label></th>
-              <td class="preset-brand"><input class="slidebox" id="checkboxDefault" type="checkbox" aria-label="Default, nabous.dev" checked></td>
-              <td class="preset-browser"><input class="slidebox" type="checkbox" aria-label="Default, browser colors" checked></td><td>×2</td><td>0.33</td><td>0.1</td>
-            </tr>
-            <tr style="--preset-width: 2.5; --preset-spacing: -.33; --preset-deform: .1">
-              <th scope="row"><label for="checkboxMaterial">Material UI</label></th>
-              <td class="preset-brand"><input class="slidebox" id="checkboxMaterial" type="checkbox" aria-label="Material UI, nabous.dev" checked></td>
-              <td class="preset-browser"><input class="slidebox" type="checkbox" aria-label="Material UI, browser colors" checked></td><td>×2.5</td><td>−0.33</td><td>0.1</td>
-            </tr>
-            <tr style="--preset-width: 1.6; --preset-spacing: .03; --preset-deform: 0">
-              <th scope="row"><label for="checkboxIos">Old iOS</label></th>
-              <td class="preset-brand"><input class="slidebox" id="checkboxIos" type="checkbox" aria-label="Old iOS, nabous.dev" checked></td>
-              <td class="preset-browser"><input class="slidebox" type="checkbox" aria-label="Old iOS, browser colors" checked></td><td>×1.6</td><td>0.03</td><td>0</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="note presets-note">Compare nabous.dev glass with browser/system colors. Both columns keep their own palette; motion follows the playground settings. Material UI and Old iOS are geometry presets, not exact replicas or framework integrations.</p>
-    </section>
-    <div class="workspace">
-      <section class="card">
-        <div class="card-header"><div><div class="eyebrow">01 / PREVIEW</div><h2>Elastic switch</h2></div><button class="button" id="reset">Reset</button></div>
-        <div class="preview" id="preview" data-scheme="dark">
-          <input type="checkbox" class="slidebox" id="switch" checked aria-label="Slidebox preview">
-          <small id="switchState">Checked</small>
-          <fieldset class="controls-fieldset" id="groupDemo">
-            <legend>Grouped radio buttons</legend>
-            <div class="slidebox-group" id="groupPreview">
-              <label><input id="viewDay" type="radio" name="previewView" value="day"><span>Day</span></label>
-              <label><input id="viewWeek" type="radio" name="previewView" value="week" checked><span>Week</span></label>
-              <label><input id="viewMonth" type="radio" name="previewView" value="month"><span>Month</span></label>
-            </div>
-            <small>Selected: <output id="groupValue" for="viewDay viewWeek viewMonth">week</output></small>
-          </fieldset>
-          <div class="native-grid">
-            <label>Native range <input type="range" id="nativeRange" value="65" aria-label="Native range"></label>
-            <label>Checkbox <input type="checkbox" id="nativeCheck" checked aria-label="Native checkbox"></label>
-            <label>Radio <input type="radio" id="nativeRadio" checked aria-label="Native radio"></label>
+    <div class="studio-workbench">
+    <section class="card studio" aria-labelledby="studioTitle">
+      <div class="studio-bar"><h2 id="studioTitle">Elastic switch</h2><span class="studio-status"><span aria-hidden="true"></span> Native checkbox · CSS motion</span></div>
+      <div class="studio-layout">
+        <div class="preview studio-canvas" id="preview" data-scheme="dark">
+          <div class="studio-stage">
+            <span class="canvas-caption" aria-hidden="true">PREVIEW / LOGICAL MARGINS</span>
+            <div class="stage-crosshair" aria-hidden="true"></div>
+            <div class="studio-instrument"><input type="checkbox" class="slidebox" id="switch" checked aria-label="Slidebox preview" aria-describedby="studioHint"><label id="studioHint" for="switch">Click the checkbox or press Space</label><small id="switchState" aria-live="polite">Checked</small></div>
+            <span class="canvas-axis" aria-hidden="true">x → checked state</span>
           </div>
         </div>
-        <div class="action-row">
-          <div class="seg"><button type="button" class="button active" data-scheme="dark">Dark</button><button type="button" class="button" data-scheme="light">Light</button></div>
-          <button type="button" class="button" id="replay"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 1 3 6.7M3 18v-6h6"/></svg> Replay</button>
-        </div>
+        <aside class="studio-notes" aria-label="Live experiment settings">
+          <div><div class="eyebrow">CSS SETTINGS / EXCERPT</div><pre><code id="studioCode">--slidebox-width: 2;
+--slidebox-spacing: 0.33;
+--slidebox-deform: 0.1;
+--slidebox-duration: 200ms;</code></pre></div>
+          <div class="studio-preset"><button class="button primary" type="button" id="elasticPreset"><i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i> Elastic preset</button><p class="note">Applies the geometry and easing used in the article’s demo.</p></div>
+        </aside>
+      </div>
+      <div class="action-row studio-actions">
+        <div class="seg"><button type="button" class="button active" data-scheme="dark">Dark</button><button type="button" class="button" data-scheme="light">Light</button></div>
+        <button type="button" class="button" id="replay"><i class="fa-solid fa-rotate-right" aria-hidden="true"></i> Replay</button>
+      </div>
+    </section>
+    <div class="workspace" id="instruments">
+      <section class="card">
+        <div class="card-header"><div><div class="eyebrow">CONTROLS / GEOMETRY</div><h2>Shape &amp; movement</h2></div><button class="button" id="reset"><i class="fa-solid fa-arrow-rotate-left" aria-hidden="true"></i> Reset</button></div>
         <div class="section-pad">
           <div class="eyebrow">02 / GEOMETRY</div>
           <div class="setting"><label for="width">Track width <output id="widthValue"></output></label><input id="width" type="range" min="1.5" max="5" step=".1"></div>
@@ -131,11 +101,59 @@
             <circle id="graphDot" cx="24" cy="135" r="5" fill="#fff"/>
             <text x="24" y="172">0</text><text x="317" y="172">1</text>
           </svg>
-          <div class="action-row"><span class="code-name" id="easeName">easeInOutSine</span><button type="button" class="button" id="play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z"/></svg> Play easing</button></div>
+          <div class="action-row"><span class="code-name" id="easeName">easeInOutSine</span><button type="button" class="button" id="play"><i class="fa-solid fa-play" aria-hidden="true"></i> Play easing</button></div>
           <p class="note">Elastic and Bounce use sampled CSS linear() curves to retain the overshoot.</p>
         </div>
       </section>
     </div>
+    </div>
+    <div class="chapter-heading"><div class="eyebrow">EXAMPLES</div><p>Fixed geometry presets</p></div>
+    <section class="card checkbox-presets" id="checkboxPresets" data-scheme="dark" aria-labelledby="checkboxPresetsTitle">
+      <div class="card-header"><div><div class="eyebrow">CHECKBOXES / COLOR COMPARISON</div><h2 id="checkboxPresetsTitle">Checkboxes</h2></div></div>
+      <div class="presets-scroll">
+        <table class="presets-table">
+          <caption>Toggle each example to compare. These geometry presets stay fixed while you adjust the playground.</caption>
+          <thead><tr><th scope="col">Name</th><th scope="col">nabous.dev</th><th scope="col">Browser colors</th><th scope="col">Width</th><th scope="col">Spacing</th><th scope="col">Deform</th></tr></thead>
+          <tbody>
+            <tr style="--preset-width: 2; --preset-spacing: .33; --preset-deform: .1">
+              <th scope="row"><label for="checkboxDefault">Default</label></th>
+              <td class="preset-brand"><input class="slidebox" id="checkboxDefault" type="checkbox" aria-label="Default, nabous.dev" checked></td>
+              <td class="preset-browser"><input class="slidebox" type="checkbox" aria-label="Default, browser colors" checked></td><td>×2</td><td>0.33</td><td>0.1</td>
+            </tr>
+            <tr style="--preset-width: 2.5; --preset-spacing: -.33; --preset-deform: .1">
+              <th scope="row"><label for="checkboxMaterial">Material UI</label></th>
+              <td class="preset-brand"><input class="slidebox" id="checkboxMaterial" type="checkbox" aria-label="Material UI, nabous.dev" checked></td>
+              <td class="preset-browser"><input class="slidebox" type="checkbox" aria-label="Material UI, browser colors" checked></td><td>×2.5</td><td>−0.33</td><td>0.1</td>
+            </tr>
+            <tr style="--preset-width: 1.6; --preset-spacing: .03; --preset-deform: 0">
+              <th scope="row"><label for="checkboxIos">Old iOS</label></th>
+              <td class="preset-brand"><input class="slidebox" id="checkboxIos" type="checkbox" aria-label="Old iOS, nabous.dev" checked></td>
+              <td class="preset-browser"><input class="slidebox" type="checkbox" aria-label="Old iOS, browser colors" checked></td><td>×1.6</td><td>0.03</td><td>0</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note presets-note">Compare nabous.dev glass with browser/system colors. Both columns keep their own palette; motion follows the playground settings. Material UI and Old iOS are geometry presets, not exact replicas or framework integrations.</p>
+    </section>
+    <section class="card range-card" aria-labelledby="nativeReferencesTitle">
+      <div class="card-header"><div><div class="eyebrow">NATIVE INPUTS</div><h2 id="nativeReferencesTitle">Radio group &amp; browser controls</h2></div></div>
+      <div class="preview studio-comparisons" id="nativeReferences" data-scheme="dark">
+        <fieldset class="controls-fieldset" id="groupDemo">
+          <legend>Grouped radio buttons</legend>
+          <div class="slidebox-group" id="groupPreview">
+            <label><input id="viewDay" type="radio" name="previewView" value="day"><span>Day</span></label>
+            <label><input id="viewWeek" type="radio" name="previewView" value="week" checked><span>Week</span></label>
+            <label><input id="viewMonth" type="radio" name="previewView" value="month"><span>Month</span></label>
+          </div>
+          <small>Selected: <output id="groupValue" for="viewDay viewWeek viewMonth">week</output></small>
+        </fieldset>
+        <div class="native-grid">
+          <label>Native range <input type="range" id="nativeRange" value="65" aria-label="Native range"></label>
+          <label>Checkbox <input type="checkbox" id="nativeCheck" checked aria-label="Native checkbox"></label>
+          <label>Radio <input type="radio" id="nativeRadio" checked aria-label="Native radio"></label>
+        </div>
+      </div>
+    </section>
     <section class="card range-card" id="rangeSection" aria-labelledby="rangeTitle">
       <div class="card-header"><div><div class="eyebrow">06 / RANGE</div><h2 id="rangeTitle">Range slider</h2></div><span class="experiment-label">Experimental</span></div>
       <div class="section-pad">
@@ -159,14 +177,13 @@
       </div>
     </section>
     <section class="card export-card">
-      <div class="card-header"><div><div class="eyebrow">07 / USE SLIDEBOX</div><h2>Add it to your project</h2></div><button id="copy" type="button" class="button primary"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="13" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg> <span>Copy install command</span></button></div>
+      <div class="card-header"><div><div class="eyebrow">INSTALL</div><h2>Add it to your project</h2></div><button id="copy" type="button" class="button primary"><i class="fa-regular fa-copy" aria-hidden="true"></i> <span>Copy install command</span></button></div>
       <div class="section-pad">
         <pre><code id="installCommand">npm install @monabbous/slidebox</code></pre>
         <p class="note">Use plain CSS, Sass or Less mixins, or the Tailwind v3/v4 plugin. Set your defaults and override individual controls.</p>
-        <a class="button" href="https://github.com/monabbous/slidebox#readme" target="_blank" rel="noopener noreferrer">Read the usage guide ↗</a>
+        <a class="button" href="https://github.com/monabbous/slidebox#readme" target="_blank" rel="noopener noreferrer">Read the usage guide <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
       </div>
     </section>
   </main>
-  <footer><a href="https://nabous.dev" target="_blank" rel="noopener noreferrer">nabous.dev</a></footer>
 </body>
 </html>

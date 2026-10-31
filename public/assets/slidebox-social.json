@@ -1,0 +1,11 @@
+{
+  "source": "slidebox-cover.webp",
+  "sourceSha256": "7cf49d7fe6eba263caa8e3207232c54d07637ea2334cb9bd6139ff25c9a81735",
+  "frame": "first frame",
+  "canvas": [
+    1920,
+    1080
+  ],
+  "output": "slidebox-social.jpg",
+  "purpose": "Static Open Graph and Twitter preview; no upscaling"
+}

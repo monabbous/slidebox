@@ -10,4 +10,5 @@ Read [`skills/slidebox/SKILL.md`](skills/slidebox/SKILL.md) first for integratio
 - Run `npm run build` and `npm test` after relevant source changes. Use `npm run test:browser` for interaction/layout changes; install the development dependencies and Chromium first if needed.
 - Read `benchmarks/README.md` before touching measurements. Preserve raw pilot results and their method; do not treat presentation edits as new measurements. Keep generated `benchmark-results/` out of Git and npm.
 - `public/blog.md` and `public/lab/` are fetched at request time by nabous.dev. Website rendering/deployment code lives in the separate `monabbous/nabous.dev` repository.
+- The host owns its header, fonts, icons, social metadata, and glass/studio theme. Keep the standalone playground usable without that shell; do not copy site chrome back into this repository.
 - Do not commit private editorial notes, browser profiles, credentials, or original personal recordings. Do not release, publish, or deploy unless authorized.

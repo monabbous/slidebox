@@ -111,7 +111,7 @@ function applyPreview() {
   }
   const controlsPreview = $('controlsPreview');
   controlsPreview.style.setProperty('--slidebox-spacing', String(state.spacing));
-  for (const container of [controlsPreview, $('preview'), $('checkboxPresets')]) {
+  for (const container of [controlsPreview, $('preview'), $('nativeReferences'), $('checkboxPresets')].filter(Boolean)) {
     container.style.setProperty('--slidebox-duration', '0s');
     for (const [name, value] of Object.entries({
       track, border, off, on, deform: state.deform, easing: cssTiming()
@@ -123,6 +123,7 @@ function applyPreview() {
       switchInput.style.setProperty('--_duration', state.duration + 'ms');
       controlsPreview.style.setProperty('--slidebox-duration', state.duration + 'ms');
       $('preview').style.setProperty('--slidebox-duration', state.duration + 'ms');
+      $('nativeReferences')?.style.setProperty('--slidebox-duration', state.duration + 'ms');
       $('checkboxPresets').style.setProperty('--slidebox-duration', state.duration + 'ms');
     });
   });
@@ -160,6 +161,13 @@ function render() {
     custom:'Native controls and Slidebox use the selected colors.'
   };
   $('paletteNote').textContent=notes[state.palette];
+  if ($('studioCode')) $('studioCode').textContent = [
+    `--slidebox-width: ${state.width};`,
+    `--slidebox-spacing: ${state.spacing};`,
+    `--slidebox-deform: ${state.deform};`,
+    `--slidebox-duration: ${state.duration}ms;`,
+    `/* ${state.family === 'Linear' ? 'linear' : 'ease' + state.direction + state.family} */`
+  ].join('\n');
   plotCurve();
   applyPreview();
 }
@@ -183,6 +191,7 @@ document.querySelectorAll('button[data-scheme]').forEach(button => {
     $('preview').dataset.scheme=button.dataset.scheme;
     $('controlsPreview').dataset.scheme=button.dataset.scheme;
     $('checkboxPresets').dataset.scheme=button.dataset.scheme;
+    if ($('nativeReferences')) $('nativeReferences').dataset.scheme=button.dataset.scheme;
     document.querySelectorAll('button[data-scheme]').forEach(b =>
       b.classList.toggle('active',b===button));
   });
@@ -192,6 +201,11 @@ switchInput.addEventListener('change', () => {
 });
 $('replay').addEventListener('click', () => switchInput.click());
 $('reset').addEventListener('click', () => {state=defaults();render();});
+$('elasticPreset')?.addEventListener('click', () => {
+  state = { ...state, width: 2.5, spacing: -.27, deform: .2, duration: 350, family: 'Elastic', direction: 'InOut' };
+  render();
+  switchInput.focus({ preventScroll: true });
+});
 $('play').addEventListener('click', () => {
   cancelAnimationFrame(animationFrame);
   switchInput.click();

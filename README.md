@@ -492,6 +492,14 @@ It triggers 500 and 2,000 visible controls together, comparing margins, delayed 
 
 ## Development
 
+The standalone playground supplies its controls, examples, and a neutral baseline stylesheet. When hosted at nabous.dev, the website adds its header, fonts, Font Awesome icons, social metadata, glass theme, and sticky studio layout on the server. Those site styles live in `monabbous/nabous.dev`, not the component package.
+
+The browser suite checks standalone behavior by default. For the additional host-theme checks, run the preset suite against a running hosted lab:
+
+```sh
+SLIDEBOX_HOSTED_LAB_URL=https://nabous.dev/lab/slidebox/ npm run test:browser -- tests/browser/presets.spec.mjs
+```
+
 ```sh
 npm ci
 npm run build

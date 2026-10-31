@@ -1,7 +1,26 @@
 import { test, expect } from "@playwright/test";
+const hosted = Boolean(process.env.SLIDEBOX_HOSTED_LAB_URL);
 
-test("checkbox examples appear above the playground with the requested fixed geometry", async ({ page }) => {
-  await page.goto("/");
+test("hosted studio keeps the canvas beside the controls and stacks on mobile", async ({ page }) => {
+  test.skip(!hosted, "Sticky layout is supplied by the website shell.");
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto("./");
+  await expect(page.locator(".studio")).toHaveCSS("position", "sticky");
+  const stage = await page.locator(".studio").boundingBox();
+  const controls = await page.locator(".workspace").boundingBox();
+  expect(controls.x).toBeGreaterThan(stage.x + stage.width);
+  await page.evaluate(() => scrollTo(0, 650));
+  expect((await page.locator(".studio").boundingBox()).y).toBeGreaterThanOrEqual(23);
+  expect((await page.locator(".studio").boundingBox()).y).toBeLessThanOrEqual(25);
+  for (const width of [320, 375, 768]) {
+    await page.setViewportSize({ width, height: 900 });
+    await expect(page.locator(".studio")).toHaveCSS("position", "static");
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+  }
+});
+
+test("checkbox examples appear below the instruments with the requested fixed geometry", async ({ page }) => {
+  await page.goto("./");
   const examples = page.locator("#checkboxPresets");
   await expect(examples.getByRole("heading", { name: "Checkboxes", exact: true })).toBeVisible();
   const presets = [
@@ -33,18 +52,18 @@ test("checkbox examples appear above the playground with the requested fixed geo
       expect(await geometry(examples.getByRole("checkbox", { name: `${name}, ${palette}`, exact: true }))).toEqual(expected);
     }
   }
-  expect((await examples.boundingBox()).y).toBeLessThan((await page.locator(".workspace").boundingBox()).y);
+  expect((await examples.boundingBox()).y).toBeGreaterThan((await page.locator(".workspace").boundingBox()).y);
   await page.getByRole("button", { name: "Light", exact: true }).click();
   await expect(examples).toHaveAttribute("data-scheme", "light");
 });
 
 test("example colors remain side by side independently of the playground palette", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("./");
   const brand = page.getByRole("checkbox", { name: "Default, nabous.dev", exact: true });
   const browser = page.getByRole("checkbox", { name: "Default, browser colors", exact: true });
   for (const palette of ["brand", "native", "system", "custom"]) {
     await page.locator("#palette").selectOption(palette);
-    await expect(brand).toHaveCSS("backdrop-filter", "blur(40px)");
+    await expect(brand).toHaveCSS("backdrop-filter", hosted ? "blur(40px)" : "none");
     await expect(browser).toHaveCSS("backdrop-filter", "none");
     await expect(browser).toHaveCSS("background-image", "none");
     expect(await brand.evaluate(el => getComputedStyle(el).getPropertyValue("--_on").trim())).toBe("#00b2b2");
@@ -53,19 +72,21 @@ test("example colors remain side by side independently of the playground palette
 
 test("preset table scrolls on narrow screens instead of overflowing the page", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
-  await page.goto("/");
+  await page.goto("./");
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(375);
   await expect(page.locator(".presets-scroll")).toHaveCSS("overflow-x", "auto");
 });
 
-test("nabous.dev glass is the default and other palettes keep their original paint", async ({ page }) => {
-  await page.goto("/");
+test("palette state works standalone and uses host glass when supplied", async ({ page }) => {
+  await page.goto("./");
   await expect(page.locator("#palette")).toHaveValue("brand");
   await expect(page.locator("body")).toHaveClass(/brand-glass/);
-  await expect(page.locator("#switch")).toHaveCSS("backdrop-filter", "blur(40px)");
+  await expect(page.locator("#switch")).toHaveCSS("backdrop-filter", hosted ? "blur(40px)" : "none");
   await expect(page.locator("#switch")).toHaveCSS("box-shadow", "none");
-  expect(await page.locator("#switch").evaluate(el => getComputedStyle(el, "::after").backgroundImage)).toContain("radial-gradient");
-  expect(await page.locator("#switch").evaluate(el => getComputedStyle(el, "::after").backgroundImage)).toContain("linear-gradient(rgb(0, 178, 178), rgb(0, 178, 178))");
+  if (hosted) {
+    expect(await page.locator("#switch").evaluate(el => getComputedStyle(el, "::after").backgroundImage)).toContain("radial-gradient");
+    expect(await page.locator("#switch").evaluate(el => getComputedStyle(el, "::after").backgroundImage)).toContain("linear-gradient(rgb(0, 178, 178), rgb(0, 178, 178))");
+  }
   await page.locator("#palette").selectOption("native");
   await expect(page.locator("body")).not.toHaveClass(/brand-glass/);
   await expect(page.locator("#switch")).toHaveCSS("background-image", "none");
@@ -74,7 +95,8 @@ test("nabous.dev glass is the default and other palettes keep their original pai
 });
 
 test("cards use the nabous.dev About border recipe", async ({ page }) => {
-  await page.goto("/");
+  test.skip(!hosted, "Website styling is owned and supplied by nabous.dev, not the standalone project.");
+  await page.goto("./");
   const card = page.locator("#checkboxPresets");
   await expect(card).toHaveCSS("border-top-width", "2px");
   const border = await card.evaluate(el => {
@@ -88,7 +110,8 @@ test("cards use the nabous.dev About border recipe", async ({ page }) => {
 });
 
 test("checkbox thumbs paint above the glowing track border", async ({ page }) => {
-  await page.goto("/");
+  test.skip(!hosted, "Track lighting is supplied by the nabous.dev host theme.");
+  await page.goto("./");
   for (const selector of ["#switch", "#checkboxDefault", "#checkboxMaterial", "#checkboxIos"]) {
     const layers = await page.locator(selector).evaluate(el => ({
       isolation: getComputedStyle(el).isolation,
@@ -100,14 +123,16 @@ test("checkbox thumbs paint above the glowing track border", async ({ page }) =>
   }
 });
 
-test("range has its own section below the playground and the page keeps its bottom underglow", async ({ page }) => {
-  await page.goto("/");
+test("range has its own section below the playground with optional host lighting", async ({ page }) => {
+  await page.goto("./");
   const workspace = await page.locator(".workspace").boundingBox();
   const range = page.locator("#rangeSection");
   const box = await range.boundingBox();
   expect(box.y).toBeGreaterThanOrEqual(workspace.y + workspace.height);
   await expect(range.getByRole("heading", { name: "Range slider", exact: true })).toBeVisible();
   await expect(range.getByText("Experimental", { exact: true })).toBeVisible();
-  expect(await page.locator("body").evaluate(el => getComputedStyle(el).backgroundImage)).toContain("at 50% 100%");
-  expect(await page.locator("body").evaluate(el => getComputedStyle(el).backgroundAttachment)).toContain("fixed");
+  if (hosted) {
+    expect(await page.locator("body").evaluate(el => getComputedStyle(el).backgroundImage)).toContain("at 50% 100%");
+    expect(await page.locator("body").evaluate(el => getComputedStyle(el).backgroundAttachment)).toContain("fixed");
+  }
 });

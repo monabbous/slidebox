@@ -3,6 +3,9 @@ title: "Coming back to my six-year-old CSS checkbox"
 published: true
 description: "Revisiting the margin trick behind my elastic CSS checkbox, native controls, and what the benchmarks actually show."
 cover_image: assets/slidebox-cover.webp
+social_image: assets/slidebox-social.jpg
+social_image_width: 1920
+social_image_height: 1080
 canonical_url: https://nabous.dev/blog/slidebox/
 tags: css, webdev, showdev, opensource
 ---
