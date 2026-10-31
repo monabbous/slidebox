@@ -1,6 +1,8 @@
 
 # dependencies
 /node_modules
+/test-results/
+/playwright-report/
 
 # profiling files
 chrome-profiler-events*.json

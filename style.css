@@ -7,10 +7,19 @@
   --line: #467b96;
   --text: #e8f6fa;
   --muted: #a1c7d8;
+  /* Viewport-aligned light, shared between surfaces as on nabous.dev. */
+  --glass-bg: radial-gradient(circle at var(--mouse-x, -100vmax) var(--mouse-y, -100vmax), color-mix(in srgb, var(--accent) 9%, transparent), transparent 300px) 0 0 / 100vw 100vh fixed no-repeat;
+  --glass-border: radial-gradient(circle at var(--mouse-x, -100vmax) var(--mouse-y, -100vmax), color-mix(in srgb, var(--accent) 55%, transparent), transparent 160px) 0 0 / 100vw 100vh fixed no-repeat border-box;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 * { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--text); font-size: 14px; }
+body {
+  margin: 0;
+  background: radial-gradient(ellipse at 10% 5%, #087d8659, transparent 55%), radial-gradient(ellipse at 95% 65%, #2a5b7c99, transparent 60%), var(--bg);
+  background-attachment: fixed;
+  color: var(--text);
+  font-size: 14px;
+}
 button, input, select { font: inherit; }
 button { cursor: pointer; }
 button:focus-visible, select:focus-visible, input:not(.slidebox):focus-visible { outline: 2px solid #4de3dc; outline-offset: 2px; }
@@ -52,6 +61,17 @@ a { color: inherit; text-decoration: none; }
 .field-label, .easing-form label { font-size: 12px; color: var(--muted); }
 select { background: #195675; color: var(--text); border: 1px solid #5c90a7; border-radius: 7px; padding: 9px 12px; width: 100%; margin-top: 7px; }
 .note { font-size: 11px; line-height: 1.65; color: var(--muted); margin: 10px 0; }
+.drag-option { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; font-size: 12px; cursor: pointer; }
+.drag-option input { accent-color: var(--accent); }
+.drag-option .slidebox {
+  --_track: #2a5b7c;
+  --_border: #5289a6;
+  --_off: #e8f6fa;
+  --_on: #00b2b2;
+  font-size: 22px;
+  flex: none;
+  margin: 0;
+}
 .color-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; margin: 12px 0; }
 .color-grid label { display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--line); border-radius: 7px; padding: 7px 10px; font-size: 11px; }
 .color-grid input { border: 0; padding: 0; width: 36px; height: 27px; background: transparent; cursor: pointer; }
@@ -65,6 +85,59 @@ select { background: #195675; color: var(--text); border: 1px solid #5c90a7; bor
 .export-tabs { margin-bottom: 12px; flex-wrap: wrap; }
 pre { font: 11px/1.65 ui-monospace, SFMono-Regular, monospace; white-space: pre; overflow: auto; max-height: 300px; padding: 15px; border-radius: 7px; border: 1px solid var(--line); background: #082b40; color: #b8f1eb; }
 footer { text-align: center; color: var(--muted); font-size: 11px; padding: 24px; }
+
+/* Glass surfaces: https://dev.to/nabous/weekend-hobby-playing-with-light-glass-and-css-1h2 */
+.topbar, .card, .button, .seg button, .color-grid label {
+  position: relative;
+  isolation: isolate;
+  background: var(--glass-bg);
+  background-color: color-mix(in srgb, var(--bg) 40%, transparent);
+  border-color: color-mix(in srgb, var(--line) 55%, transparent);
+  -webkit-backdrop-filter: blur(40px);
+  backdrop-filter: blur(40px);
+}
+.topbar::before, .card::before, .button::before, .seg button::before, .color-grid label::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: 2;
+  border-radius: inherit;
+  border: 1px solid transparent;
+  pointer-events: none;
+  background: var(--glass-border);
+  -webkit-mask: linear-gradient(white, white) padding-box, linear-gradient(white, white);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(white, white) padding-box, linear-gradient(white, white);
+  mask-composite: exclude;
+}
+.topbar::before { border-width: 0 0 1px; }
+.button.active, .seg button.active, .button.primary {
+  background: var(--glass-bg);
+  background-color: #087d8680;
+  border-color: #1fcec580;
+}
+.button:hover, .seg button:hover { border-color: #31e1d8; }
+.card-header, .section-pad.divider { border-color: #467b9666; }
+select, pre, #graph {
+  background-color: #082b4059;
+  border-color: #467b9680;
+}
+select { background-image: none; }
+select option { background: var(--bg); color: var(--text); }
+
+@supports not (backdrop-filter: blur(1px)) {
+  .topbar, .card, .button, .seg button, .color-grid label { background-color: #104562; }
+}
+@media (forced-colors: active) {
+  .topbar, .card, .button, .seg button, .color-grid label {
+    background: Canvas;
+    border-color: ButtonBorder;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .topbar::before, .card::before, .button::before, .seg button::before, .color-grid label::before { display: none; }
+  .drag-option .slidebox { --_track: Field; --_border: ButtonBorder; --_off: FieldText; --_on: Highlight; }
+}
 /* Slidebox component: begin */
 .slidebox {
   --_container-width-ratio: 2;
@@ -118,6 +191,11 @@ footer { text-align: center; color: var(--muted); font-size: 11px; padding: 24px
 .slidebox:not(:checked):active::after { --_end: calc(1 - var(--_deform)); }
 .slidebox:checked:active::after { --_start: calc(1 - var(--_deform)); }
 .slidebox:disabled { cursor: not-allowed; opacity: .5; }
+.slidebox[data-slidebox-dragging]::after {
+  margin-inline-start: calc((1em * var(--_container-width-ratio) - 1em) * max(0, var(--slidebox-drag-progress) - max(0, var(--slidebox-drag-stretch, 0))) + var(--_thumb-spacing-ratio) * .5em);
+  margin-inline-end: calc((1em * var(--_container-width-ratio) - 1em) * max(0, 1 - var(--slidebox-drag-progress) - max(0, -1 * var(--slidebox-drag-stretch, 0))) + var(--_thumb-spacing-ratio) * .5em);
+  transition: none;
+}
 @media (forced-colors: active) {
   .slidebox { --_track: Field; --_border: ButtonBorder; --_off: FieldText; --_on: Highlight; }
 }

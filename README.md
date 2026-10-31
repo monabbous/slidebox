@@ -1,6 +1,6 @@
 # Slidebox
 
-An elastic CSS switch built on a native checkbox. No JavaScript, extra elements, or runtime dependencies required.
+An elastic CSS switch built on a native checkbox. No JavaScript, extra elements, or runtime dependencies required. Add optional [experimental pointer dragging](#experimental-pointer-dragging) when you want the thumb to follow your pointer.
 
 ![Slidebox switch animation](assets/slidebox-demo.webp)
 
@@ -199,6 +199,79 @@ theme: {
 
 CSS custom properties work with every integration. Avoid setting a control both through plugin/mixin defaults and an inherited variable: a value assigned directly to the switch wins over inheritance. Use a utility or a selector targeting that switch to override it.
 
+## Experimental pointer dragging
+
+**Opt-in and experimental.** The switch works without JavaScript. This separate, dependency-free ES module adds mouse, touch, and pen dragging to a checkbox styled with Slidebox. It never initializes controls automatically. The API and gesture feel may change in future releases.
+
+Keep using your chosen CSS, Sass, Less, or Tailwind integration, then attach the enhancement **after the input is mounted**:
+
+```html
+<label>
+  <input id="notifications" class="slidebox" type="checkbox" role="switch" name="notifications">
+  Enable notifications
+</label>
+```
+
+```js
+import "@monabbous/slidebox/dist/css/slidebox.css"; // Omit for Sass, Less, or Tailwind.
+import { enhanceSlidebox } from "@monabbous/slidebox/experimental/drag.mjs";
+
+const input = document.querySelector("#notifications");
+const disableDragging = enhanceSlidebox(input, { threshold: 5 });
+
+// Before removing the input, or when disabling this experimental feature:
+// disableDragging();
+```
+
+The JavaScript and drag styles must come from the **same package version**. Sass and Less mixins also include the necessary styles, so your checkbox can use a custom class instead of `.slidebox`.
+
+### Behavior and configuration
+
+- `threshold` is the horizontal movement, in CSS pixels, required to begin dragging. Default: `5`. Must be a finite, non-negative number.
+- The thumb follows the pointer; its trailing edge stretches and relaxes using `--slidebox-deform` and `--slidebox-duration`. Set `--slidebox-deform: 0` to disable stretching. Reduced-motion preferences also disable drag stretching.
+- Releasing at or beyond the midpoint checks the input; releasing before it unchecks it. A changed state emits one bubbling `input` event followed by one bubbling `change` event. Drag movement alone does not emit either event.
+- Normal clicks, label clicks, Space-key activation, form values, and form resets remain native. A completed drag suppresses its following click to prevent a second toggle. No synthetic `click` is emitted for a drag.
+- RTL reverses the gesture direction. Disabled inputs, including those inside a disabled fieldset, cannot be dragged.
+- Vertical touch gestures remain available for scrolling, and pinch zoom remains enabled. Cancellation or lost pointer capture abandons the gesture without committing it.
+- Call the returned cleanup function to stop dragging and restore temporary styles. Cleanup can be called repeatedly. Disabling it during a drag cancels that drag.
+- Repeated calls for the same input return its existing cleanup function. To change `threshold`, clean up and initialize again.
+
+Use normal checkbox bindings in your framework. In React, for example, initialize from a ref and return cleanup from an effect:
+
+```jsx
+import { useEffect, useRef, useState } from "react";
+import { enhanceSlidebox } from "@monabbous/slidebox/experimental/drag.mjs";
+
+function Notifications() {
+  const input = useRef(null);
+  const [enabled, setEnabled] = useState(false);
+
+  useEffect(() => {
+    const element = input.current;
+    // Native listeners also receive the enhancement's programmatic change event.
+    const sync = () => setEnabled(element.checked);
+    element.addEventListener("change", sync);
+    const destroy = enhanceSlidebox(element);
+    return () => {
+      destroy();
+      element.removeEventListener("change", sync);
+    };
+  }, []);
+
+  return (
+    <label>
+      <input ref={input} className="slidebox" type="checkbox" role="switch"
+        checked={enabled} onChange={event => setEnabled(event.target.checked)} />
+      Enable notifications
+    </label>
+  );
+}
+```
+
+TypeScript declarations ship alongside `drag.mjs`. Importing the module is safe during server rendering, but calling `enhanceSlidebox()` requires a mounted checkbox in a browser supporting Pointer Events and pointer capture. Use a sufficiently wide horizontal Slidebox (width ratio greater than 1). Test touch, scrolling, and your framework's controlled-input behavior before adopting it in production; vertical switches are not supported.
+
+Try it in the playground under **03 / Experimental → Enable pointer dragging**. Reset turns the option off. The playground's glass lighting is separate and is not shipped as part of the drag module.
+
 ## Development
 
 ```sh
@@ -208,7 +281,16 @@ npm test
 npm pack --dry-run
 ```
 
-The build extracts component rules from `style.css` and generates CSS, Sass, Less, and Tailwind rules. Tests compile both mixins and the plugin with Tailwind v3 and v4. The lab itself is plain HTML/CSS/JavaScript; serve the repository with `python3 -m http.server 8080` and open `http://localhost:8080`.
+The build extracts component rules from `style.css` and generates CSS, Sass, Less, and Tailwind rules. Tests compile both mixins and the plugin with Tailwind v3 and v4, and check the drag module's lifecycle.
+
+For real-browser drag and playground checks:
+
+```sh
+npx playwright install chromium
+npm run test:browser
+```
+
+These run in Chromium; other browsers and devices still need testing. The lab itself is plain HTML/CSS/JavaScript; serve the repository with `python3 -m http.server 8080` and open `http://localhost:8080`.
 
 Releases use the manual [Publish to npm](.github/workflows/publish-npm.yml) workflow on `main`, with npm trusted publishing through the `production` environment. Choose a version bump for a new release, or enable `publish_existing_version` to retry the current version without a bump or new tag.
 

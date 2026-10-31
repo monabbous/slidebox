@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Slidebox drag test</title>
+<link rel="stylesheet" href="/dist/css/slidebox.css">
+<style>
+  body { padding: 50px; }
+  .slidebox { --slidebox-size: 50px; --slidebox-duration: 200ms; }
+</style>
+<form id="form">
+  <label><input class="slidebox" id="switch" type="checkbox" name="enabled"> Enable notifications</label>
+  <button type="reset">Reset</button>
+</form>
+<script type="module">
+  import { enhanceSlidebox } from "/experimental/drag.mjs";
+  window.events = [];
+  const input = document.getElementById("switch");
+  for (const name of ["input", "change"]) input.addEventListener(name, () => window.events.push(name));
+  window.destroy = enhanceSlidebox(input);
+  window.ready = true;
+</script>
+</html>

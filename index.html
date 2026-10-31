@@ -4,10 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light dark">
-  <meta name="description" content="Design an elastic CSS switch, compare system colors, and export CSS or Tailwind v4.">
+  <meta name="description" content="Try elastic native controls, customize their motion and appearance, and install Slidebox for CSS, Sass, Less, or Tailwind.">
   <title>Slidebox Lab | nabous.dev</title>
   <link rel="stylesheet" href="./style.css">
   <script src="./script.js" defer></script>
+  <script type="module" src="./playground/drag-preview.mjs"></script>
+  <script type="module" src="./playground/glass.mjs"></script>
 </head>
 <body>
   <header class="topbar">
@@ -18,7 +20,7 @@
     <div class="intro">
       <div class="eyebrow">CSS / COMPONENT TOOL</div>
       <h1>Slidebox Lab</h1>
-      <p>Adjust the switch, compare native controls, and copy the result.</p>
+      <p>Try an elastic native checkbox. Tune the feel, then add it to your project.</p>
     </div>
     <div class="workspace">
       <section class="card">
@@ -43,9 +45,16 @@
           <div class="setting"><label for="deform">Press deformation <output id="deformValue"></output></label><input id="deform" type="range" min="0" max="1" step=".01"></div>
           <div class="setting"><label for="duration">Duration <output id="durationValue"></output></label><input id="duration" type="range" min="0" max="2000" step="10"></div>
         </div>
+        <div class="section-pad divider">
+          <div class="eyebrow">03 / EXPERIMENTAL</div>
+          <div class="setting">
+            <label class="drag-option" for="dragEnabled"><input class="slidebox" type="checkbox" role="switch" id="dragEnabled" aria-describedby="dragNote"> Enable pointer dragging</label>
+            <p class="note" id="dragNote">Off by default. Enable to drag the switch thumb; clicks and keyboard controls still work. Dragging is an experimental, opt-in JavaScript enhancement.</p>
+          </div>
+        </div>
       </section>
       <section class="card">
-        <div class="card-header"><div><div class="eyebrow">03 / APPEARANCE</div><h2>Colors</h2></div></div>
+        <div class="card-header"><div><div class="eyebrow">04 / APPEARANCE</div><h2>Colors</h2></div></div>
         <div class="section-pad">
           <label class="field-label" for="palette">Palette</label>
           <select id="palette">
@@ -63,7 +72,7 @@
           </div>
         </div>
         <div class="section-pad divider">
-          <div class="eyebrow">04 / EASING</div><h2>Motion</h2>
+          <div class="eyebrow">05 / EASING</div><h2>Motion</h2>
           <div class="easing-form">
             <label for="family">Family<select id="family">
               <option>Linear</option><option>Sine</option><option>Quad</option><option>Cubic</option>
@@ -89,10 +98,11 @@
       </section>
     </div>
     <section class="card export-card">
-      <div class="card-header"><div><div class="eyebrow">05 / EXPORT</div><h2>Generated code</h2></div><button id="copy" type="button" class="button primary"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="13" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg> <span>Copy code</span></button></div>
+      <div class="card-header"><div><div class="eyebrow">06 / USE SLIDEBOX</div><h2>Add it to your project</h2></div><button id="copy" type="button" class="button primary"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="13" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg> <span>Copy install command</span></button></div>
       <div class="section-pad">
-        <div class="seg export-tabs"><button type="button" data-format="css" class="active">CSS</button><button type="button" data-format="tailwind">Tailwind v4</button><button type="button" data-format="vars">Variables</button></div>
-        <pre><code id="code"></code></pre>
+        <pre><code id="installCommand">npm install @monabbous/slidebox</code></pre>
+        <p class="note">Use plain CSS, Sass or Less mixins, or the Tailwind v3/v4 plugin. Set your defaults and override individual controls.</p>
+        <a class="button" href="https://github.com/monabbous/slidebox#readme" target="_blank" rel="noopener noreferrer">Read the usage guide ↗</a>
       </div>
     </section>
   </main>

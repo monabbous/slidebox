@@ -8,7 +8,6 @@ const defaults = () => ({
   colors: { accent: '#00b2b2', track: '#2a5b7c', border: '#5289a6', off: '#e8f6fa' }
 });
 let state = defaults();
-let format = 'css';
 let restoreFrame1 = 0;
 let restoreFrame2 = 0;
 let animationFrame = 0;
@@ -131,97 +130,6 @@ function plotCurve() {
     ? 'linear' : 'ease'+state.direction+state.family;
 }
 
-function configDeclarations() {
-  const [track,border,off,on] = paletteValues();
-  return [
-    `--_container-width-ratio: ${state.width};`,
-    `--_thumb-spacing-ratio: ${state.spacing};`,
-    `--_deform: ${state.deform};`,
-    `--_duration: ${state.duration}ms;`,
-    `--_easing-function: ${cssTiming()};`,
-    `--_track: ${track};`,
-    `--_border: ${border};`,
-    `--_off: ${off};`,
-    `--_on: ${state.palette === 'native' ? 'light-dark(#0b75ff, SelectedItem)' : state.palette === 'system' ? 'SelectedItem' : on};`
-  ].join('\n  ');
-}
-
-const baseCSS = `appearance: none;
-  -webkit-appearance: none;
-  box-sizing: border-box;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: calc(1em * var(--_container-width-ratio));
-  height: 1em;
-  padding: 0;
-  background: var(--_track);
-  border: 1px solid var(--_border);
-  border-radius: 100vw;
-  cursor: pointer;`;
-const thumbCSS = `--_start: 0;
-  --_end: 1;
-  content: "";
-  display: block;
-  flex: 1 1 auto;
-  min-width: 0;
-  width: calc((1 - var(--_thumb-spacing-ratio)) * 1em);
-  height: calc((1 - var(--_thumb-spacing-ratio)) * 1em);
-  margin-block: calc(var(--_thumb-spacing-ratio) * .5em);
-  margin-inline-start: calc((1em * var(--_container-width-ratio) - 1em) * var(--_start) + var(--_thumb-spacing-ratio) * .5em);
-  margin-inline-end: calc((1em * var(--_container-width-ratio) - 1em) * var(--_end) + var(--_thumb-spacing-ratio) * .5em);
-  border-radius: inherit;
-  background: var(--_off);
-  transition: background var(--_duration) var(--_easing-function), margin-inline-start var(--_duration) var(--_easing-function), margin-inline-end var(--_duration) var(--_easing-function);
-  transition-delay: 0s, 0s, calc(var(--_duration) * var(--_deform));`;
-const checkedCSS = `--_start: 1;
-  --_end: 0;
-  background: var(--_on);
-  transition-delay: 0s, calc(var(--_duration) * var(--_deform)), 0s;`;
-const extraCSS = `
-.slidebox:not(:checked):active::after { --_end: calc(1 - var(--_deform)); }
-.slidebox:checked:active::after { --_start: calc(1 - var(--_deform)); }
-.slidebox:disabled { cursor: not-allowed; opacity: .5; }
-@media (forced-colors: active) {
-  .slidebox { --_track: Field; --_border: ButtonBorder; --_off: FieldText; --_on: Highlight; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .slidebox::after { transition-duration: .01ms; transition-delay: 0ms; }
-}`;
-function generatedCode() {
-  const decl=configDeclarations();
-  const accentUpgrade = ['native', 'system'].includes(state.palette)
-    ? '\n@supports (color: AccentColor) { .slidebox { --_on: AccentColor; } }' : '';
-  if (format === 'vars') return `.slidebox {\n  ${decl}\n}${accentUpgrade}`;
-  if (format === 'tailwind') return `@import "tailwindcss";
-
-@utility slidebox {
-  ${decl}
-  ${baseCSS}
-  &::after {
-    ${thumbCSS}
-  }
-  &:checked::after {
-    ${checkedCSS}
-  }
-  &:not(:checked):active::after { --_end: calc(1 - var(--_deform)); }
-  &:checked:active::after { --_start: calc(1 - var(--_deform)); }
-  &:disabled { cursor: not-allowed; opacity: .5; }
-}
-${accentUpgrade}${extraCSS.slice(extraCSS.indexOf('@media'))}`;
-  return `.slidebox {
-  ${decl}
-  ${baseCSS}
-}
-.slidebox::after {
-  ${thumbCSS}
-}
-.slidebox:checked::after {
-  ${checkedCSS}
-}
-${accentUpgrade}\n${extraCSS}`;
-}
-
 function render() {
   for (const key of ['width','spacing','deform','duration']) {
     $(key).value=state[key];
@@ -242,7 +150,6 @@ function render() {
   $('paletteNote').textContent=notes[state.palette];
   plotCurve();
   applyPreview();
-  $('code').textContent=generatedCode();
 }
 
 for (const key of ['width','spacing','deform','duration']) {
@@ -284,22 +191,14 @@ $('play').addEventListener('click', () => {
   };
   animationFrame=requestAnimationFrame(tick);
 });
-document.querySelectorAll('[data-format]').forEach(button => {
-  button.addEventListener('click', () => {
-    format=button.dataset.format;
-    document.querySelectorAll('[data-format]').forEach(b =>
-      b.classList.toggle('active',b===button));
-    $('code').textContent=generatedCode();
-  });
-});
 $('copy').addEventListener('click', async () => {
   try {
-    await navigator.clipboard.writeText(generatedCode());
+    await navigator.clipboard.writeText($('installCommand').textContent);
     $('copy').querySelector('span').textContent='Copied';
-    setTimeout(() => $('copy').querySelector('span').textContent='Copy code',1500);
+    setTimeout(() => $('copy').querySelector('span').textContent='Copy install command',1500);
   } catch {
     const range=document.createRange();
-    range.selectNodeContents($('code'));
+    range.selectNodeContents($('installCommand'));
     const selection=window.getSelection();
     selection.removeAllRanges();
     selection.addRange(range);

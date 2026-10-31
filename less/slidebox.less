@@ -65,6 +65,11 @@
   &:not(:checked):active::after { --_end: calc(1 - var(--_deform)); }
   &:checked:active::after { --_start: calc(1 - var(--_deform)); }
   &:disabled { cursor: not-allowed; opacity: .5; }
+  &[data-slidebox-dragging]::after {
+    margin-inline-start: ~"calc((1em * var(--_container-width-ratio) - 1em) * max(0, var(--slidebox-drag-progress) - max(0, var(--slidebox-drag-stretch, 0))) + var(--_thumb-spacing-ratio) * .5em)";
+    margin-inline-end: ~"calc((1em * var(--_container-width-ratio) - 1em) * max(0, 1 - var(--slidebox-drag-progress) - max(0, -1 * var(--slidebox-drag-stretch, 0))) + var(--_thumb-spacing-ratio) * .5em)";
+    transition: none;
+  }
   @media (forced-colors: active) {
     & { --_track: Field; --_border: ButtonBorder; --_off: FieldText; --_on: Highlight; }
   }

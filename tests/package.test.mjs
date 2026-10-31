@@ -18,6 +18,8 @@ test("package retains the published npm name and correct component entrypoints",
   assert.equal(pkg.name, "@monabbous/slidebox");
   assert.equal(pkg.style, "./dist/css/slidebox.css");
   assert.equal(pkg.sass, "./scss/slidebox.scss");
+  assert.ok(pkg.files.includes("experimental/"));
+  assert.ok(file("experimental/drag.d.mts").includes("HTMLInputElement"));
 });
 test("Sass entrypoint preserves the plain CSS rules", () => {
   const css = sass.compile(base + "/scss/slidebox.scss").css;
