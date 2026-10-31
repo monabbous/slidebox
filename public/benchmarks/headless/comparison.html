@@ -1,0 +1,84 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Switch implementation comparison</title><style>:root{color-scheme:light}*{box-sizing:border-box}body{font:15px/1.7 system-ui;margin:0;background:#edf3f7;color:#18313e}main{max-width:1200px;margin:32px auto;padding:0 24px 60px}nav{padding:18px 24px;background:#063c59;color:white;display:flex;gap:24px;flex-wrap:wrap}nav a{color:white}a{color:#007f80}h1{font-size:38px;line-height:1.2;letter-spacing:-.04em}h2{margin-top:36px}h3{margin:0 0 10px;font-size:16px}.note{background:#fff3cf;border-left:4px solid #b67d14;padding:16px}.card{background:white;padding:20px;border:1px solid #d9e5eb;border-radius:10px;min-width:0}.charts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}svg{width:100%;height:auto}table{display:block;overflow:auto;border-collapse:collapse;width:100%;font-size:12px;background:white}td,th{padding:9px;border:1px solid #d9e5eb;text-align:left;white-space:nowrap}th{background:#e5f1f4}pre{overflow:auto;background:#102b3b;color:#e8f6fa;padding:20px;border-radius:8px}code{font-size:.9em}li{margin-bottom:8px}.legend{display:flex;gap:24px;margin:15px 0}.legend span:before{content:'';display:inline-block;width:12px;height:12px;margin-right:7px;background:#008f91}.legend span+span:before{background:#d17b22}summary{cursor:pointer}section{margin:24px 0}@media(max-width:850px){.charts{display:block}.card{margin-bottom:18px}h1{font-size:30px}}</style></head><body><nav><a href="/">Article draft</a><a href="/benchmarks/comparison.html">Existing approaches</a><a href="/benchmarks/">Stress graphs</a><a href="/benchmarks/explore.html">Live lab</a><a href="/benchmarks/results.json">Raw data</a></nav><main><h1>Existing ways to build a stretchy switch</h1>
+<p>Research checked Oct. 31, 2026. These are source-code comparisons, not claims about which author invented the effect or which implementation is fastest.</p>
+<h2>The closest alternatives</h2>
+<table>
+<thead>
+<tr>
+<th>Approach / example</th>
+<th>What actually moves</th>
+<th>Core interaction</th>
+<th>Shape and tradeoff</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Slidebox 1.3.0</td>
+<td>Two logical margins around a flex pseudo-element, with staggered delays</td>
+<td>A native checkbox; CSS-only for normal use</td>
+<td>Actual thumb width changes. A very large length radius keeps rounded ends. One input draws both track and thumb. Layout work still needs measuring.</td>
+</tr>
+<tr>
+<td><a href="https://delcano.jp/en/web-production/posts/css-toggle-switch-animation/">Delcano&#39;s squish switch</a></td>
+<td>Absolute <code>left</code> and <code>right</code> edges, with different delays</td>
+<td>Visually hidden native checkbox plus a track span and pseudo-element; CSS-only</td>
+<td>A very close leading-edge/trailing-edge alternative. The posted base uses <code>50%</code> corners; a sufficiently large length radius can also preserve a pill here. <code>left</code>/<code>right</code> are layout-affecting, not automatic compositor-only animations.</td>
+</tr>
+<tr>
+<td><a href="https://codehim.com/html5-css3/toggle-button-in-css-with-stretchable-elastic-effect/">Josetxu&#39;s stretchable toggle, republished by CodeHim</a></td>
+<td>Keyframes animate thumb <code>width</code> and <code>right</code></td>
+<td>Checkbox and label; CSS-only for the demo</td>
+<td>Real geometric stretch rather than scaling the thumb. More staged motion and decorative styling. The posted <code>input { display:none }</code> loses normal keyboard focus; fix that before treating it as a production accessibility example. Its text has separate scale animations.</td>
+</tr>
+<tr>
+<td><a href="https://daisyui.com/components/toggle/">daisyUI Toggle</a></td>
+<td>Interpolated grid tracks; the middle column holds the thumb</td>
+<td>Native <code>&lt;input type=&quot;checkbox&quot; class=&quot;toggle&quot;&gt;</code>; CSS-only in that mode</td>
+<td>Strong native/minimal-markup comparison. Its ordinary grid transition is a slide, not the same delayed-edge deformation. Source also supports a label/input/icons form.</td>
+</tr>
+<tr>
+<td><a href="https://www.dimi.me/lab/animated-switch">Dimi&#39;s animated switch</a></td>
+<td>Motion layout animation, press-state scale/radius changes, and an inner element&#39;s margins</td>
+<td>Radix + React + Motion, with an interactive button and form bridge</td>
+<td>A genuine interactive spring/press alternative, but it supplies a framework state/composition contract too. Comparing its whole stack to a CSS file as though the features were identical would be misleading.</td>
+</tr>
+<tr>
+<td><a href="https://css-tricks.com/gooey-effect/">SVG gooey filtering</a></td>
+<td>Multiple shapes under blur/alpha-threshold filters</td>
+<td>Can be driven by a native checkbox and CSS; SVG itself doesn&#39;t require JS</td>
+<td>Produces a liquid neck/merging blobs, not a single capsule with rounded ends. Extra filter/raster work depends on effect size, browser, and hardware. This is a technique explanation, not a ready-made accessible switch by itself.</td>
+</tr>
+</tbody></table>
+<h2>Primary source observations</h2>
+<ul>
+<li><strong>daisyUI:</strong> the <a href="https://github.com/saadeghi/daisyui/blob/master/packages/daisyui/src/components/toggle.css">official toggle CSS</a> changes <code>grid-template-columns</code> from <code>0fr 1fr 1fr</code> to <code>1fr 1fr 0fr</code>. Its before pseudo-element occupies the middle column. It is not a React component merely because it is commonly used in Tailwind projects.</li>
+<li><strong>Delcano:</strong> the “Squish” example keeps width automatic and switches <code>left</code>/<code>right</code> targets, delaying the trailing edge by 0.1s. This is the nearest CSS-only comparison for the two-edge idea. Its unmeasured prose about rendering being cheap is not a benchmark result.</li>
+<li><strong>Josetxu / CodeHim:</strong> <code>go-left</code>/<code>go-right</code> keyframes expand actual width mid-travel. A fixed-length radius already avoids the need to scale the thumb. The page credits Josetxu and links the <a href="https://codepen.io/josetxu/pen/ExJXRBB">original CodePen</a>.</li>
+<li><strong>Dimi / Radix:</strong> Dimi publishes its complete component code on the linked page. <a href="https://github.com/radix-ui/primitives/blob/main/packages/react/switch/src/switch.tsx">Radix&#39;s source</a> uses a <code>button</code> with <code>role=&quot;switch&quot;</code> and renders a checkbox bridge when needed for form integration. Don&#39;t describe the button as a native checkbox, or imply that using it is inherently inaccessible.</li>
+<li><strong>SVG:</strong> Lucas Bebber&#39;s explanation shows <code>feGaussianBlur</code>, <code>feColorMatrix</code>, and blending/compositing to merge shapes. It dates to 2015; don&#39;t reuse its historical browser-support notes as current support data.</li>
+</ul>
+<p>The AI authorship or development process of these examples was not established. Their code cannot be used as proof of a claim about LLM output in general.</p>
+<h2>What this means for Slidebox&#39;s story</h2>
+<p>The two-edge idea has CSS alternatives. A native checkbox and a large pill radius are also not unique to Slidebox. The defensible story is Mohamed&#39;s own route to the margin implementation, its configurable geometry and integrations, and why he likes handing the input state to the browser. Avoid a claim that everybody else needs JavaScript, scales the endcaps, or uses more code for the same result.</p>
+<p><code>100vw</code> is one convenient oversized length radius. Another sufficiently large circular length radius can also become a pill. The visual benefit comes from changing real geometry and letting the browser fit the corners, not from that exact unit having special performance properties.</p>
+<h2>What the local stress benchmark compares</h2>
+<p>The lab compares isolated mechanisms, not the entire above libraries or their web pages:</p>
+<ol>
+<li>Published Slidebox CSS with normalized colors, dimensions, duration, and easing.</li>
+<li>An independently written delayed <code>left</code>/<code>right</code> illustration, normalized to the same thumb dimensions and delay.</li>
+<li>A transform-only slide, with the same endpoints but no deformation.</li>
+<li>A grid-track slide inspired by the daisyUI mechanism. The lab fixes the middle thumb track to normalize its size; it is not the exact shipped daisyUI stylesheet.</li>
+<li>An unanimated native checkbox as a reference for state changes and painting, not a visually equivalent animation.</li>
+</ol>
+<p>Every scene contains 500 or 2,000 visible inputs. A single batch changes them all together. Separate trials add property-specific <code>will-change</code> hints before warmup. Core scenes have no glass, shadows, online fonts, network scripts, or recording overhead.</p>
+<p><code>will-change</code> is a hint, not a promise to move margin, inset, or grid animation onto the compositor. Persistent hints on thousands of elements can also cost resources. See <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/will-change">MDN&#39;s guidance</a> and <a href="https://web.dev/articles/animations-guide">web.dev&#39;s animation guide</a>.</p>
+<h2>How to read the metrics</h2>
+<p>The primary report uses a headed Chromium run on the NVIDIA renderer; the earlier SwiftShader/headless pilot is preserved separately. Each scene gets 350ms to settle after creation. The first occurrence of each technique/count/hint combination gets one practice trial, followed by a 250ms rest. Five recorded trials per combination run in a fixed-seed randomized order. These are programmatic simultaneous state changes, not thousands of trusted user clicks.</p>
+<p>At 2,000 controls some scenes are badly overloaded. Fewer layout passes can mean frames were skipped or state changes coalesced, not that a technique became more efficient. A zero-layout transform scene can still have poor frame cadence for other rendering/compositing reasons; these measurements don&#39;t establish the exact bottleneck by themselves.</p>
+<ul>
+<li>The FPS graph is <strong>rAF callback cadence</strong>, not a GPU/presented-frame counter. It measures intervals overlapping the first 300ms after each batch actually begins. A native checkbox has no equivalent animation, so its line is an idle/state-change reference.</li>
+<li>Layout passes and duration come from Chrome&#39;s Performance counters. A pass count is not a count of changed inputs.</li>
+<li>Layout Shift entries and CLS use the browser&#39;s Layout Instability API, separately from layout work. <strong>Zero CLS does not mean zero layout.</strong> These are synthetic batches, not field Core Web Vitals or a real-user INP score.</li>
+<li>Variability bars show minimum to maximum across independent trials; the bar is the median. Five trials are a local pilot, not broad statistical or cross-device proof.</li>
+<li>JavaScript heap is not total process/GPU/layer memory.</li>
+<li>The environment record states headless/headed mode and the graphics renderer. Software rendering or headless results must not be presented as the exact experience of a hardware-composited Omarchy desktop.</li>
+</ul>
+</main></body></html>

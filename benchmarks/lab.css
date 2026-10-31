@@ -1,0 +1,55 @@
+* { box-sizing: border-box; }
+body { margin: 0; background: #101b24; color: #e8f6fa; font: 14px system-ui; }
+header { height: 70px; padding: 15px 24px; }
+header p { margin: 0; color: #a1c7d8; font-size: 12px; }
+body.manual header { height: auto; }
+#toolbar { margin-top: 14px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+#toolbar[hidden] { display: none; }
+select, button { padding: 6px; font: inherit; }
+#grid { display: grid; grid-template-columns: repeat(40, 40px); gap: 6px; padding: 0 24px; width: max-content; }
+.unit {
+  width: 40px; height: 20px; font-size: 20px; margin: 0; padding: 0;
+  border: 1px solid #5289a6; border-radius: 100vw; background: #2a5b7c;
+  appearance: none; -webkit-appearance: none; position: relative; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  --slidebox-size: 20px; --slidebox-width: 2; --slidebox-spacing: .33;
+  --slidebox-deform: .1; --slidebox-duration: 200ms; --slidebox-easing: ease-in-out;
+  --slidebox-track: #2a5b7c; --slidebox-border: #5289a6;
+  --slidebox-off: #e8f6fa; --slidebox-on: #00b2b2;
+}
+.unit:where(:not(.slidebox):not(.native))::after {
+  content: ""; position: absolute; top: 2.3px; height: 13.4px;
+  box-sizing: border-box; min-width: 0; border: 1px solid #2a5b7c;
+  border-radius: 100vw; background: #e8f6fa;
+}
+.unit:not(.slidebox):checked::after { background: #00b2b2; }
+/* Independent normalized illustrations, not copied vendor components.
+   Sources and visual differences are documented in benchmarks/README.md. */
+.edge::after {
+  left: 3.3px; right: 23.3px;
+  transition: background 200ms ease-in-out, left 200ms ease-in-out, right 200ms ease-in-out;
+  transition-delay: 0s, 0s, 20ms;
+}
+.edge:checked::after { left: 23.3px; right: 3.3px; transition-delay: 0s, 20ms, 0s; }
+.translate::after {
+  left: 3.3px; width: 11.4px; transform: translateX(0);
+  transition: background 200ms ease-in-out, transform 200ms ease-in-out;
+}
+.translate:checked::after { transform: translateX(20px); }
+.unit.grid-track {
+  display: inline-grid; grid-template-columns: 0fr 11.4px 1fr; padding-inline: 3.3px;
+  transition: grid-template-columns 200ms ease-in-out;
+}
+.unit.grid-track:checked { grid-template-columns: 1fr 11.4px 0fr; }
+.unit.grid-track::after {
+  position: relative; top: 0; grid-column: 2; grid-row: 1; align-self: center;
+  width: 100%; transition: background 200ms ease-in-out;
+}
+.unit.native {
+  appearance: auto; -webkit-appearance: auto; background: none; border: 0;
+  width: 20px; justify-self: center; accent-color: #00b2b2;
+}
+.hint .slidebox::after { will-change: margin-inline-start, margin-inline-end; }
+.hint .edge::after { will-change: left, right; }
+.hint .translate::after { will-change: transform; }
+.hint .grid-track { will-change: grid-template-columns; }

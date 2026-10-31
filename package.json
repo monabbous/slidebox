@@ -34,9 +34,12 @@
     "url": "https://github.com/monabbous/slidebox/issues"
   },
   "scripts": {
-    "build": "node scripts/build.mjs",
+    "build": "node scripts/build.mjs && node scripts/build-public.mjs",
     "test": "node --test tests/*.test.mjs",
     "test:browser": "playwright test",
+    "benchmark": "node benchmarks/run.mjs",
+    "benchmark:report": "node benchmarks/report.mjs",
+    "benchmark:serve": "node benchmarks/serve.mjs",
     "prepack": "npm run build"
   },
   "keywords": [

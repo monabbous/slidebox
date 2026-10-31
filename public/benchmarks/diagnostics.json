@@ -1,0 +1,317 @@
+{
+  "warning": "Separate traced diagnostic runs; instrumentation overhead means these paint durations must not be mixed into the primary untraced FPS sample. Inclusive event times are not GPU raster/presentation times.",
+  "browser": "156.0.8078.4",
+  "headless": false,
+  "viewport": {
+    "width": 1920,
+    "height": 1440
+  },
+  "runs": [
+    {
+      "variant": "slidebox",
+      "count": 2000,
+      "hint": false,
+      "trace": "traces/slidebox-auto.json.gz",
+      "mainThreadFilter": "CrRendererMain",
+      "events": {
+        "Layout": {
+          "count": 7,
+          "inclusiveMs": 46.56,
+          "maxMs": 7.372
+        },
+        "UpdateLayoutTree": {
+          "count": 8,
+          "inclusiveMs": 208.614,
+          "maxMs": 59.023
+        },
+        "RecalculateStyles": {
+          "count": 0,
+          "inclusiveMs": 0,
+          "maxMs": 0
+        },
+        "PrePaint": {
+          "count": 21,
+          "inclusiveMs": 30.564,
+          "maxMs": 4.758
+        },
+        "Paint": {
+          "count": 16008,
+          "inclusiveMs": 192.38399999999382,
+          "maxMs": 14.121
+        }
+      }
+    },
+    {
+      "variant": "slidebox",
+      "count": 2000,
+      "hint": true,
+      "trace": "traces/slidebox-hint.json.gz",
+      "mainThreadFilter": "CrRendererMain",
+      "events": {
+        "Layout": {
+          "count": 6,
+          "inclusiveMs": 44.455,
+          "maxMs": 9.586
+        },
+        "UpdateLayoutTree": {
+          "count": 8,
+          "inclusiveMs": 195.72599999999997,
+          "maxMs": 65.069
+        },
+        "RecalculateStyles": {
+          "count": 0,
+          "inclusiveMs": 0,
+          "maxMs": 0
+        },
+        "PrePaint": {
+          "count": 25,
+          "inclusiveMs": 33.498,
+          "maxMs": 7.483
+        },
+        "Paint": {
+          "count": 16008,
+          "inclusiveMs": 195.72499999999016,
+          "maxMs": 15.021
+        }
+      }
+    },
+    {
+      "variant": "edge",
+      "count": 2000,
+      "hint": false,
+      "trace": "traces/edge-auto.json.gz",
+      "mainThreadFilter": "CrRendererMain",
+      "events": {
+        "Layout": {
+          "count": 7,
+          "inclusiveMs": 48.932,
+          "maxMs": 10.893
+        },
+        "UpdateLayoutTree": {
+          "count": 8,
+          "inclusiveMs": 197.12099999999998,
+          "maxMs": 61.1
+        },
+        "RecalculateStyles": {
+          "count": 0,
+          "inclusiveMs": 0,
+          "maxMs": 0
+        },
+        "PrePaint": {
+          "count": 23,
+          "inclusiveMs": 35.18500000000001,
+          "maxMs": 5.915
+        },
+        "Paint": {
+          "count": 16008,
+          "inclusiveMs": 189.9029999999793,
+          "maxMs": 15.366
+        }
+      }
+    },
+    {
+      "variant": "edge",
+      "count": 2000,
+      "hint": true,
+      "trace": "traces/edge-hint.json.gz",
+      "mainThreadFilter": "CrRendererMain",
+      "events": {
+        "Layout": {
+          "count": 0,
+          "inclusiveMs": 0,
+          "maxMs": 0
+        },
+        "UpdateLayoutTree": {
+          "count": 2,
+          "inclusiveMs": 67.12,
+          "maxMs": 37.436
+        },
+        "RecalculateStyles": {
+          "count": 0,
+          "inclusiveMs": 0,
+          "maxMs": 0
+        },
+        "PrePaint": {
+          "count": 17,
+          "inclusiveMs": 6.88,
+          "maxMs": 3.526
+        },
+        "Paint": {
+          "count": 4002,
+          "inclusiveMs": 44.94599999999921,
+          "maxMs": 14.413
+        }
+      }
+    },
+    {
+      "variant": "translate",
+      "count": 2000,
+      "hint": false,
+      "trace": "traces/translate-auto.json.gz",
+      "mainThreadFilter": "CrRendererMain",
+      "events": {
+        "Layout": {
+          "count": 0,
+          "inclusiveMs": 0,
+          "maxMs": 0
+        },
+        "UpdateLayoutTree": {
+          "count": 2,
+          "inclusiveMs": 55.785,
+          "maxMs": 34.73
+        },
+        "RecalculateStyles": {
+          "count": 0,
+          "inclusiveMs": 0,
+          "maxMs": 0
+        },
+        "PrePaint": {
+          "count": 13,
+          "inclusiveMs": 8.611,
+          "maxMs": 5.114
+        },
+        "Paint": {
+          "count": 4002,
+          "inclusiveMs": 38.55800000000063,
+          "maxMs": 12.404
+        }
+      }
+    },
+    {
+      "variant": "translate",
+      "count": 2000,
+      "hint": true,
+      "trace": "traces/translate-hint.json.gz",
+      "mainThreadFilter": "CrRendererMain",
+      "events": {
+        "Layout": {
+          "count": 0,
+          "inclusiveMs": 0,
+          "maxMs": 0
+        },
+        "UpdateLayoutTree": {
+          "count": 2,
+          "inclusiveMs": 57.214,
+          "maxMs": 34.379
+        },
+        "RecalculateStyles": {
+          "count": 0,
+          "inclusiveMs": 0,
+          "maxMs": 0
+        },
+        "PrePaint": {
+          "count": 8,
+          "inclusiveMs": 12.073999999999998,
+          "maxMs": 8.212
+        },
+        "Paint": {
+          "count": 4002,
+          "inclusiveMs": 50.93200000000014,
+          "maxMs": 18.362
+        }
+      }
+    },
+    {
+      "variant": "grid-track",
+      "count": 2000,
+      "hint": false,
+      "trace": "traces/grid-track-auto.json.gz",
+      "mainThreadFilter": "CrRendererMain",
+      "events": {
+        "Layout": {
+          "count": 4,
+          "inclusiveMs": 69.42399999999999,
+          "maxMs": 26.209
+        },
+        "UpdateLayoutTree": {
+          "count": 6,
+          "inclusiveMs": 247.46500000000003,
+          "maxMs": 73.754
+        },
+        "RecalculateStyles": {
+          "count": 0,
+          "inclusiveMs": 0,
+          "maxMs": 0
+        },
+        "PrePaint": {
+          "count": 21,
+          "inclusiveMs": 29.269999999999996,
+          "maxMs": 6.473
+        },
+        "Paint": {
+          "count": 20006,
+          "inclusiveMs": 214.12599999992645,
+          "maxMs": 24.103
+        }
+      }
+    },
+    {
+      "variant": "grid-track",
+      "count": 2000,
+      "hint": true,
+      "trace": "traces/grid-track-hint.json.gz",
+      "mainThreadFilter": "CrRendererMain",
+      "events": {
+        "Layout": {
+          "count": 5,
+          "inclusiveMs": 73.387,
+          "maxMs": 23.776
+        },
+        "UpdateLayoutTree": {
+          "count": 7,
+          "inclusiveMs": 272.153,
+          "maxMs": 60.524
+        },
+        "RecalculateStyles": {
+          "count": 0,
+          "inclusiveMs": 0,
+          "maxMs": 0
+        },
+        "PrePaint": {
+          "count": 23,
+          "inclusiveMs": 35.504,
+          "maxMs": 7.05
+        },
+        "Paint": {
+          "count": 24007,
+          "inclusiveMs": 249.28199999989823,
+          "maxMs": 22.691
+        }
+      }
+    },
+    {
+      "variant": "native",
+      "count": 2000,
+      "hint": false,
+      "trace": "traces/native-auto.json.gz",
+      "mainThreadFilter": "CrRendererMain",
+      "events": {
+        "Layout": {
+          "count": 0,
+          "inclusiveMs": 0,
+          "maxMs": 0
+        },
+        "UpdateLayoutTree": {
+          "count": 2,
+          "inclusiveMs": 21.491,
+          "maxMs": 11.937
+        },
+        "RecalculateStyles": {
+          "count": 0,
+          "inclusiveMs": 0,
+          "maxMs": 0
+        },
+        "PrePaint": {
+          "count": 163,
+          "inclusiveMs": 4.640999999999994,
+          "maxMs": 1.753
+        },
+        "Paint": {
+          "count": 4002,
+          "inclusiveMs": 32.47700000000043,
+          "maxMs": 9.244
+        }
+      }
+    }
+  ]
+}

@@ -36,6 +36,7 @@ Switches and radio groups need no JavaScript. The range slider is **experimental
 - [Experimental checkbox dragging](#experimental-checkbox-dragging)
 - [Experimental range slider](#experimental-range-slider)
 - [Accessibility and browser support](#accessibility-and-browser-support)
+- [Benchmarks](#benchmarks)
 - [Development](#development)
 
 ## Demos
@@ -444,6 +445,23 @@ In the playground, the range has its own section below the switch/radio controls
 - Use a current browser with CSS custom properties, CSS math, logical properties, and `light-dark()` support. Native range styling and checkbox pseudo-elements can differ between engines.
 
 The automated browser checks run in Chromium. Firefox/WebKit range rules are included, but those browsers and real touch devices still need testing. No claim that every control looks identical in every browser.
+
+## Benchmarks
+
+Slidebox is a small, configurable native-input implementation, not a claim to be the fastest switch. Other CSS-only approaches can produce similar deformation, and being free of a required JS runtime does not mean animating margins is free of layout work.
+
+The source checkout includes a reproducible technique comparison:
+
+```sh
+npm ci
+npm run build
+npx playwright install chromium
+npm run benchmark -- --headed
+```
+
+It triggers 500 and 2,000 visible controls together, comparing margins, delayed edges, transform/grid slides, and an unanimated native reference. It tests property-specific `will-change` hints, saves raw data, and generates offline SVG graphs for callback cadence, layout/style work, and layout shifts. Optional tracing adds separate paint diagnostics.
+
+**The cadence graphs measure rAF callbacks, not actual GPU-presented FPS.** The scenes are technique illustrations with different visual effects, not whole-library rankings. Read the [benchmark guide](benchmarks/README.md) for sources, options, warmup, limitations, and sharing results. Generated data stays out of Git and the npm package.
 
 ## Development
 

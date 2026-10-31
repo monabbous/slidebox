@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Slidebox technique lab</title>
+  <link rel="stylesheet" href="slidebox.css">
+  <link rel="stylesheet" href="lab.css">
+  <script type="module" src="lab.mjs"></script>
+</head>
+<body>
+  <header>
+    <strong id="title">Normalized switch techniques</strong>
+    <p>40 × 20px footprints · no glass, shadows, fonts, or continuous page animations</p>
+    <div id="toolbar" hidden>
+      <label>Technique <select id="variant">
+        <option value="slidebox">Slidebox margins</option>
+        <option value="edge">Staggered edges</option>
+        <option value="translate">Transform slide (no stretch)</option>
+        <option value="grid-track">Grid slide (no stretch)</option>
+        <option value="native">Native checkbox</option>
+      </select></label>
+      <label>Count <select id="count"><option>1</option><option selected>500</option><option>2000</option></select></label>
+      <label><input id="hint" type="checkbox"> will-change hint</label>
+      <button id="render" type="button">Render</button>
+      <button id="toggle" type="button">Toggle all</button>
+      <span>Manual inspection only. Run the CLI for measured results.</span>
+    </div>
+  </header>
+  <div id="grid"></div>
+</body>
+</html>

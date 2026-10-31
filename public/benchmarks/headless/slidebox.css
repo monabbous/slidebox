@@ -1,0 +1,65 @@
+.slidebox {
+  --_container-width-ratio: var(--slidebox-width, 2);
+  --_thumb-spacing-ratio: var(--slidebox-spacing, .33);
+  --_deform: var(--slidebox-deform, .1);
+  --_duration: var(--slidebox-duration, 200ms);
+  --_easing-function: var(--slidebox-easing, ease-in-out);
+  --_track: var(--slidebox-track, Field);
+  --_border: var(--slidebox-border, ButtonBorder);
+  --_off: var(--slidebox-off, FieldText);
+  --_on: var(--slidebox-on, var(--_accent, light-dark(#0b75ff, SelectedItem)));
+  appearance: none;
+  -webkit-appearance: none;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(1em * var(--_container-width-ratio));
+  height: 1em;
+  font-size: var(--slidebox-size, 54px);
+  padding: 0;
+  border: 1px solid var(--_border);
+  border-radius: 100vw;
+  background: var(--_track);
+  cursor: pointer;
+}
+@supports (color: AccentColor) {
+  .slidebox { --_accent: AccentColor; }
+}
+.slidebox::after {
+  --_start: 0; --_end: 1;
+  box-sizing: border-box;
+  content: "";
+  display: block;
+  flex: 1 1 auto;
+  min-width: 0;
+  width: calc((1 - var(--_thumb-spacing-ratio)) * 1em);
+  height: calc((1 - var(--_thumb-spacing-ratio)) * 1em);
+  margin-block: calc(var(--_thumb-spacing-ratio) * .5em);
+  margin-inline-start: calc((1em * var(--_container-width-ratio) - 1em) * var(--_start) + var(--_thumb-spacing-ratio) * .5em);
+  margin-inline-end: calc((1em * var(--_container-width-ratio) - 1em) * var(--_end) + var(--_thumb-spacing-ratio) * .5em);
+  border-radius: inherit;
+  border: 1px solid var(--_track);
+  background: var(--_off);
+  transition: background var(--_duration) var(--_easing-function), margin-inline-start var(--_duration) var(--_easing-function), margin-inline-end var(--_duration) var(--_easing-function);
+  transition-delay: 0s, 0s, calc(var(--_duration) * var(--_deform));
+}
+.slidebox:checked::after {
+  --_start: 1; --_end: 0;
+  background: var(--_on);
+  transition-delay: 0s, calc(var(--_duration) * var(--_deform)), 0s;
+}
+.slidebox:not(:checked):active::after { --_end: calc(1 - var(--_deform)); }
+.slidebox:checked:active::after { --_start: calc(1 - var(--_deform)); }
+.slidebox:disabled { cursor: not-allowed; opacity: .5; }
+.slidebox[data-slidebox-dragging]::after {
+  margin-inline-start: calc((1em * var(--_container-width-ratio) - 1em) * max(0, var(--slidebox-drag-progress) - max(0, var(--slidebox-drag-stretch, 0))) + var(--_thumb-spacing-ratio) * .5em);
+  margin-inline-end: calc((1em * var(--_container-width-ratio) - 1em) * max(0, 1 - var(--slidebox-drag-progress) - max(0, -1 * var(--slidebox-drag-stretch, 0))) + var(--_thumb-spacing-ratio) * .5em);
+  transition: none;
+}
+@media (forced-colors: active) {
+  .slidebox { --_track: Field; --_border: ButtonBorder; --_off: FieldText; --_on: Highlight; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .slidebox::after { transition-duration: .01ms; transition-delay: 0ms; }
+}

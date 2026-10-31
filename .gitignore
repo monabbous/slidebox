@@ -3,6 +3,7 @@
 /node_modules
 /test-results/
 /playwright-report/
+/benchmark-results/
 
 # profiling files
 chrome-profiler-events*.json

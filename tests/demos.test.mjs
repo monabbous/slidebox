@@ -55,6 +55,22 @@ test("every recorded demo is complete, lossless, correctly cropped, and keeps it
   }
 });
 
+test("the public blog cover is a complete lossless 16:9 animation with original timing", () => {
+  const bytes = file("public/assets/slidebox-cover.webp");
+  assert.equal(bytes.readUInt32LE(4) + 8, bytes.length);
+  const all = chunks(bytes, 12, bytes.length);
+  const canvas = all.find(chunk => chunk.tag === "VP8X");
+  assert.deepEqual([bytes.readUIntLE(canvas.payload + 4, 3) + 1, bytes.readUIntLE(canvas.payload + 7, 3) + 1], [960, 540]);
+  const frames = all.filter(chunk => chunk.tag === "ANMF");
+  assert.ok(frames.length > 1);
+  let duration = 0;
+  for (const frame of frames) {
+    duration += bytes.readUIntLE(frame.payload + 12, 3);
+    assert.ok(chunks(bytes, frame.payload + 16, frame.payload + frame.length).some(chunk => chunk.tag === "VP8L"));
+  }
+  assert.ok(Math.abs(duration - 4150) <= 18, `Cover duration: ${duration}ms`);
+});
+
 test("the README includes every demo and its table-of-contents anchors resolve", () => {
   const readme = file("README.md").toString();
   for (const clip of manifest.clips) assert.ok(readme.includes("/assets/" + clip.file), clip.file);

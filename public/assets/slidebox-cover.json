@@ -1,0 +1,14 @@
+{
+  "file": "slidebox-cover.webp",
+  "purpose": "Animated 16:9 blog thumbnail",
+  "source": "screenrecording-2026-10-31_05-12-41.mp4",
+  "startSeconds": 41.05,
+  "durationSeconds": 4.15,
+  "sourceCrop": [260, 94, 558, 690],
+  "scaledCrop": [520, 188],
+  "canvas": [960, 540],
+  "paddingColor": "#1f2427",
+  "encoding": "libwebp_anim, lossless=1, quality=100, loop=0",
+  "timing": "Original 60 fps, no speed changes or inserted frames",
+  "caption": "Author-recorded CSS checkbox demonstration, resized and padded for the blog cover. Original clips remain unchanged."
+}
