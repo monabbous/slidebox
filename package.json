@@ -5,12 +5,23 @@
   "license": "ISC",
   "style": "./dist/css/slidebox.css",
   "sass": "./scss/slidebox.scss",
+  "less": "./less/slidebox.less",
   "files": [
     "dist/css/slidebox.css",
-    "scss/slidebox.scss"
+    "scss/",
+    "less/",
+    "tailwind/"
   ],
   "publishConfig": {
     "access": "public"
+  },
+  "peerDependencies": {
+    "tailwindcss": ">=3.4.0 <5"
+  },
+  "peerDependenciesMeta": {
+    "tailwindcss": {
+      "optional": true
+    }
   },
   "repository": {
     "type": "git",
@@ -34,5 +45,13 @@
     "scss",
     "elastic",
     "system-colors"
-  ]
+  ],
+  "devDependencies": {
+    "@tailwindcss/node": "^4.3.3",
+    "less": "^4.9.1",
+    "postcss": "^8.5.32",
+    "sass": "^1.107.1",
+    "tailwindcss": "^3.4.19",
+    "tailwindcss-v4": "npm:tailwindcss@^4.3.3"
+  }
 }

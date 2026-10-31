@@ -1,13 +1,13 @@
 .slidebox {
-  --_container-width-ratio: 2;
-  --_thumb-spacing-ratio: .33;
-  --_deform: .1;
-  --_duration: 200ms;
-  --_easing-function: ease-in-out;
-  --_track: Field;
-  --_border: ButtonBorder;
-  --_off: FieldText;
-  --_on: light-dark(#0b75ff, SelectedItem);
+  --_container-width-ratio: var(--slidebox-width, 2);
+  --_thumb-spacing-ratio: var(--slidebox-spacing, .33);
+  --_deform: var(--slidebox-deform, .1);
+  --_duration: var(--slidebox-duration, 200ms);
+  --_easing-function: var(--slidebox-easing, ease-in-out);
+  --_track: var(--slidebox-track, Field);
+  --_border: var(--slidebox-border, ButtonBorder);
+  --_off: var(--slidebox-off, FieldText);
+  --_on: var(--slidebox-on, var(--_accent, light-dark(#0b75ff, SelectedItem)));
   appearance: none;
   -webkit-appearance: none;
   box-sizing: border-box;
@@ -16,7 +16,7 @@
   justify-content: center;
   width: calc(1em * var(--_container-width-ratio));
   height: 1em;
-  font-size: 54px;
+  font-size: var(--slidebox-size, 54px);
   padding: 0;
   border: 1px solid var(--_border);
   border-radius: 100vw;
@@ -24,7 +24,7 @@
   cursor: pointer;
 }
 @supports (color: AccentColor) {
-  .slidebox { --_on: AccentColor; }
+  .slidebox { --_accent: AccentColor; }
 }
 .slidebox::after {
   --_start: 0; --_end: 1;

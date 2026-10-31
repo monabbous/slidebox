@@ -1,65 +1,215 @@
-# Slidebox Lab
+# Slidebox
 
-An elastic CSS switch with a playground for geometry, colors, and motion.
+An elastic CSS switch built on a native checkbox. No JavaScript, extra elements, or runtime dependencies required.
 
-[Preview the interactive playground online](https://htmlpreview.github.io/?https://github.com/monabbous/slidebox/blob/main/index.html)
+![Slidebox switch animation](assets/slidebox-demo.webp)
 
-![Slidebox Lab demo: default geometry, 200ms ease-in-out](assets/slidebox-demo.webp)
+[Try the playground](https://htmlpreview.github.io/?https://github.com/monabbous/slidebox/blob/main/index.html) · [npm](https://www.npmjs.com/package/@monabbous/slidebox)
 
-The animation uses the default width (2), thumb spacing (0.33), deformation (0.1), and a 200ms `ease-in-out` transition.
+## Install
 
-## npm package
-
-The published CSS package keeps the name [`@monabbous/slidebox`](https://www.npmjs.com/package/@monabbous/slidebox).
-The package includes the switch stylesheet at `dist/css/slidebox.css` and a Sass-compatible entrypoint at `scss/slidebox.scss`. The playground is not included in npm.
-
-```bash
+```sh
 npm install @monabbous/slidebox
 ```
 
-Import `@monabbous/slidebox/dist/css/slidebox.css` in a stylesheet or through your bundler, then use `<input class="slidebox" type="checkbox">`. The package is built from the component rules in `style.css` using `npm run build`.
+Choose **one** integration below: CSS, Sass, Less, or Tailwind. You don't need to import the plain CSS when using a mixin or the Tailwind plugin.
 
-## Manual npm releases
+## Plain CSS
 
-The release workflow is [Publish to npm](.github/workflows/publish-npm.yml). It is triggered **only** through GitHub Actions > Run workflow on `main`, with a `patch`, `minor`, or `major` choice.
+Import the stylesheet through your bundler:
 
-The manifest starts at `0.3.0`, so the first `patch` dispatch will release `0.3.1` (once npm credentials are configured). The workflow builds and tests the package, creates a `chore(release): vX.Y.Z` commit and tag, pushes both to `main`, then publishes to npm.
-
-Before the first release:
-
-1. In GitHub Settings > General > Default branch, change `master` to `main`.
-2. Add a granular npm publish token as the repository Actions secret `NPM_TOKEN`, scoped to `@monabbous/slidebox`, with permission to publish. Never commit the token.
-3. Ensure GitHub Actions has permission to write repository contents.
-4. Manually dispatch the release workflow on `main`.
-
-The workflow does not run on pushes or tags. A failed npm publish after the Git tag has been pushed requires fixing the publish failure for that version before choosing a new bump. The old library is preserved in `legacy/`.
-
-## Run locally
-
-Clone this repository, then serve its root directory:
-
-```bash
-python3 -m http.server 8080
+```js
+import "@monabbous/slidebox/dist/css/slidebox.css";
 ```
 
-Open `http://localhost:8080`. The lab uses plain HTML, CSS, and JavaScript, without a build step.
+Add the class to a checkbox and give it an accessible label:
 
-## Playground
+```html
+<label>
+  <input class="slidebox" type="checkbox" role="switch" name="notifications">
+  Enable notifications
+</label>
+```
 
-- Adjust track width, thumb spacing, press deformation, and transition duration.
-- Change easing family and direction (In, Out, or In-Out), including Elastic and Bounce.
-- Compare Slidebox against native controls in light and dark schemes.
-- Choose browser-default, CSS system, nabous.dev, or custom colors.
-- Copy complete CSS, Tailwind v4 `@utility` CSS, or configuration variables.
+Use normal checkbox attributes: `checked`, `disabled`, `required`, `name`, and `value`. Read or change its state with your framework's normal checkbox binding. `role="switch"` is optional; omit it for checkbox semantics.
 
-Chromium currently lacks support for the `AccentColor` CSS color keyword. In browser-default mode, the custom thumb uses a blue approximation in light mode and `SelectedItem` in dark mode, while native controls retain `accent-color: auto`. Browsers that support `AccentColor` use it automatically.
+### Set defaults and override individual switches
 
-Controls can be adjusted without triggering transition animations. The selected duration is restored after two animation frames.
+Public custom properties inherit, so you can set site-wide defaults on `:root`, section defaults on a parent, or overrides on a single input:
 
-The easing functions follow [easings.net](https://easings.net/). Elastic and Bounce use sampled CSS `linear()` timing functions.
+```css
+:root {
+  color-scheme: light dark;
+  --slidebox-size: 24px;
+  --slidebox-on: #7c3aed;
+  --slidebox-duration: 250ms;
+}
 
-## Original Slidebox package
+.settings {
+  --slidebox-width: 2.4;
+}
 
-The original Sass package, compiled CSS, package manifests, and example are preserved in [`legacy/`](legacy/). See the [legacy README](legacy/README.md) for the previous installation instructions.
+.slidebox.compact {
+  --slidebox-size: 18px;
+  --slidebox-spacing: 0.25;
+}
+```
 
-[Source](https://github.com/monabbous/slidebox) · [nabous.dev](https://nabous.dev)
+`color-scheme: light dark` lets the system colors follow the user's theme. Use `light` or `dark` to force a scheme.
+
+## Controls
+
+The same names work as CSS properties (`--slidebox-NAME`), Sass map keys, Less arguments (`@NAME`), and Tailwind plugin options/utilities.
+
+| Control | Default | Meaning |
+| --- | --- | --- |
+| `size` | `54px` | Switch height; width and thumb geometry scale with it. Use a CSS length. |
+| `width` | `2` | Track width divided by height. Use a unitless number greater than 1. |
+| `spacing` | `.33` | Space around the thumb as a fraction of the height. Use a number from 0 to less than 1. |
+| `deform` | `.1` | Elastic press deformation and motion delay ratio. Use a number from 0 to less than 1; 0 removes the deformation. |
+| `duration` | `200ms` | Animation duration, including a time unit. |
+| `easing` | `ease-in-out` | Any CSS timing function, including `cubic-bezier()` and `linear()`. |
+| `track` | `Field` | Track background color. |
+| `border` | `ButtonBorder` | Track border color. |
+| `off` | `FieldText` | Unchecked thumb color. |
+| `on` | System accent, when supported | Checked thumb color; falls back to `light-dark(#0b75ff, SelectedItem)`. |
+
+Custom colors do not override forced-colors accessibility mode. Reduced-motion users get effectively instant transitions. Logical margins support both LTR and RTL layouts. Keep the browser's focus outline, or provide a visible `:focus-visible` style yourself.
+
+## Sass mixin
+
+Use Dart Sass's module system. Configure shared defaults with `$defaults`, then override any control per mixin call:
+
+```scss
+@use "@monabbous/slidebox/scss/mixins" as slidebox with (
+  $defaults: (
+    size: 24px,
+    on: #7c3aed,
+    duration: 250ms
+  )
+);
+
+.toggle {
+  @include slidebox.slidebox();
+}
+
+.toggle-large {
+  @include slidebox.slidebox((size: 36px, width: 2.5));
+}
+```
+
+```html
+<label><input class="toggle" type="checkbox"> Enable notifications</label>
+```
+
+Importing the mixin does not emit CSS until you include it. Configure the module once, before any other module loads it. Your Sass bundler must resolve npm imports (with the Sass CLI, add `--load-path=node_modules`).
+
+For the ready-made `.slidebox` class instead of a mixin:
+
+```scss
+@use "@monabbous/slidebox/scss/slidebox";
+```
+
+## Less mixin
+
+Import the mixin, then use named arguments. Create a wrapper mixin for project defaults:
+
+```less
+@import "@monabbous/slidebox/less/slidebox.less";
+
+.app-switch(@size: 24px; @on: #7c3aed; @duration: 250ms) {
+  .slidebox(@size: @size; @on: @on; @duration: @duration);
+}
+
+.toggle { .app-switch(); }
+.toggle-large { .app-switch(@size: 36px); }
+.toggle-wide { .slidebox(@size: 24px; @width: 2.5; @spacing: 0.25); }
+```
+
+The import emits no CSS on its own. Use semicolons between arguments, especially when passing timing functions containing commas. Your Less bundler must resolve npm imports; with the Less CLI, add `--include-path=node_modules`.
+
+## Tailwind CSS
+
+The plugin is included in the same npm package and supports Tailwind v3.4 and v4. Install Tailwind separately using its normal setup.
+
+### Tailwind v4
+
+Register the plugin in your Tailwind stylesheet. The options block sets project defaults; omit it to keep Slidebox's defaults:
+
+```css
+@import "tailwindcss";
+@plugin "@monabbous/slidebox/tailwind/index.cjs" {
+  size: 24px;
+  on: #7c3aed;
+  duration: 250ms;
+}
+```
+
+### Tailwind v3
+
+Register it in `tailwind.config.cjs`:
+
+```js
+module.exports = {
+  content: ["./src/**/*.{html,js,ts,jsx,tsx,vue,svelte}"],
+  plugins: [
+    require("@monabbous/slidebox/tailwind/index.cjs")({
+      size: "24px",
+      on: "#7c3aed",
+      duration: "250ms",
+    }),
+  ],
+};
+```
+
+### Utilities and overrides
+
+Add `slidebox` for the component, then control it with `slidebox-NAME-[VALUE]` utilities:
+
+```html
+<label>
+  <input
+    type="checkbox"
+    class="slidebox slidebox-size-[28px] slidebox-width-[2.5] slidebox-spacing-[0.25] slidebox-deform-[0.15] slidebox-duration-[300ms] slidebox-on-violet-600 dark:slidebox-on-violet-400"
+  >
+  Enable notifications
+</label>
+```
+
+- All controls accept arbitrary values: `slidebox-track-[#222]`, `slidebox-easing-[cubic-bezier(0.4,0,0.2,1)]`, etc.
+- `track`, `border`, `off`, and `on` expose your Tailwind color palette, such as `slidebox-on-emerald-500`.
+- `duration` and `easing` also expose Tailwind's transition theme, such as `slidebox-duration-300` and `slidebox-easing-linear`.
+- Variants work normally: `md:slidebox-size-[32px]`, `hover:slidebox-on-emerald-600`, etc.
+- Use `slidebox-size-*` rather than `h-*` to resize: thumb geometry uses the switch's font size.
+- Keep complete class names in source; dynamically assembled class strings may not be detected by Tailwind.
+
+In v3, add named presets under `theme.extend.slidebox`:
+
+```js
+theme: {
+  extend: {
+    slidebox: {
+      size: { compact: "18px", comfortable: "28px" },
+      width: { wide: "2.5" },
+    },
+  },
+},
+// Now use slidebox-size-compact or slidebox-width-wide.
+```
+
+CSS custom properties work with every integration. Avoid setting a control both through plugin/mixin defaults and an inherited variable: a value assigned directly to the switch wins over inheritance. Use a utility or a selector targeting that switch to override it.
+
+## Development
+
+```sh
+npm ci
+npm run build
+npm test
+npm pack --dry-run
+```
+
+The build extracts component rules from `style.css` and generates CSS, Sass, Less, and Tailwind rules. Tests compile both mixins and the plugin with Tailwind v3 and v4. The lab itself is plain HTML/CSS/JavaScript; serve the repository with `python3 -m http.server 8080` and open `http://localhost:8080`.
+
+Releases use the manual [Publish to npm](.github/workflows/publish-npm.yml) workflow on `main`, with npm trusted publishing through the `production` environment. Choose a version bump for a new release, or enable `publish_existing_version` to retry the current version without a bump or new tag.
+
+The original implementation is preserved in [`legacy/`](legacy/).
