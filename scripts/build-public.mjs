@@ -1,4 +1,4 @@
-import { copyFileSync, mkdirSync } from "node:fs";
+import { copyFileSync, mkdirSync, readFileSync } from "node:fs";
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -10,3 +10,8 @@ for (const path of ["index.html", "style.css", "script.js", "dist/css/group.css"
   copyFileSync(new URL(`../${path}`, import.meta.url), destination);
 }
 console.log("Updated public/lab from the source playground");
+mkdirSync(new URL("../public/assets/", import.meta.url), { recursive: true });
+const demos = JSON.parse(readFileSync(new URL("../assets/demos.json", import.meta.url), "utf8"));
+for (const { file } of demos.clips) {
+  copyFileSync(new URL(`../assets/${file}`, import.meta.url), new URL(`../public/assets/${file}`, import.meta.url));
+}

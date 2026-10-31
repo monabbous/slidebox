@@ -2,6 +2,8 @@
 
 Run the comparisons yourself. These tools live in the source checkout and are not included in the npm package.
 
+Read the [project story](https://nabous.dev/blog/slidebox/), try the [playground](https://nabous.dev/lab/slidebox/), or inspect the [published pilot report](https://nabous.dev/project-assets/slidebox/benchmarks/). The pilot report predates this revised harness; keep its recorded method and environment with its results.
+
 The goal is to compare rendering mechanisms, not to prove that Slidebox is universally faster or that another library is inefficient. Slidebox's strongest distinctions are its small native-input implementation, configurable shape, and no required JS for ordinary interaction. Other compact CSS-only switches exist, and a delayed-edge implementation can produce a very similar effect.
 
 ## Run

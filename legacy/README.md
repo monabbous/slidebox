@@ -1,6 +1,8 @@
 # Slidebox
 ![Example](https://i.imgur.com/yyRPh0R.gif)
-## [Example (click me)](https://htmlpreview.github.io/?https://github.com/monabbous/slidebox/blob/master/legacy/examples/simple.html)
+## [Current playground](https://nabous.dev/lab/slidebox/)
+
+This folder preserves the older implementation. See [the original example source](examples/simple.html) or [read the project story](https://nabous.dev/blog/slidebox/).
 As you can see in the example above, this slidebox is easy to configure with these two css properties, `color` and `font-size`.
 
 ### Quick Setup

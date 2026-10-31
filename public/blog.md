@@ -3,6 +3,7 @@ title: "Coming back to my six-year-old CSS checkbox"
 published: true
 description: "Revisiting the margin trick behind my elastic CSS checkbox, native controls, and what the benchmarks actually show."
 cover_image: assets/slidebox-cover.webp
+canonical_url: https://nabous.dev/blog/slidebox/
 tags: css, webdev, showdev, opensource
 ---
 
@@ -14,7 +15,7 @@ Slidebox was one of those projects. I [open-sourced it in October 2020](https://
 
 Six years later, I'm playing with it again 😄
 
-![The elastic Material-style checkbox switching on and off](https://raw.githubusercontent.com/monabbous/slidebox/v1.3.0/assets/slidebox-demo.webp)
+![The elastic Material-style checkbox switching on and off](https://nabous.dev/project-assets/slidebox/assets/slidebox-demo.webp)
 
 That oversized, elastic Material-style one is my favorite.
 
@@ -75,11 +76,11 @@ You can change the width, thumb spacing, deformation, colors, and motion. Negati
 
 | Default | Material-style | Old iOS-style |
 | --- | --- | --- |
-| ![Default checkbox](https://raw.githubusercontent.com/monabbous/slidebox/v1.3.0/assets/checkbox-default-brand.webp) | ![Material-style checkbox](https://raw.githubusercontent.com/monabbous/slidebox/v1.3.0/assets/checkbox-material-brand.webp) | ![Old iOS-style checkbox](https://raw.githubusercontent.com/monabbous/slidebox/v1.3.0/assets/checkbox-ios-brand.webp) |
+| ![Default checkbox](https://nabous.dev/project-assets/slidebox/assets/checkbox-default-brand.webp) | ![Material-style checkbox](https://nabous.dev/project-assets/slidebox/assets/checkbox-material-brand.webp) | ![Old iOS-style checkbox](https://nabous.dev/project-assets/slidebox/assets/checkbox-ios-brand.webp) |
 
 These are geometry presets, not exact replicas of those interfaces. The elastic version at the top is another combination of the same controls.
 
-The [playground](https://htmlpreview.github.io/?https://github.com/monabbous/slidebox/blob/main/index.html) puts my blue-and-teal theme beside browser colors. I wanted to see the shape and movement without mistaking the extra styling for the component itself.
+The [playground](https://nabous.dev/lab/slidebox/) puts my blue-and-teal theme beside browser colors. I wanted to see the shape and movement without mistaking the extra styling for the component itself.
 
 If you've read my [glassmorphism post](https://dev.to/nabous/weekend-hobby-playing-with-light-glass-and-css-1h2), you'll recognize the colors and pointer glow. I want to turn that glass effect into a Tailwind npm package after this one. The early building blocks are already in the [nabous.dev GitHub repo](https://github.com/monabbous/nabous.dev/blob/master/src/styles/glassmorphism.css) if you want to try them before the package is ready.
 
@@ -87,7 +88,7 @@ I've also put Slidebox and the glassmorphism effect into my Omarchy setup. Getti
 
 ## The radio group was a good excuse to try it somewhere else
 
-![Native radio buttons with a stretching selection highlight](https://raw.githubusercontent.com/monabbous/slidebox/v1.3.0/assets/radio-group.webp)
+![Native radio buttons with a stretching selection highlight](https://nabous.dev/project-assets/slidebox/assets/radio-group.webp)
 
 I wanted the active background to stretch toward whichever option I was pressing. Click the active one and nothing should deform. Press an earlier or later choice and it should lean that way, while the labels stay still.
 
@@ -99,7 +100,7 @@ I like this part of revisiting an old project: finding another place the same id
 
 ## The range is where I'm still experimenting
 
-![An experimental range with optional JavaScript motion and progress fill enabled](https://raw.githubusercontent.com/monabbous/slidebox/v1.3.0/assets/range-drag.webp)
+![An experimental range with optional JavaScript motion and progress fill enabled](https://nabous.dev/project-assets/slidebox/assets/range-drag.webp)
 
 The range works as a native input without JavaScript. The delayed tail and progress fill in this recording are optional JavaScript enhancements, and I'm keeping them marked experimental.
 
@@ -115,7 +116,7 @@ Keeping the code small and leaning on native browser behavior were deliberate ch
 
 I tried some deliberately excessive scenes with 500 and 2,000 switches changing together. In a local headed Chromium run on my i7-11800H / RTX 3060 setup, the default margin version's median was about 59.9 animation-frame callbacks per second at 500 controls, and 15.6 at 2,000. That second scene definitely isn't a smoothness claim.
 
-The [comparison and graphs](benchmarks/) also include a staggered-edge CSS version, transform and grid slides, and runs with property-specific `will-change` hints. The edge-based version was very close to Slidebox. Other CSS approaches can produce similar stretching, so comparing only against a heavier JavaScript component wouldn't tell the whole story.
+The [comparison and graphs](https://nabous.dev/project-assets/slidebox/benchmarks/) also include a staggered-edge CSS version, transform and grid slides, and runs with property-specific `will-change` hints. The edge-based version was very close to Slidebox. Other CSS approaches can produce similar stretching, so comparing only against a heavier JavaScript component wouldn't tell the whole story.
 
 I don't have evidence that my approach is universally faster. What I like about it is the small amount of markup and setup, the native checkbox behavior, and being able to change the shape without adding a JavaScript runtime for ordinary interaction. It's a compact way to get the effect I wanted. Other small CSS implementations exist too.
 

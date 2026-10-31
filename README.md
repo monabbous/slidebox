@@ -10,12 +10,12 @@ Elastic checkboxes and grouped radios. Still real inputs: labels, keyboard contr
 ![No runtime dependencies](https://img.shields.io/badge/runtime_dependencies-0-00b2b2)
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/monabbous/slidebox/main/assets/slidebox-demo.webp" width="520" alt="A Material-style native checkbox stretching and springing between checked and unchecked, using CSS">
+  <img src="https://nabous.dev/project-assets/slidebox/assets/slidebox-demo.webp" width="520" alt="A Material-style native checkbox stretching and springing between checked and unchecked, using CSS">
 </p>
 
 The header demo is CSS-only: width `2.5`, spacing `−.27`, deform `.2`, and a `350ms` elastic easing. The thumb changes shape through margins, not scaling.
 
-[Try the playground](https://htmlpreview.github.io/?https://github.com/monabbous/slidebox/blob/main/index.html) · [npm](https://www.npmjs.com/package/@monabbous/slidebox) · [Source](https://github.com/monabbous/slidebox)
+[Try the playground](https://nabous.dev/lab/slidebox/) · [Read the story](https://nabous.dev/blog/slidebox/) · [npm](https://www.npmjs.com/package/@monabbous/slidebox) · [Source](https://github.com/monabbous/slidebox)
 
 Switches and radio groups need no JavaScript. The range slider is **experimental**; its optional motion and progress fill use JavaScript. Checkbox dragging is also optional and experimental.
 
@@ -47,21 +47,21 @@ Click any preview to open the playground. These are crops of the actual recordin
 
 | Preset | nabous.dev | Browser colors | Width | Spacing | Deform |
 | --- | --- | --- | --- | --- | --- |
-| Default | [![Default checkbox, nabous.dev](https://raw.githubusercontent.com/monabbous/slidebox/main/assets/checkbox-default-brand.webp)](https://htmlpreview.github.io/?https://github.com/monabbous/slidebox/blob/main/index.html) | [![Default checkbox, browser colors](https://raw.githubusercontent.com/monabbous/slidebox/main/assets/checkbox-default-browser.webp)](https://htmlpreview.github.io/?https://github.com/monabbous/slidebox/blob/main/index.html) | 2 | .33 | .1 |
-| Material UI | [![Material-style checkbox, nabous.dev](https://raw.githubusercontent.com/monabbous/slidebox/main/assets/checkbox-material-brand.webp)](https://htmlpreview.github.io/?https://github.com/monabbous/slidebox/blob/main/index.html) | [![Material-style checkbox, browser colors](https://raw.githubusercontent.com/monabbous/slidebox/main/assets/checkbox-material-browser.webp)](https://htmlpreview.github.io/?https://github.com/monabbous/slidebox/blob/main/index.html) | 2.5 | −.33 | .1 |
-| Old iOS | [![Old iOS-style checkbox, nabous.dev](https://raw.githubusercontent.com/monabbous/slidebox/main/assets/checkbox-ios-brand.webp)](https://htmlpreview.github.io/?https://github.com/monabbous/slidebox/blob/main/index.html) | [![Old iOS-style checkbox, browser colors](https://raw.githubusercontent.com/monabbous/slidebox/main/assets/checkbox-ios-browser.webp)](https://htmlpreview.github.io/?https://github.com/monabbous/slidebox/blob/main/index.html) | 1.6 | .03 | 0 |
+| Default | [![Default checkbox, nabous.dev](https://nabous.dev/project-assets/slidebox/assets/checkbox-default-brand.webp)](https://nabous.dev/lab/slidebox/) | [![Default checkbox, browser colors](https://nabous.dev/project-assets/slidebox/assets/checkbox-default-browser.webp)](https://nabous.dev/lab/slidebox/) | 2 | .33 | .1 |
+| Material UI | [![Material-style checkbox, nabous.dev](https://nabous.dev/project-assets/slidebox/assets/checkbox-material-brand.webp)](https://nabous.dev/lab/slidebox/) | [![Material-style checkbox, browser colors](https://nabous.dev/project-assets/slidebox/assets/checkbox-material-browser.webp)](https://nabous.dev/lab/slidebox/) | 2.5 | −.33 | .1 |
+| Old iOS | [![Old iOS-style checkbox, nabous.dev](https://nabous.dev/project-assets/slidebox/assets/checkbox-ios-brand.webp)](https://nabous.dev/lab/slidebox/) | [![Old iOS-style checkbox, browser colors](https://nabous.dev/project-assets/slidebox/assets/checkbox-ios-browser.webp)](https://nabous.dev/lab/slidebox/) | 1.6 | .03 | 0 |
 
 These are geometry presets, not framework integrations or exact replicas. The browser-color Material UI and Old iOS previews are stills; those two weren't toggled in the recording.
 
 **Material UI geometry, elastic easing:**
 
-[![Material-style checkbox with elastic CSS easing](https://raw.githubusercontent.com/monabbous/slidebox/main/assets/checkbox-material-elastic.webp)](https://htmlpreview.github.io/?https://github.com/monabbous/slidebox/blob/main/index.html)
+[![Material-style checkbox with elastic CSS easing](https://nabous.dev/project-assets/slidebox/assets/checkbox-material-elastic.webp)](https://nabous.dev/lab/slidebox/)
 
 The header shows the larger custom variant. [Copy either configuration](#checkbox-presets).
 
 ### Radio group demo
 
-[![Radio group showing the active segment, backward selection, and forward selection across Day, Week, and Month](https://raw.githubusercontent.com/monabbous/slidebox/main/assets/radio-group.webp)](https://htmlpreview.github.io/?https://github.com/monabbous/slidebox/blob/main/index.html)
+[![Radio group showing the active segment, backward selection, and forward selection across Day, Week, and Month](https://nabous.dev/project-assets/slidebox/assets/radio-group.webp)](https://nabous.dev/lab/slidebox/)
 
 Week → Day → Week → Month. Pressing the active choice does nothing; selecting before or after it stretches the highlight in that direction. CSS only. [Radio group setup](#grouped-radio-buttons).
 
@@ -69,15 +69,15 @@ Week → Day → Week → Month. Pressing the active choice does nothing; select
 
 **Native range, no JS enhancements** — an unfilled still reference:
 
-[![Unfilled native range before enabling either JavaScript option](https://raw.githubusercontent.com/monabbous/slidebox/main/assets/range-native.webp)](https://htmlpreview.github.io/?https://github.com/monabbous/slidebox/blob/main/index.html)
+[![Unfilled native range before enabling either JavaScript option](https://nabous.dev/project-assets/slidebox/assets/range-native.webp)](https://nabous.dev/lab/slidebox/)
 
 **Clicking to a value — motion and fill enabled (JS):**
 
-[![Experimental range reacting to native value changes with optional JavaScript motion and fill](https://raw.githubusercontent.com/monabbous/slidebox/main/assets/range-click.webp)](https://htmlpreview.github.io/?https://github.com/monabbous/slidebox/blob/main/index.html)
+[![Experimental range reacting to native value changes with optional JavaScript motion and fill](https://nabous.dev/project-assets/slidebox/assets/range-click.webp)](https://nabous.dev/lab/slidebox/)
 
 **Dragging — motion and fill enabled (JS):**
 
-[![Experimental range being dragged with a delayed visual tail and progress fill](https://raw.githubusercontent.com/monabbous/slidebox/main/assets/range-drag.webp)](https://htmlpreview.github.io/?https://github.com/monabbous/slidebox/blob/main/index.html)
+[![Experimental range being dragged with a delayed visual tail and progress fill](https://nabous.dev/project-assets/slidebox/assets/range-drag.webp)](https://nabous.dev/lab/slidebox/)
 
 The native control still owns its value. The helpers only add motion and fill. [Range setup and options](#experimental-range-slider).
 
