@@ -1,6 +1,6 @@
 {
   "name": "@monabbous/slidebox",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Elastic, system-color-aware CSS checkbox switch.",
   "license": "ISC",
   "style": "./dist/css/slidebox.css",
