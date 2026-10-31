@@ -1,14 +1,24 @@
 {
   "file": "slidebox-cover.webp",
-  "purpose": "Animated 16:9 blog thumbnail",
-  "source": "screenrecording-2026-10-31_05-12-41.mp4",
-  "startSeconds": 41.05,
-  "durationSeconds": 4.15,
-  "sourceCrop": [260, 94, 558, 690],
-  "scaledCrop": [520, 188],
-  "canvas": [960, 540],
-  "paddingColor": "#1f2427",
-  "encoding": "libwebp_anim, lossless=1, quality=100, loop=0",
-  "timing": "Original 60 fps, no speed changes or inserted frames",
-  "caption": "Author-recorded CSS checkbox demonstration, resized and padded for the blog cover. Original clips remain unchanged."
+  "purpose": "High-resolution animated 16:9 blog thumbnail",
+  "source": "Automated browser rendering of dist/css/slidebox.css; not the author's documentary recording",
+  "cssSha256": "16ba4272fa96b7a72649cacefc977c6580f648827bbcefd3be54a1373cf4b703",
+  "browser": "156.0.8078.4",
+  "canvas": [
+    1920,
+    1080
+  ],
+  "fps": 60,
+  "durationSeconds": 4,
+  "sampledFrames": 240,
+  "timing": "CSS timeline sampled at 60 fps; the encoder can coalesce identical held frames",
+  "settings": {
+    "width": 2.5,
+    "spacing": -0.27,
+    "deform": 0.2,
+    "duration": "350ms",
+    "easing": "easeInOutElastic"
+  },
+  "encoding": "Lossless animated WebP from full-resolution browser PNG frames, loop=0; no upscaling",
+  "caption": "Automated demonstration of the actual CSS component, rendered at 1920×1080. Original author-recorded clips remain unchanged."
 }
