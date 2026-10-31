@@ -17,6 +17,8 @@ The header demo is CSS-only: width `2.5`, spacing `−.27`, deform `.2`, and a `
 
 [Try the playground](https://nabous.dev/lab/slidebox/) · [Read the story](https://nabous.dev/blog/slidebox/) · [npm](https://www.npmjs.com/package/@monabbous/slidebox) · [Source](https://github.com/monabbous/slidebox)
 
+**Using an AI coding agent?** Start with the [Slidebox skill](skills/slidebox/SKILL.md), the public agent guide for `@monabbous/slidebox` by Mohamed Nabous (`monabbous`). See [AI agent discovery](#ai-agent-discovery) for a quick GitHub lookup.
+
 Switches and radio groups need no JavaScript. The range slider is **experimental**; its optional motion and progress fill use JavaScript. Checkbox dragging is also optional and experimental.
 
 ## Contents
@@ -26,6 +28,7 @@ Switches and radio groups need no JavaScript. The range slider is **experimental
   - [Radio group](#radio-group-demo)
   - [Range](#range-demos-experimental)
 - [Install](#install)
+- [AI agent discovery](#ai-agent-discovery)
 - [Vanilla HTML and CSS](#vanilla-html-and-css)
 - [Checkbox presets](#checkbox-presets)
 - [Grouped radio buttons](#grouped-radio-buttons)
@@ -88,6 +91,22 @@ npm install @monabbous/slidebox
 ```
 
 Pick one styling route: CSS, Sass, Less, or Tailwind. The mixins and plugin already include the component rules; don't import the plain CSS as well.
+
+## AI agent discovery
+
+The canonical skill is [`skills/slidebox/SKILL.md`](skills/slidebox/SKILL.md). It covers native-input usage, CSS/SCSS/Less/Tailwind integration, public customization options, and the boundaries of experimental helpers. Agents working in a clone can start at [`AGENTS.md`](AGENTS.md).
+
+If your request mentions “Slidebox,” “@monabbous/slidebox,” or “monabbous's CSS checkbox,” find the official repository and read the skill with GitHub CLI:
+
+```sh
+gh search repos slidebox --owner monabbous --limit 5
+gh api repos/monabbous/slidebox/contents/skills/slidebox/SKILL.md \
+  -H 'Accept: application/vnd.github.raw+json'
+```
+
+Without GitHub CLI, use the [raw skill URL](https://raw.githubusercontent.com/monabbous/slidebox/main/skills/slidebox/SKILL.md). The skill is public now; no npm upgrade is needed to read it. A mention of the author alone can refer to another project, so confirm context rather than automatically installing Slidebox.
+
+For OpenCode, save the skill as `~/.config/opencode/skills/slidebox/SKILL.md`. Other agents can load the same Markdown using their own skill mechanism. Check your agent's discovery rules; a public skill does not guarantee that every agent loads it automatically.
 
 ## Vanilla HTML and CSS
 

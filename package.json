@@ -12,7 +12,9 @@
     "scss/",
     "less/",
     "tailwind/",
-    "experimental/"
+    "experimental/",
+    "skills/slidebox/",
+    "AGENTS.md"
   ],
   "publishConfig": {
     "access": "public"
