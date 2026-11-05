@@ -33,6 +33,22 @@ test("official groups and experimental ranges are opt-in and generated from comp
   });
 });
 
+test("thumb decoration hooks share geometry instead of introducing a second motion implementation", () => {
+  const checkbox = postcss.parse(file("dist/css/slidebox.css"));
+  let shared = 0;
+  checkbox.walkRules(rule => {
+    if (rule.selectors.includes(".slidebox[data-slidebox-thumb-layers]::before") && rule.selectors.includes(".slidebox::after")) {
+      if (rule.nodes.some(node => node.prop === "margin-inline-start")) shared++;
+    }
+  });
+  assert.equal(shared, 1);
+  assert.match(file("dist/css/slidebox.css"), /data-slidebox-thumb-layers/);
+  assert.match(file("experimental/range.css"), /data-slidebox-range-thumb/);
+  assert.match(file("experimental/range.css"), /--slidebox-visual-progress/);
+  assert.match(file("experimental/range.d.mts"), /layers\?: boolean/);
+  assert.match(file("experimental/range.d.mts"), /refresh\(\): void/);
+});
+
 test("Sass mixins expose official groups and experimental ranges with shared defaults", () => {
   const css = sass.compileString(`@use "mixins" with ($defaults: (size: 28px, duration: 300ms)); @use "experimental" with ($defaults: (size: 28px, duration: 300ms)); .volume { @include experimental.range(); } .period { @include mixins.group((selected-text: black, on: cyan)); }`, { loadPaths: [base + "/scss"] }).css;
   for (const token of [".volume::-webkit-slider-thumb", ".volume::-moz-range-thumb", ".period > label > input:checked + span", "--slidebox-size: 28px", "--slidebox-selected-text: black", "--slidebox-duration: 300ms", "anchor-scope", "prefers-reduced-motion", "forced-colors"]) assert.ok(css.includes(token), token);

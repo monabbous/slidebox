@@ -27,11 +27,11 @@
       "--_accent": "AccentColor"
     }
   },
-  "&::after": {
+  "&[data-slidebox-thumb-layers]::before,\n&::after": {
     "--_start": "0",
     "--_end": "1",
     "box-sizing": "border-box",
-    "content": "\"\"",
+    "content": "none",
     "display": "block",
     "flex": "1 1 auto",
     "min-width": "0",
@@ -46,23 +46,43 @@
     "transition": "background var(--_duration) var(--_easing-function), margin-inline-start var(--_duration) var(--_easing-function), margin-inline-end var(--_duration) var(--_easing-function)",
     "transition-delay": "0s, 0s, calc(var(--_duration) * var(--_deform))"
   },
-  "&:checked::after": {
+  "&::after": {
+    "content": "\"\""
+  },
+  "&[data-slidebox-thumb-layers]": {
+    "display": "inline-grid",
+    "isolation": "isolate",
+    "grid-template-columns": "minmax(0, 1fr)",
+    "grid-template-rows": "minmax(0, 1fr)"
+  },
+  "&[data-slidebox-thumb-layers]::before,\n&[data-slidebox-thumb-layers]::after": {
+    "content": "\"\"",
+    "grid-area": "1 / 1",
+    "width": "auto"
+  },
+  "&[data-slidebox-thumb-layers]::before": {
+    "z-index": "0"
+  },
+  "&[data-slidebox-thumb-layers]::after": {
+    "z-index": "1"
+  },
+  "&[data-slidebox-thumb-layers]:checked::before,\n&:checked::after": {
     "--_start": "1",
     "--_end": "0",
     "background": "var(--_on)",
     "transition-delay": "0s, calc(var(--_duration) * var(--_deform)), 0s"
   },
-  "&:not(:checked):active::after": {
+  "&[data-slidebox-thumb-layers]:not(:checked):active::before,\n&:not(:checked):active::after": {
     "--_end": "calc(1 - var(--_deform))"
   },
-  "&:checked:active::after": {
+  "&[data-slidebox-thumb-layers]:checked:active::before,\n&:checked:active::after": {
     "--_start": "calc(1 - var(--_deform))"
   },
   "&:disabled": {
     "cursor": "not-allowed",
     "opacity": ".5"
   },
-  "&[data-slidebox-dragging]::after": {
+  "&[data-slidebox-thumb-layers][data-slidebox-dragging]::before,\n&[data-slidebox-dragging]::after": {
     "margin-inline-start": "calc((1em * var(--_container-width-ratio) - 1em) * max(0, var(--slidebox-drag-progress) - max(0, var(--slidebox-drag-stretch, 0))) + var(--_thumb-spacing-ratio) * .5em)",
     "margin-inline-end": "calc((1em * var(--_container-width-ratio) - 1em) * max(0, 1 - var(--slidebox-drag-progress) - max(0, -1 * var(--slidebox-drag-stretch, 0))) + var(--_thumb-spacing-ratio) * .5em)",
     "transition": "none"
@@ -73,10 +93,13 @@
       "--_border": "ButtonBorder",
       "--_off": "FieldText",
       "--_on": "Highlight"
+    },
+    "&[data-slidebox-thumb-layers]::before": {
+      "content": "none"
     }
   },
   "@media (prefers-reduced-motion: reduce)": {
-    "&::after": {
+    "&[data-slidebox-thumb-layers]::before,\n  &::after": {
       "transition-duration": ".01ms",
       "transition-delay": "0ms"
     }

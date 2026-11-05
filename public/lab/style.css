@@ -89,10 +89,11 @@ pre { max-width: 100%; overflow: auto; font-size: 12px; }
 @supports (color: AccentColor) {
   .slidebox { --_on: AccentColor; }
 }
+.slidebox[data-slidebox-thumb-layers]::before,
 .slidebox::after {
   --_start: 0; --_end: 1;
   box-sizing: border-box;
-  content: "";
+  content: none;
   display: block;
   flex: 1 1 auto;
   min-width: 0;
@@ -107,14 +108,35 @@ pre { max-width: 100%; overflow: auto; font-size: 12px; }
   transition: background var(--_duration) var(--_easing-function), margin-inline-start var(--_duration) var(--_easing-function), margin-inline-end var(--_duration) var(--_easing-function);
   transition-delay: 0s, 0s, calc(var(--_duration) * var(--_deform));
 }
+.slidebox::after { content: ""; }
+/* Optional stacked paint layers. Both pseudos share the geometry and margin
+   transitions above; skins do not have to reproduce the switch's motion. */
+.slidebox[data-slidebox-thumb-layers] {
+  display: inline-grid;
+  isolation: isolate;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+}
+.slidebox[data-slidebox-thumb-layers]::before,
+.slidebox[data-slidebox-thumb-layers]::after {
+  content: "";
+  grid-area: 1 / 1;
+  width: auto;
+}
+.slidebox[data-slidebox-thumb-layers]::before { z-index: 0; }
+.slidebox[data-slidebox-thumb-layers]::after { z-index: 1; }
+.slidebox[data-slidebox-thumb-layers]:checked::before,
 .slidebox:checked::after {
   --_start: 1; --_end: 0;
   background: var(--_on);
   transition-delay: 0s, calc(var(--_duration) * var(--_deform)), 0s;
 }
+.slidebox[data-slidebox-thumb-layers]:not(:checked):active::before,
 .slidebox:not(:checked):active::after { --_end: calc(1 - var(--_deform)); }
+.slidebox[data-slidebox-thumb-layers]:checked:active::before,
 .slidebox:checked:active::after { --_start: calc(1 - var(--_deform)); }
 .slidebox:disabled { cursor: not-allowed; opacity: .5; }
+.slidebox[data-slidebox-thumb-layers][data-slidebox-dragging]::before,
 .slidebox[data-slidebox-dragging]::after {
   margin-inline-start: calc((1em * var(--_container-width-ratio) - 1em) * max(0, var(--slidebox-drag-progress) - max(0, var(--slidebox-drag-stretch, 0))) + var(--_thumb-spacing-ratio) * .5em);
   margin-inline-end: calc((1em * var(--_container-width-ratio) - 1em) * max(0, 1 - var(--slidebox-drag-progress) - max(0, -1 * var(--slidebox-drag-stretch, 0))) + var(--_thumb-spacing-ratio) * .5em);
@@ -122,8 +144,10 @@ pre { max-width: 100%; overflow: auto; font-size: 12px; }
 }
 @media (forced-colors: active) {
   .slidebox { --_track: Field; --_border: ButtonBorder; --_off: FieldText; --_on: Highlight; }
+  .slidebox[data-slidebox-thumb-layers]::before { content: none; }
 }
 @media (prefers-reduced-motion: reduce) {
+  .slidebox[data-slidebox-thumb-layers]::before,
   .slidebox::after { transition-duration: .01ms; transition-delay: 0ms; }
 }
 /* Slidebox component: end */

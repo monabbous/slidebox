@@ -4,7 +4,16 @@
  * Call after mounting; call the returned cleanup function before unmounting.
  * Importing during server rendering is safe.
  */
-export declare function enhanceSlideboxRange(input: HTMLInputElement): () => void;
+export interface SlideboxRangeOptions {
+  /** Keep the existing two-span visual mounted so skins can decorate its thumb and fill pseudos. */
+  layers?: boolean;
+}
+export interface SlideboxRangeCleanup {
+  (): void;
+  /** Refresh after programmatic style/theme or position-only layout changes. */
+  refresh(): void;
+}
+export declare function enhanceSlideboxRange(input: HTMLInputElement, options?: SlideboxRangeOptions): SlideboxRangeCleanup;
 
 /**
  * Experimental progress fill, independent of directional motion.

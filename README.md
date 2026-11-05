@@ -36,6 +36,7 @@ Switches and radio groups need no JavaScript. The range slider is **experimental
 - [Less](#less)
 - [Tailwind](#tailwind)
 - [Defaults and controls](#defaults-and-controls)
+- [Optional thumb paint layers](#optional-thumb-paint-layers)
 - [Experimental checkbox dragging](#experimental-checkbox-dragging)
 - [Experimental range slider](#experimental-range-slider)
 - [Accessibility and browser support](#accessibility-and-browser-support)
@@ -393,6 +394,36 @@ The same names work as `--slidebox-NAME` custom properties, Sass map keys, Less 
 Keep spacing below `1`. Negative checkbox/range spacing is intentional; negative padding is clamped to zero for the native range. `deform: 0` removes deformation.
 
 Inherited properties make good site defaults. A mixin/plugin default assigned directly to a control takes priority over inheritance; override that control with a selector or utility when needed.
+
+## Optional thumb paint layers
+
+This extension is unreleased on the thumb-decoration branch. It is not included in registry version 1.3.2.
+
+For a two-layer checkbox thumb, add one attribute to the existing input:
+
+```html
+<label>
+  <input class="slidebox" type="checkbox" data-slidebox-thumb-layers>
+  Enable notifications
+</label>
+```
+
+The default switch remains flex-based. The optional attribute co-locates `::before` and `::after` in one grid cell; both reuse the same thumb geometry and logical-margin transitions. A skin can paint a fill and border independently without copying Slidebox's motion. No JavaScript or extra elements are needed. The core still supplies system-color paint, not a glass theme.
+
+Experimental ranges can reuse the motion helper's existing two decorative spans as persistent skin parts:
+
+```js
+import { enhanceSlideboxRange, enhanceSlideboxRangeFill } from "@monabbous/slidebox/experimental/range.mjs";
+
+const input = document.querySelector("#volume");
+const stopRange = enhanceSlideboxRange(input, { layers: true });
+const stopFill = enhanceSlideboxRangeFill(input);
+// Call stopRange() and stopFill() on unmount.
+```
+
+The helper exposes `[data-slidebox-range-thumb]` inside `[data-slidebox-range-visual]`. Its `::before` can host a skin border; the visual wrapper's `::before` supplies the optional fill. These are paint hooks, not another input or hit target. Native values, labels, pointer handling, and form events stay unchanged. `layers` defaults to `false`; reduced motion keeps an opted-in visual static, and forced colors restore the native thumb.
+
+Input/document resizing and scrolling refresh the visual. Call `stopRange.refresh()` after other position-only layout or theme changes. Cleanup removes both decorative spans, restores owned attributes/properties, and stops observers and pending frames. No idle animation loop runs. Call cleanup before reinitializing with different options. Skins should use the public part attributes and inherited variables, not read private `--_...` properties or reproduce the geometry.
 
 ## Experimental checkbox dragging
 
