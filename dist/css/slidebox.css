@@ -59,6 +59,8 @@
   content: "";
   grid-area: 1 / 1;
   width: auto;
+  height: auto;
+  align-self: stretch;
 }
 .slidebox[data-slidebox-thumb-layers]::before { z-index: 0; }
 .slidebox[data-slidebox-thumb-layers]::after { z-index: 1; }

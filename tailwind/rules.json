@@ -58,7 +58,9 @@
   "&[data-slidebox-thumb-layers]::before,\n&[data-slidebox-thumb-layers]::after": {
     "content": "\"\"",
     "grid-area": "1 / 1",
-    "width": "auto"
+    "width": "auto",
+    "height": "auto",
+    "align-self": "stretch"
   },
   "&[data-slidebox-thumb-layers]::before": {
     "z-index": "0"
