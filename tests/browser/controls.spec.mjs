@@ -29,8 +29,12 @@ test("checkbox paint layers keep one input and share native thumb geometry in LT
     await expect.poll(() => input.evaluate(element => parseFloat(getComputedStyle(element, "::after").marginInlineStart))).toBeCloseTo(8.25, 1);
     const original = await input.evaluate(read, "::after");
     await input.evaluate(element => element.setAttribute("data-slidebox-thumb-layers", ""));
-    expect(await input.evaluate(read, "::before")).toEqual(original);
-    expect(await input.evaluate(read, "::after")).toEqual(original);
+    const layered = await input.evaluate(read, "::before");
+    // Grid fills the input's content box on both axes. The old fixed height
+    // omitted the track borders, making the layered thumb 2px too tall.
+    expect(layered.slice(2)).toEqual(original.slice(2));
+    expect(Math.abs(parseFloat(layered[0]) - parseFloat(layered[1]))).toBeLessThan(.1);
+    expect(await input.evaluate(read, "::after")).toEqual(layered);
     expect(await input.evaluate(element => element.parentElement.children.length)).toBe(1);
     await input.press("Space");
     await expect(input).toBeChecked();
@@ -42,6 +46,10 @@ test("checkbox paint layers keep one input and share native thumb geometry in LT
       await page.waitForTimeout(40);
     }
     expect(await page.locator("#form").evaluate(form => new FormData(form).get("enabled"))).toBe("on");
+    await expect.poll(() => input.evaluate(element => {
+      const style = getComputedStyle(element, "::before");
+      return Math.abs(parseFloat(style.width) - parseFloat(style.height));
+    })).toBeLessThan(.1);
   }
 });
 
