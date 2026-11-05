@@ -397,7 +397,7 @@ Inherited properties make good site defaults. A mixin/plugin default assigned di
 
 ## Optional thumb paint layers
 
-This extension is unreleased on the thumb-decoration branch. It is not included in registry version 1.3.2.
+These hooks require Slidebox 1.4.0 or later.
 
 For a two-layer checkbox thumb, add one attribute to the existing input:
 

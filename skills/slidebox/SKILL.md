@@ -98,7 +98,7 @@ Native radio groups are official. Checkbox dragging and ranges are experimental 
 
 The checkbox thumb is a flex pseudo-element. Its two logical margins transition at slightly different times, allowing its actual width to change temporarily. This is not simply a transform scale. Margins can cause layout work. Do not claim compositor-only rendering, universal speed superiority, or uniqueness of the general elastic-switch idea.
 
-The unreleased `data-slidebox-thumb-layers` checkbox hook co-locates two pseudos using the same geometry/timing; it adds no elements or JavaScript and does not claim the default switch's `::before`. Experimental ranges can opt into `{ layers: true }` on `enhanceSlideboxRange` to retain its existing two decorative spans for fill/border skins. Use public part attributes and cleanup/refresh contracts from the README; do not reproduce the geometry in an integration.
+In Slidebox 1.4.0 and later, the `data-slidebox-thumb-layers` checkbox hook co-locates two pseudos using the same geometry/timing; it adds no elements or JavaScript and does not claim the default switch's `::before`. Experimental ranges can opt into `{ layers: true }` on `enhanceSlideboxRange` to retain its existing two decorative spans for fill/border skins. Use public part attributes and cleanup/refresh contracts from the README; do not reproduce the geometry in an integration.
 
 For benchmarks, callback cadence means `requestAnimationFrame` callbacks, not measured GPU-presented FPS. Preserve the recorded environment, visual differences between techniques, and limitations when citing a graph. Do not rerun a benchmark just to integrate a checkbox.
 
