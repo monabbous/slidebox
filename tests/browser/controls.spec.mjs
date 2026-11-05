@@ -17,6 +17,93 @@ test("range retains native steps, keyboard controls, and form submission", async
   await expect(range).toHaveCSS("outline-style", "solid");
 });
 
+test("checkbox paint layers keep one input and share native thumb geometry in LTR and RTL", async ({ page }) => {
+  const input = page.locator("#switch");
+  const read = (element, pseudo) => {
+    const style = getComputedStyle(element, pseudo);
+    return [style.width, style.height, style.marginInlineStart, style.marginInlineEnd, style.marginTop, style.marginBottom, style.transitionDuration, style.transitionDelay];
+  };
+  for (const direction of ["ltr", "rtl"]) {
+    await input.evaluate((element, direction) => { element.dir = direction; element.removeAttribute("data-slidebox-thumb-layers"); }, direction);
+    await input.uncheck();
+    await expect.poll(() => input.evaluate(element => parseFloat(getComputedStyle(element, "::after").marginInlineStart))).toBeCloseTo(8.25, 1);
+    const original = await input.evaluate(read, "::after");
+    await input.evaluate(element => element.setAttribute("data-slidebox-thumb-layers", ""));
+    expect(await input.evaluate(read, "::before")).toEqual(original);
+    expect(await input.evaluate(read, "::after")).toEqual(original);
+    expect(await input.evaluate(element => element.parentElement.children.length)).toBe(1);
+    await input.press("Space");
+    await expect(input).toBeChecked();
+    for (let frame = 0; frame < 6; frame++) {
+      expect(await input.evaluate(element => {
+        const a = getComputedStyle(element, "::before"), b = getComputedStyle(element, "::after");
+        return ["width", "height", "marginInlineStart", "marginInlineEnd"].every(key => Math.abs(parseFloat(a[key]) - parseFloat(b[key])) < .1);
+      })).toBe(true);
+      await page.waitForTimeout(40);
+    }
+    expect(await page.locator("#form").evaluate(form => new FormData(form).get("enabled"))).toBe("on");
+  }
+});
+
+test("range layers reuse two decorative spans, remain native, and restore media/reset/cleanup state", async ({ page }) => {
+  await page.evaluate(async () => {
+    const { enhanceSlideboxRange, enhanceSlideboxRangeFill } = await import("/experimental/range.mjs");
+    const input = document.querySelector("#volume");
+    window.layerCleanup = enhanceSlideboxRange(input, { layers: true });
+    window.layerFillCleanup = enhanceSlideboxRangeFill(input);
+  });
+  const range = page.locator("#volume"), visual = page.locator("[data-slidebox-range-visual]");
+  await expect(range).toHaveAttribute("data-slidebox-range-layers", "");
+  await expect(visual).toHaveCount(1);
+  await expect(visual.locator("*")).toHaveCount(1);
+  await expect(visual.locator("[data-slidebox-range-thumb]")).toHaveCount(1);
+  await page.locator("#form").evaluate(form => {
+    const banner = document.createElement("div");
+    banner.style.height = "120px";
+    form.before(banner);
+  });
+  await expect.poll(() => range.evaluate(input => Math.abs(input.getBoundingClientRect().top - input.nextElementSibling.getBoundingClientRect().top))).toBeLessThan(.5);
+  expect(await visual.evaluate(element => getComputedStyle(element, "::before").content)).toBe('""');
+  await range.press("End");
+  await expect(range).toHaveValue("100");
+  await expect(range).not.toHaveAttribute("data-slidebox-range-dragging");
+  await expect(visual).toHaveCount(1);
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await range.press("Home");
+  await expect(range).toHaveValue("0");
+  await expect(visual).toHaveCount(1);
+  await expect(range).not.toHaveAttribute("data-slidebox-range-dragging");
+  await page.locator("#form").evaluate(form => form.reset());
+  await expect(range).toHaveValue("40");
+  await expect.poll(() => visual.evaluate(element => element.style.getPropertyValue("--slidebox-visual-progress"))).toBe("0.4");
+  await page.emulateMedia({ forcedColors: "active" });
+  await expect(visual).toHaveCount(0);
+  await expect(range).not.toHaveAttribute("data-slidebox-range-layers");
+  await page.emulateMedia({ forcedColors: "none" });
+  await expect(visual).toHaveCount(1);
+  await range.evaluate(input => { input.disabled = true; });
+  await expect(visual).toHaveCSS("opacity", "0.5");
+  await page.evaluate(() => { window.layerCleanup(); window.layerCleanup(); window.layerFillCleanup(); });
+  await expect(visual).toHaveCount(0);
+  await expect(range).not.toHaveAttribute("data-slidebox-range-layers");
+  expect(await range.evaluate(input => input.style.getPropertyValue("--slidebox-range-stretch"))).toBe("");
+});
+
+test("a resting layered range does not run an idle animation loop", async ({ page }) => {
+  await page.evaluate(async () => {
+    const raf = window.requestAnimationFrame.bind(window);
+    window.layerFrames = 0;
+    window.requestAnimationFrame = callback => { window.layerFrames++; return raf(callback); };
+    const { enhanceSlideboxRange } = await import("/experimental/range.mjs");
+    window.layerCleanup = enhanceSlideboxRange(document.querySelector("#volume"), { layers: true });
+  });
+  await page.waitForTimeout(150);
+  const frames = await page.evaluate(() => window.layerFrames);
+  await page.waitForTimeout(200);
+  expect(await page.evaluate(() => window.layerFrames)).toBe(frames);
+  await page.evaluate(() => window.layerCleanup());
+});
+
 test("range pointer interaction changes the value without custom JavaScript", async ({ page }) => {
   const range = page.locator("#volume");
   const box = await range.boundingBox();

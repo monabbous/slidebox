@@ -41,10 +41,11 @@
   @supports (color: AccentColor) {
     & { --_accent: AccentColor; }
   }
+  &[data-slidebox-thumb-layers]::before,
   &::after {
     --_start: 0; --_end: 1;
     box-sizing: border-box;
-    content: "";
+    content: none;
     display: block;
     flex: 1 1 auto;
     min-width: 0;
@@ -59,14 +60,33 @@
     transition: background var(--_duration) var(--_easing-function), margin-inline-start var(--_duration) var(--_easing-function), margin-inline-end var(--_duration) var(--_easing-function);
     transition-delay: 0s, 0s, calc(var(--_duration) * var(--_deform));
   }
+  &::after { content: ""; }
+  &[data-slidebox-thumb-layers] {
+    display: inline-grid;
+    isolation: isolate;
+    grid-template-columns: ~"minmax(0, 1fr)";
+    grid-template-rows: ~"minmax(0, 1fr)";
+  }
+  &[data-slidebox-thumb-layers]::before,
+  &[data-slidebox-thumb-layers]::after {
+    content: "";
+    grid-area: 1 / 1;
+    width: auto;
+  }
+  &[data-slidebox-thumb-layers]::before { z-index: 0; }
+  &[data-slidebox-thumb-layers]::after { z-index: 1; }
+  &[data-slidebox-thumb-layers]:checked::before,
   &:checked::after {
     --_start: 1; --_end: 0;
     background: var(--_on);
     transition-delay: 0s, calc(var(--_duration) * var(--_deform)), 0s;
   }
+  &[data-slidebox-thumb-layers]:not(:checked):active::before,
   &:not(:checked):active::after { --_end: calc(1 - var(--_deform)); }
+  &[data-slidebox-thumb-layers]:checked:active::before,
   &:checked:active::after { --_start: calc(1 - var(--_deform)); }
   &:disabled { cursor: not-allowed; opacity: .5; }
+  &[data-slidebox-thumb-layers][data-slidebox-dragging]::before,
   &[data-slidebox-dragging]::after {
     margin-inline-start: ~"calc((1em * var(--_container-width-ratio) - 1em) * max(0, var(--slidebox-drag-progress) - max(0, var(--slidebox-drag-stretch, 0))) + var(--_thumb-spacing-ratio) * .5em)";
     margin-inline-end: ~"calc((1em * var(--_container-width-ratio) - 1em) * max(0, 1 - var(--slidebox-drag-progress) - max(0, -1 * var(--slidebox-drag-stretch, 0))) + var(--_thumb-spacing-ratio) * .5em)";
@@ -74,8 +94,10 @@
   }
   @media (forced-colors: active) {
     & { --_track: Field; --_border: ButtonBorder; --_off: FieldText; --_on: Highlight; }
+    &[data-slidebox-thumb-layers]::before { content: none; }
   }
   @media (prefers-reduced-motion: reduce) {
+    &[data-slidebox-thumb-layers]::before,
     &::after { transition-duration: .01ms; transition-delay: 0ms; }
   }
   }
@@ -110,7 +132,7 @@
     --_press-end: 0px;
     display: inline-grid;
     grid-auto-flow: column;
-    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-columns: ~"minmax(0, 1fr)";
     box-sizing: border-box;
     padding: calc(var(--_size) * var(--_spacing));
     gap: calc(var(--_size) * var(--_spacing));
@@ -182,8 +204,6 @@
   @supports (color: AccentColor) {
     & { --_accent: AccentColor; }
   }
-  /* A shared sliding indicator where scoped CSS anchor positioning is available.
-     Other browsers retain the per-segment highlight above. Neither needs JS. */
   @supports (anchor-scope: --slidebox-selection) and (left: anchor(left)) {
     & { anchor-scope: --slidebox-selection; }
     & > label:has(> input:checked) { anchor-name: --slidebox-selection; }

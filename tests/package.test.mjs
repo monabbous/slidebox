@@ -25,7 +25,7 @@ test("Sass entrypoint preserves the plain CSS rules", () => {
   const css = sass.compile(base + "/scss/slidebox.scss").css;
   const selectors = text => {
     const result = [];
-    postcss.parse(text).walkRules(rule => result.push(rule.selector));
+    postcss.parse(text).walkRules(rule => result.push(rule.selectors.join(", ")));
     return result;
   };
   assert.deepEqual(selectors(css), selectors(file("dist/css/slidebox.css")));

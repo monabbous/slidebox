@@ -83,7 +83,36 @@
 .slidebox-range:focus-visible { outline: 2px solid var(--_on); outline-offset: 3px; }
 .slidebox-range[data-slidebox-range-dragging]::-webkit-slider-thumb { background: transparent; border-color: transparent; transition: none; }
 .slidebox-range[data-slidebox-range-dragging]::-moz-range-thumb { background: transparent; border-color: transparent; transition: none; }
-.slidebox-range:disabled { cursor: not-allowed; opacity: .5; }
+/* Opt-in visual layers share the motion helper's existing two spans.
+   Fill and border are pseudos, not more DOM; the native hit box never moves. */
+.slidebox-range[data-slidebox-range-layers]::-webkit-slider-thumb { background: transparent; border-color: transparent; }
+.slidebox-range[data-slidebox-range-layers]::-moz-range-thumb { background: transparent; border-color: transparent; }
+.slidebox-range[data-slidebox-range-layers][data-slidebox-range-fill] {
+  background-image: var(--_range-track-image, none);
+  background-size: 100vw 100vh;
+  background-position: 0 0;
+  background-attachment: fixed;
+}
+.slidebox-range + [data-slidebox-range-visual] > [data-slidebox-range-thumb] {
+  position: relative;
+  z-index: 1;
+  border: 1px solid var(--slidebox-visual-track, Field);
+  background: var(--slidebox-visual-on, Highlight);
+}
+.slidebox-range[data-slidebox-range-layers][data-slidebox-range-fill] + [data-slidebox-range-visual]::before {
+  --_visual-fill-size: max(0px, min(var(--slidebox-visual-thumb-size), 100%));
+  content: "";
+  position: absolute;
+  inset-inline-start: var(--slidebox-visual-gap);
+  top: calc((100% - var(--_visual-fill-size)) / 2);
+  width: calc(var(--slidebox-visual-thumb-size) / 2 + (100% - var(--slidebox-visual-travel-size)) * var(--slidebox-visual-progress));
+  height: var(--_visual-fill-size);
+  border-radius: inherit;
+  background: var(--slidebox-visual-on, Highlight);
+  pointer-events: none;
+}
+.slidebox-range:disabled,
+.slidebox-range:disabled + [data-slidebox-range-visual] { cursor: not-allowed; opacity: .5; }
 @supports (color: AccentColor) {
   .slidebox-range { --_accent: AccentColor; }
 }
